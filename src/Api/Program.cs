@@ -1,3 +1,5 @@
+using Api.ExceptionHandlers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,6 +14,10 @@ builder.Services.AddCors(options =>
                   .AllowAnyMethod();
         });
 });
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();
@@ -21,6 +27,8 @@ app.MapGet("/echo", () =>
 {
     return "hello world";
 });
+
+app.UseExceptionHandler();
 
 app.Run();
 
