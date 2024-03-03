@@ -8,15 +8,17 @@ public class GetVotesQueryHandler : IRequestHandler<GetVotesQuery, IEnumerable<V
 {
     #region Fields
 
-    private readonly IVoteRepository _repository;
+    private readonly IVotesRepository _votesRepository;
+    private readonly IOptionsRepository _OptionsRepository;
 
     #endregion
 
     #region Constructors
 
-    public GetVotesQueryHandler(IVoteRepository repository)
+    public GetVotesQueryHandler(IVotesRepository repository, IOptionsRepository optionsRepository)
     {
-        _repository = repository;
+        _votesRepository = repository;
+        _OptionsRepository = optionsRepository;
     }
 
     #endregion
@@ -25,9 +27,17 @@ public class GetVotesQueryHandler : IRequestHandler<GetVotesQuery, IEnumerable<V
 
     public async Task<IEnumerable<VoteResponse>> Handle(GetVotesQuery request, CancellationToken cancellationToken)
     {
-        var result = await _repository.SelectWithOptions();
+        var votes = await _votesRepository.Select();
+        var options = await _OptionsRepository.Select();
 
-        return result.Adapt<IEnumerable<VoteResponse>>();
+        var voteResponse = new List<VoteResponse>();
+
+        foreach (var vote in votes)
+        {
+            voteResponse.Add((options.Where(w => w.VoteId == vote.Id), vote).Adapt<VoteResponse>());
+        }
+
+        return voteResponse;
     }
 
     #endregion

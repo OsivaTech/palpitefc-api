@@ -1,9 +1,12 @@
 using PalpiteApi.Api.Endpoints;
 using PalpiteApi.Api.ExceptionHandlers;
+using PalpiteApi.Api.Extensions;
 using PalpiteApi.Application.Extensions;
 using PalpiteApi.Domain.Settings;
 using PalpiteApi.Infra.Persistence.Connection;
 using PalpiteApi.Infra.Persistence.Extensions;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,14 +23,22 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    options.SerializerOptions.PropertyNameCaseInsensitive = true;
+    options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-builder.Services.AddDatabase();
-
 builder.Services.Configure<DbSettings>(builder.Configuration.GetSection("Settings:Database:MySql"));
 
+builder.Services.AddDatabase();
 builder.Services.AddMediator();
+builder.Services.AddCustomMappings();
 
 var app = builder.Build();
 

@@ -13,6 +13,11 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<DataContext>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-        services.AddTransient<IVoteRepository, VoteRepository>();
+        services.AddTransient<IVotesRepository, VotesRepository>();
+        services.AddTransient<IOptionsRepository, OptionsRepository>();
+        services.AddTransient<IChampionshipsRepository, ChampionshipsRepository>();
+        services.AddTransient<IGamesRepository, GamesRepository>();
+        services.AddTransient<ITeamsGamesRepository, TeamsGameRepository>();
+        services.AddTransient<ITeamsRepository, TeamsRepository>();
     }
 }
