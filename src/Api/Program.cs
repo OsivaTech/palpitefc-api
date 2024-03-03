@@ -1,8 +1,9 @@
 using PalpiteApi.Api.Endpoints;
 using PalpiteApi.Api.ExceptionHandlers;
+using PalpiteApi.Application.Extensions;
+using PalpiteApi.Domain.Settings;
 using PalpiteApi.Infra.Persistence.Connection;
 using PalpiteApi.Infra.Persistence.Extensions;
-using PalpiteApi.Infra.Persistence.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,8 @@ builder.Services.AddProblemDetails();
 builder.Services.AddDatabase();
 
 builder.Services.Configure<DbSettings>(builder.Configuration.GetSection("Settings:Database:MySql"));
+
+builder.Services.AddMediator();
 
 var app = builder.Build();
 

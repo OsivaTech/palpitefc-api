@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PalpiteApi.Domain.Interfaces;
 using PalpiteApi.Infra.Persistence.Connection;
 using PalpiteApi.Infra.Persistence.Repositories;
 
@@ -12,6 +13,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<DataContext>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-        services.AddTransient<ChampionshipsRepository>();
+        services.AddTransient<IVoteRepository, VoteRepository>();
     }
 }

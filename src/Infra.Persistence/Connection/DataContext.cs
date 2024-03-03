@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
-using PalpiteApi.Infra.Persistence.Settings;
+using PalpiteApi.Domain.Settings;
 using System.Data;
 
 namespace PalpiteApi.Infra.Persistence.Connection;

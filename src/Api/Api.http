@@ -1,6 +1,21 @@
 @Api_HostAddress = http://localhost:5113
 
+GET {{Api_HostAddress}}/vote
+Accept: application/json
+
+###
+
 GET {{Api_HostAddress}}/championship
+Accept: application/json
+
+###
+
+GET {{Api_HostAddress}}/gamme
+Accept: application/json
+
+###
+
+GET {{Api_HostAddress}}/ranking
 Accept: application/json
 
 ###
