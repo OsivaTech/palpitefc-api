@@ -1,4 +1,4 @@
-﻿namespace Application.Responses;
+﻿namespace PalpiteApi.Application.Responses;
 
 public class RankingResponse
 {

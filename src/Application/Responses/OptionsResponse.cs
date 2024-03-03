@@ -1,9 +1,9 @@
 ﻿namespace PalpiteApi.Application.Responses;
 
-public class VoteResponse
+public class OptionsResponse
 {
     public int Id { get; set; }
     public string? Title { get; set; }
     public int Count { get; set; }
-    public IEnumerable<OptionsResponse>? Options { get; set; }
+    public int? VoteId { get; set; }
 }

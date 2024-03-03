@@ -1,4 +1,4 @@
-﻿using Application.Responses;
+﻿using PalpiteApi.Application.Responses;
 
 namespace PalpiteApi.Api.Endpoints;
 
