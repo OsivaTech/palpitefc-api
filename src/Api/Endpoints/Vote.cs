@@ -1,4 +1,4 @@
-﻿namespace Api.Endpoints;
+﻿namespace PalpiteApi.Api.Endpoints;
 
 public static class Vote
 {

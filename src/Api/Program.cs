@@ -1,5 +1,8 @@
-using Api.Endpoints;
-using Api.ExceptionHandlers;
+using PalpiteApi.Api.Endpoints;
+using PalpiteApi.Api.ExceptionHandlers;
+using PalpiteApi.Infra.Persistence.Connection;
+using PalpiteApi.Infra.Persistence.Extensions;
+using PalpiteApi.Infra.Persistence.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +22,16 @@ builder.Services.AddCors(options =>
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
+builder.Services.AddDatabase();
+
+builder.Services.Configure<DbSettings>(builder.Configuration.GetSection("Settings:Database:MySql"));
+
 var app = builder.Build();
+
+// initialize database
+using var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+await context.Init();
 
 app.UseHttpsRedirection();
 app.UseCors("cors");
@@ -31,4 +43,3 @@ app.MapGameEndpoints();
 app.UseExceptionHandler();
 
 app.Run();
-

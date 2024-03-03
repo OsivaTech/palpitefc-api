@@ -1,7 +1,6 @@
 ﻿using Application.Responses;
 
-namespace Api.Endpoints;
-
+namespace PalpiteApi.Api.Endpoints;
 
 public static class Championship
 {
