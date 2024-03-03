@@ -1,34 +1,34 @@
 ﻿using Mapster;
-using MediatR;
 using PalpiteApi.Application.Responses;
+using PalpiteApi.Application.Services.Interfaces;
 using PalpiteApi.Domain.Interfaces;
 
-namespace PalpiteApi.Application.Queries.Handlers;
-public class GetVotesQueryHandler : IRequestHandler<GetVotesQuery, IEnumerable<VoteResponse>>
+namespace PalpiteApi.Application.Services;
+public class VotesService : IVotesService
 {
     #region Fields
 
     private readonly IVotesRepository _votesRepository;
-    private readonly IOptionsRepository _OptionsRepository;
+    private readonly IOptionsRepository _optionsRepository;
 
     #endregion
 
     #region Constructors
 
-    public GetVotesQueryHandler(IVotesRepository repository, IOptionsRepository optionsRepository)
+    public VotesService(IVotesRepository repository, IOptionsRepository optionsRepository)
     {
         _votesRepository = repository;
-        _OptionsRepository = optionsRepository;
+        _optionsRepository = optionsRepository;
     }
 
     #endregion
 
     #region Public Methods
 
-    public async Task<IEnumerable<VoteResponse>> Handle(GetVotesQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<VoteResponse>> GetAsync(CancellationToken cancellationToken)
     {
         var votes = await _votesRepository.Select();
-        var options = await _OptionsRepository.Select();
+        var options = await _optionsRepository.Select();
 
         var voteResponse = new List<VoteResponse>();
 

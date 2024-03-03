@@ -1,12 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PalpiteApi.Application.Services;
+using PalpiteApi.Application.Services.Interfaces;
 using System.Reflection;
 
 namespace PalpiteApi.Application.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddMediator(this IServiceCollection services)
+    public static void AddServices(this IServiceCollection services)
     {
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        services.AddScoped<IVotesService, VotesService>();
+        services.AddScoped<IChampionshipsService, ChampionshipsService>();
+        services.AddScoped<IGamesService, GamesService>();
     }
 }

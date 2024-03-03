@@ -5,8 +5,8 @@ using PalpiteApi.Application.Extensions;
 using PalpiteApi.Domain.Settings;
 using PalpiteApi.Infra.Persistence.Connection;
 using PalpiteApi.Infra.Persistence.Extensions;
-using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,8 +36,8 @@ builder.Services.AddProblemDetails();
 
 builder.Services.Configure<DbSettings>(builder.Configuration.GetSection("Settings:Database:MySql"));
 
+builder.Services.AddServices();
 builder.Services.AddDatabase();
-builder.Services.AddMediator();
 builder.Services.AddCustomMappings();
 
 var app = builder.Build();

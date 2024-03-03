@@ -1,11 +1,11 @@
 ﻿using Mapster;
-using MediatR;
 using PalpiteApi.Application.Responses;
+using PalpiteApi.Application.Services.Interfaces;
 using PalpiteApi.Domain.Interfaces;
 
-namespace PalpiteApi.Application.Queries.Handlers;
+namespace PalpiteApi.Application.Services;
 
-public class GetGamesQueryHandler : IRequestHandler<GetGamesQuery, IEnumerable<GameResponse>>
+public class GamesService : IGamesService
 {
     #region Fields
 
@@ -17,7 +17,7 @@ public class GetGamesQueryHandler : IRequestHandler<GetGamesQuery, IEnumerable<G
 
     #region Contructors
 
-    public GetGamesQueryHandler(IGamesRepository gameRepository, ITeamsRepository teamsRepository, ITeamsGamesRepository teamsGameRepository)
+    public GamesService(IGamesRepository gameRepository, ITeamsRepository teamsRepository, ITeamsGamesRepository teamsGameRepository)
     {
         _gamesRepository = gameRepository;
         _teamsRepository = teamsRepository;
@@ -28,7 +28,7 @@ public class GetGamesQueryHandler : IRequestHandler<GetGamesQuery, IEnumerable<G
 
     #region Public Methods
 
-    public async Task<IEnumerable<GameResponse>> Handle(GetGamesQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<GameResponse>> GetAsync(CancellationToken cancellationToken)
     {
         var games = await _gamesRepository.Select();
         var teamsGame = await _teamsGameRepository.Select();
