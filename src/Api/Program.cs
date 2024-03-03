@@ -1,3 +1,4 @@
+using Api.Endpoints;
 using Api.ExceptionHandlers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,10 +24,9 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseCors("cors");
 
-app.MapGet("/echo", () =>
-{
-    return "hello world";
-});
+app.MapVoteEndpoints();
+app.MapChampionshipEndpoints();
+app.MapGameEndpoints();
 
 app.UseExceptionHandler();
 
