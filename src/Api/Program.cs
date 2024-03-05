@@ -1,17 +1,10 @@
-using PalpiteApi.Api.Endpoints;
 using PalpiteApi.Api.ExceptionHandlers;
 using PalpiteApi.Api.Extensions;
-using PalpiteApi.Application.Extensions;
-using PalpiteApi.Domain.Settings;
-using PalpiteApi.Infra.Persistence.Connection;
-using PalpiteApi.Infra.Persistence.Extensions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options =>
 {
@@ -34,26 +27,21 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-builder.Services.Configure<DbSettings>(builder.Configuration.GetSection("Settings:Database:MySql"));
-
-builder.Services.AddServices();
-builder.Services.AddDatabase();
-builder.Services.AddCustomMappings();
+builder.Services.ConfigureValidators();
+builder.Services.ConfigureDependencyInjection();
+builder.Services.ConfigureIOptions(builder.Configuration);
+builder.Services.ConfigureApiSecurity(builder.Configuration);
 
 var app = builder.Build();
-
-// initialize database
-using var scope = app.Services.CreateScope();
-var context = scope.ServiceProvider.GetRequiredService<DataContext>();
-await context.Init();
 
 app.UseHttpsRedirection();
 app.UseCors("cors");
 
-app.MapVoteEndpoints();
-app.MapChampionshipEndpoints();
-app.MapGameEndpoints();
+app.UseAuthentication();
+app.UseAuthorization();
 
+app.InitiaizeDatabase();
+app.MapEndpoints();
 app.UseExceptionHandler();
 
 app.Run();
