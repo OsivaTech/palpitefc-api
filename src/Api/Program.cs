@@ -1,3 +1,4 @@
+using PalpiteApi.Api.Converters;
 using PalpiteApi.Api.ExceptionHandlers;
 using PalpiteApi.Api.Extensions;
 using System.Text.Json;
@@ -22,6 +23,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.PropertyNameCaseInsensitive = true;
     options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    options.SerializerOptions.Converters.Add(new DateTimeConverter());
 });
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
