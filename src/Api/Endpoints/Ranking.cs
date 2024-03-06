@@ -1,6 +1,4 @@
-﻿using PalpiteApi.Application.Responses;
-
-namespace PalpiteApi.Api.Endpoints;
+﻿namespace PalpiteApi.Api.Endpoints;
 
 public static class Ranking
 {
@@ -8,11 +6,7 @@ public static class Ranking
     {
         app.MapGet("/ranking", () =>
         {
-            return new RankingResponse()
-            {
-
-            };
-
+            return new List<string>();
         });
     }
 }

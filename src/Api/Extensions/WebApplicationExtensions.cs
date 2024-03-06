@@ -12,6 +12,8 @@ public static class WebApplicationExtensions
         app.MapGameEndpoints();
         app.MapNewsEndpoints();
         app.MapAuthEndpoints();
+        app.MapRankingEndpoints();
+        app.MapUrlVideoEndpoints();
     }
 
     public static async void InitiaizeDatabase(this WebApplication app)
