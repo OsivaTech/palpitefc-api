@@ -36,6 +36,9 @@ builder.Services.ConfigureApiSecurity(builder.Configuration);
 
 var app = builder.Build();
 
+app.UsePathBase(new PathString("/api"));
+app.UseRouting();
+
 app.UseHttpsRedirection();
 app.UseCors("cors");
 
