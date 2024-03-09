@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.Extensions.Caching.Memory;
 using PalpiteApi.Application.Responses;
 using PalpiteApi.Application.Services.Interfaces;
 using PalpiteApi.Domain.Interfaces;
@@ -9,19 +10,18 @@ public class GamesService : IGamesService
 {
     #region Fields
 
-    private readonly IGamesRepository _gamesRepository;
-    private readonly ITeamsRepository _teamsRepository;
-    private readonly ITeamsGamesRepository _teamsGameRepository;
+
+    private readonly IApiFootballProvider _apiFootballProvider;
+    private readonly IMemoryCache _cache;
 
     #endregion
 
     #region Contructors
 
-    public GamesService(IGamesRepository gameRepository, ITeamsRepository teamsRepository, ITeamsGamesRepository teamsGameRepository)
+    public GamesService(IApiFootballProvider apiFootballProvider, IMemoryCache cache)
     {
-        _gamesRepository = gameRepository;
-        _teamsRepository = teamsRepository;
-        _teamsGameRepository = teamsGameRepository;
+        _apiFootballProvider = apiFootballProvider;
+        _cache = cache;
     }
 
     #endregion
@@ -30,26 +30,39 @@ public class GamesService : IGamesService
 
     public async Task<IEnumerable<GameResponse>> GetAsync(CancellationToken cancellationToken)
     {
-        var games = await _gamesRepository.Select();
-        var teamsGame = await _teamsGameRepository.Select();
-        var teams = await _teamsRepository.Select();
+        string[] champsIds = ["11", "13", "73", "475", "624", "629"];
 
-        var gamesResponse = new List<GameResponse>();
+        var games = Enumerable.Empty<GameResponse>();
 
-        foreach (var game in games)
+        foreach (var champId in champsIds)
         {
-            gamesResponse.Add(new GameResponse()
+            var cachedGames = await _cache.GetOrCreate(champId, async entry =>
             {
-                Id = game.Id,
-                ChampionshipId = game.ChampionshipId,
-                Name = game.Name,
-                Start = game.Start,
-                FirstTeam = (teams, teamsGame.Where(w => w.GameId == game.Id).ElementAt(0)).Adapt<TeamGameResponse>(),
-                SecondTeam = (teams, teamsGame.Where(w => w.GameId == game.Id).ElementAt(1)).Adapt<TeamGameResponse>(),
-            });
+                entry.AbsoluteExpiration = DateTimeOffset.UtcNow.AddDays(1);
+
+                return await _apiFootballProvider.GetMatchesByLeagueId(champId,
+                                                                       DateTime.UtcNow.ToString("yyyy-MM-dd"),
+                                                                       DateTime.UtcNow.AddDays(14).ToString("yyyy-MM-dd"));
+            })!;
+
+            var adaptedGame = cachedGames.Adapt<IEnumerable<GameResponse>>().ToArray();
+
+            for (int i = 0; i < adaptedGame.Length; i++)
+            {
+                var item = adaptedGame.ElementAt(i);
+
+                adaptedGame[i].FirstTeam.GameId = item.Id;
+                adaptedGame[i].SecondTeam.GameId = item.Id;
+                adaptedGame[i].FirstTeam.Gol = cachedGames.First(w => w.Fixture.Id.Value == item.Id).Goals.Home.GetValueOrDefault(0);
+                adaptedGame[i].SecondTeam.Gol = cachedGames.First(w => w.Fixture.Id.Value == item.Id).Goals.Away.GetValueOrDefault(0);
+            }
+
+            games = games.Concat(adaptedGame);
         }
 
-        return gamesResponse;
+        var response = games.Adapt<IEnumerable<GameResponse>>();
+
+        return response.OrderBy(x => x.Start);
     }
 
     #endregion

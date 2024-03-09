@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using PalpiteApi.Application.Responses;
 using PalpiteApi.Domain.Entities;
+using PalpiteApi.Domain.Entities.ApiFootball;
 using System.Linq.Expressions;
 
 namespace PalpiteApi.Application.Mappings;
@@ -11,7 +12,33 @@ public class MappingConfiguration : IRegister
     {
         config.ForType<(IEnumerable<Options>, Votes), VoteResponse>().MapWith(MapListOptonsAndVotesToVoteResponse());
         config.ForType<(IEnumerable<Games>, Championships), ChampionshipResponse>().MapWith(MapListGamesAndChampionshipsToChampionshipResponse());
-        config.ForType<(IEnumerable<Teams>, TeamsGame), TeamGameResponse>().MapWith(MapListTeamsAndTeamsGameToTeamGameResponse());
+
+        config.ForType<Match, GameResponse>().MapWith(MapMatchToGameResponse());
+        config.ForType<Team, TeamGameResponse>().MapWith(MapTeamToTeamGameResponse());
+    }
+
+    private Expression<Func<Team, TeamGameResponse>> MapTeamToTeamGameResponse()
+    {
+        return src => new TeamGameResponse
+        {
+            TeamId = src.Id.Value,
+            Name = src.Name,
+            Image = src.Logo
+        };
+    }
+
+    private Expression<Func<Match, GameResponse>> MapMatchToGameResponse()
+    {
+        return src => new GameResponse
+        {
+            Id = src.Fixture.Id.Value,
+            Name = "",
+            ChampionshipId = src.League.Id.Value,
+            FirstTeam = src.Teams.Home.Adapt<TeamGameResponse>(),
+            SecondTeam = src.Teams.Away.Adapt<TeamGameResponse>(),
+            Start = src.Fixture.Date.Value,
+            Finished = src.Fixture.Status.Long.Equals("Match Finished"), 
+        };
     }
 
     private Expression<Func<(IEnumerable<Options>, Votes), VoteResponse>> MapListOptonsAndVotesToVoteResponse()
@@ -32,19 +59,6 @@ public class MappingConfiguration : IRegister
             Id = src.Item2.Id,
             Name = src.Item2.Name,
             Games = src.Item1.Adapt<IEnumerable<GameResponse>>()
-        };
-    }
-
-    private static Expression<Func<(IEnumerable<Teams>, TeamsGame), TeamGameResponse>> MapListTeamsAndTeamsGameToTeamGameResponse()
-    {
-        return src => new TeamGameResponse
-        {
-            GameId = src.Item2.GameId,
-            Gol = src.Item2.Gol,
-            Id = src.Item2.Id,
-            TeamId = src.Item2.TeamId,
-            Image = src.Item1.First(w => w.Id == src.Item2.TeamId).Image,
-            Name = src.Item1.First(w => w.Id == src.Item2.TeamId).Name
         };
     }
 }

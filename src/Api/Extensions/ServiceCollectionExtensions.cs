@@ -1,14 +1,14 @@
-﻿using Mapster;
+﻿using FluentValidation;
+using Mapster;
 using MapsterMapper;
-using PalpiteApi.Application.Mappings;
-using PalpiteApi.Application.Extensions;
-using PalpiteApi.Infra.Persistence.Extensions;
-using FluentValidation;
-using PalpiteApi.Domain.Settings;
-using PalpiteApi.Application.Validators;
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using PalpiteApi.Application.Extensions;
+using PalpiteApi.Application.Mappings;
+using PalpiteApi.Application.Validators;
+using PalpiteApi.Domain.Settings;
+using PalpiteApi.Infra.Persistence.Extensions;
+using System.Text;
 
 namespace PalpiteApi.Api.Extensions;
 
@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
         services.AddServices();
         services.AddDatabase();
         services.AddCustomMappings();
+        services.AddMemoryCache();
     }
 
     public static void ConfigureApiSecurity(this IServiceCollection services, IConfiguration configuration)

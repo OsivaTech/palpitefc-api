@@ -10,16 +10,14 @@ public class ChampionshipsService : IChampionshipsService
     #region Fields
 
     private readonly IChampionshipsRepository _champsRepository;
-    private readonly IGamesRepository _gamesRepository;
 
     #endregion
 
     #region Constructor
 
-    public ChampionshipsService(IChampionshipsRepository rerpository, IGamesRepository gamesRepository)
+    public ChampionshipsService(IChampionshipsRepository rerpository)
     {
         _champsRepository = rerpository;
-        _gamesRepository = gamesRepository;
     }
 
     #endregion
@@ -29,16 +27,8 @@ public class ChampionshipsService : IChampionshipsService
     public async Task<IEnumerable<ChampionshipResponse>> GetAsync(CancellationToken cancellationToken)
     {
         var championships = await _champsRepository.Select();
-        var games = await _gamesRepository.Select();
 
-        var champsResponse = new List<ChampionshipResponse>();
-
-        foreach (var championship in championships)
-        {
-            champsResponse.Add((games.Where(w => w.ChampionshipId == championship.Id), championship).Adapt<ChampionshipResponse>());
-        }
-
-        return champsResponse;
+        return championships.Adapt<IEnumerable<ChampionshipResponse>>();
     }
 
     #endregion

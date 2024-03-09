@@ -1,3 +1,4 @@
+using Infra.Integrations.Extensions;
 using PalpiteApi.Api.Converters;
 using PalpiteApi.Api.ExceptionHandlers;
 using PalpiteApi.Api.Extensions;
@@ -31,6 +32,7 @@ builder.Services.AddProblemDetails();
 
 builder.Services.ConfigureValidators();
 builder.Services.ConfigureDependencyInjection();
+builder.Services.AddIntegrationServices(builder.Configuration);
 builder.Services.ConfigureIOptions(builder.Configuration);
 builder.Services.ConfigureApiSecurity(builder.Configuration);
 
