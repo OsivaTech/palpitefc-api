@@ -4,7 +4,7 @@ using PalpiteApi.Application.Services.Interfaces;
 
 namespace PalpiteApi.Api.Endpoints;
 
-public static class User
+public static class Auth
 {
     public static void MapAuthEndpoints(this WebApplication app)
     {
