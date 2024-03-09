@@ -19,3 +19,20 @@ GET {{Api_HostAddress}}/ranking
 Accept: application/json
 
 ###
+
+POST {{Api_HostAddress}}/auth/palpitation
+Content-Type: application/json
+
+{
+    "gameId"": 1181746,
+    "firstTeam"": {
+        "id": 0,
+        "gol": ""
+    },
+    secondTeam: {
+        "id": 0,
+        "gol": ""
+    }
+}
+ 
+###

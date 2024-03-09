@@ -1,8 +1,8 @@
-﻿using PalpiteApi.Application.Requests;
+﻿using PalpiteApi.Domain.Entities;
 
 namespace PalpiteApi.Application.Services.Interfaces;
 
 public interface ITokenService
 {
-    string Generate(SignInRequest signInInfo);
+    string Generate(Users user);
 }
