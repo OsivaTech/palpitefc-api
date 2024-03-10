@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
-using Org.BouncyCastle.Asn1.Ocsp;
 using PalpiteApi.Application.Requests;
 using PalpiteApi.Application.Services.Interfaces;
 
 namespace PalpiteApi.Api.Endpoints.Authenticated;
 
-public static class AuthOptions
+public static class Options
 {
     public static void MapAuthOptionsEndpoints(this WebApplication app)
     {
@@ -25,6 +24,6 @@ public static class AuthOptions
             }
 
             return Results.Ok(result.Value);
-        });
+        }).RequireAuthorization();
     }
 }
