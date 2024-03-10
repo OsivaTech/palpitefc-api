@@ -16,8 +16,25 @@ public class UserContextMiddleware
     {
         var header = context.Request.Headers.Authorization;
 
+        if (header.Count == 0)
+        {
+            await _next(context);
+            return;
+        }
+
+        var stringToken = (header[0] ?? string.Empty).Replace("Bearer ", "");
+
         var tokenHandler = new JwtSecurityTokenHandler();
-        var jsonToken = tokenHandler.ReadToken((header[0] ?? string.Empty).Replace("Bearer ", "")) as JwtSecurityToken;
+
+        var canRead = tokenHandler.CanReadToken(stringToken);
+
+        if (canRead is false)
+        {
+            await _next(context);
+            return;
+        }
+
+        var jsonToken = tokenHandler.ReadToken(stringToken) as JwtSecurityToken;
 
         if (jsonToken is not null)
         {
