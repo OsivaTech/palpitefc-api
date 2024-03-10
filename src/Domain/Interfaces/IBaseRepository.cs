@@ -7,5 +7,6 @@ public interface IBaseRepository<TEntity> where TEntity : BaseEntity
     Task<TEntity> Select(int id);
     Task Insert(TEntity obj);
     Task Update(TEntity obj);
+    Task Update(int obj);
     Task Delete(int id);
 }

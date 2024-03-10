@@ -13,5 +13,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IGamesService, GamesService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IOptionsService, OptionsService>();
     }
 }

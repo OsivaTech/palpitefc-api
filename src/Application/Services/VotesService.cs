@@ -39,6 +39,10 @@ public class VotesService : IVotesService
 
         return voteResponse;
     }
+    public Task<VoteResponse> GetAsync(int id, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 
     #endregion
 }

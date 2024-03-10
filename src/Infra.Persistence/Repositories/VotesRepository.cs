@@ -31,9 +31,14 @@ public class VotesRepository : IVotesRepository
     public async Task<IEnumerable<Votes>> Select()
         => await _session.Connection.QueryAsync<Votes>("SELECT * FROM votes", null, _session.Transaction);
 
-    public Task<Votes> Select(int id) => throw new NotImplementedException();
+    public async Task<Votes> Select(int id)
+    {
+        return await _session.Connection.QueryFirstOrDefaultAsync<Votes>("SELECT * FROM votes WHERE id = @id", new { id }, _session.Transaction);
+    }
 
     public Task Update(Votes obj) => throw new NotImplementedException();
+    public Task Update(int id) => throw new NotImplementedException();
+
 
     #endregion
 }

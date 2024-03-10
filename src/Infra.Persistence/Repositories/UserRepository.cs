@@ -53,6 +53,7 @@ public class UserRepository : IUserRepository
     {
         throw new NotImplementedException();
     }
+    public Task Update(int id) => throw new NotImplementedException();
 
     #endregion
 }

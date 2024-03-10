@@ -46,6 +46,6 @@ public class TeamsRepository : ITeamsRepository
     {
         throw new NotImplementedException();
     }
-
+    public Task Update(int id) => throw new NotImplementedException();
     #endregion
 }

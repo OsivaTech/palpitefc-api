@@ -46,6 +46,7 @@ public class ChampionshipsRepository : IChampionshipsRepository
     {
         throw new NotImplementedException();
     }
+    public Task Update(int id) => throw new NotImplementedException();
 
     #endregion
 }

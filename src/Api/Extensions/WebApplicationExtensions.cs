@@ -1,4 +1,5 @@
 ﻿using PalpiteApi.Api.Endpoints;
+using PalpiteApi.Api.Endpoints.Authenticated;
 using PalpiteApi.Infra.Persistence.Connection;
 
 namespace PalpiteApi.Api.Extensions;
@@ -14,6 +15,7 @@ public static class WebApplicationExtensions
         app.MapAuthEndpoints();
         app.MapRankingEndpoints();
         app.MapUrlVideoEndpoints();
+        app.MapAuthOptionsEndpoints();
     }
 
     public static async void InitiaizeDatabase(this WebApplication app)
