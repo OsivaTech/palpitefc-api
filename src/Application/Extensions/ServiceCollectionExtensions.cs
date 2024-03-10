@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PalpiteApi.Application.Services;
+using PalpiteApi.Application.Services.Auth;
 using PalpiteApi.Application.Services.Interfaces;
 
 namespace PalpiteApi.Application.Extensions;
@@ -13,6 +14,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IGamesService, GamesService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IPalpitationService, PalpitationService>();
         services.AddScoped<IOptionsService, OptionsService>();
     }
 }

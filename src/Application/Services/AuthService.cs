@@ -40,7 +40,7 @@ public class AuthService : IAuthService
         // verificar se o email já está cadastrado
         if (await _userRepository.Exists(signUpRequest.Email!) > 0)
         {
-            return Result.Failure<AuthResponse>(SignUpErrors.EmailAlreadyUsed);
+            return ResultHelper.Failure<AuthResponse>(SignUpErrors.EmailAlreadyUsed);
         }
 
         var guid = Guid.NewGuid();
@@ -57,7 +57,7 @@ public class AuthService : IAuthService
         // inserir o usuário no banco de dados
         await _userRepository.Insert(user);
 
-        var token = _tokenService.Generate(signUpRequest.Adapt<SignInRequest>());
+        var token = _tokenService.Generate(user);
 
         var authResponse = new AuthResponse()
         {
@@ -65,7 +65,7 @@ public class AuthService : IAuthService
             User = user.Adapt<UserResponse>()
         };
 
-        return Result.Success(authResponse);
+        return ResultHelper.Success(authResponse);
     }
 
     public async Task<Result<AuthResponse>> SignIn(SignInRequest signInRequest, CancellationToken cancellationToken)
@@ -76,7 +76,7 @@ public class AuthService : IAuthService
         if (users.Any() is false)
         {
             //verifica se o usuário existe
-            return Result.Failure<AuthResponse>(SignInErrors.UserNotFound);
+            return ResultHelper.Failure<AuthResponse>(SignInErrors.UserNotFound);
         }
 
         //verifica se a senha está correta
@@ -84,10 +84,10 @@ public class AuthService : IAuthService
 
         if (hash.EncryptPassword(signInRequest.Password + users.First().UserGuid) != users.First().Password)
         {
-            return Result.Failure<AuthResponse>(SignInErrors.IncorretPassword);
+            return ResultHelper.Failure<AuthResponse>(SignInErrors.IncorretPassword);
         }
 
-        var token = _tokenService.Generate(signInRequest);
+        var token = _tokenService.Generate(users.First());
 
         var authResponse = new AuthResponse()
         {
@@ -95,7 +95,7 @@ public class AuthService : IAuthService
             User = users.First().Adapt<UserResponse>()
         };
 
-        return Result.Success(authResponse);
+        return ResultHelper.Success(authResponse);
     }
 
     #endregion

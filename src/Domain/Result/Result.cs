@@ -1,9 +1,16 @@
 ﻿namespace PalpiteApi.Domain.Result;
 
-public static class Result
+public class Result
 {
-    public static Result<T> Success<T>(T value) => new(value, true, default!);
-    public static Result<T> Failure<T>(Error error) => new(default!, false, error);
+    public bool IsSuccess { get; }
+    public bool IsFailure => !IsSuccess;
+    public Error Error { get; }
+
+    public Result(bool isSuccess, Error error)
+    {
+        IsSuccess = isSuccess;
+        Error = error;
+    }
 }
 
 public class Result<T>

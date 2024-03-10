@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using PalpiteApi.Application.Requests;
 using PalpiteApi.Application.Responses;
 using PalpiteApi.Domain.Entities;
 using PalpiteApi.Domain.Entities.ApiFootball;
@@ -15,6 +16,21 @@ public class MappingConfiguration : IRegister
 
         config.ForType<Match, GameResponse>().MapWith(MapMatchToGameResponse());
         config.ForType<Team, TeamGameResponse>().MapWith(MapTeamToTeamGameResponse());
+
+        config.ForType<PalpitationRequest, Palpitations>().MapWith(MapPalpitationRequestToPalpitations());
+    }
+
+    private Expression<Func<PalpitationRequest, Palpitations>> MapPalpitationRequestToPalpitations()
+    {
+        return src => new Palpitations
+        {
+            GameId = src.GameId,
+            FirstTeamId = src.FirstTeam.Id,
+            FirstTeamGol = src.FirstTeam.Gol,
+            SecondTeamGol = src.SecondTeam.Gol,
+            SecondTeamId = src.SecondTeam.Id,
+            CreatedAt = DateTime.UtcNow
+        };
     }
 
     private Expression<Func<Team, TeamGameResponse>> MapTeamToTeamGameResponse()
@@ -37,7 +53,7 @@ public class MappingConfiguration : IRegister
             FirstTeam = src.Teams.Home.Adapt<TeamGameResponse>(),
             SecondTeam = src.Teams.Away.Adapt<TeamGameResponse>(),
             Start = src.Fixture.Date.Value,
-            Finished = src.Fixture.Status.Long.Equals("Match Finished"), 
+            Finished = src.Fixture.Status.Long.Equals("Match Finished"),
         };
     }
 

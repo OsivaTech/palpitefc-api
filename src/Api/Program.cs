@@ -2,6 +2,7 @@ using Infra.Integrations.Extensions;
 using PalpiteApi.Api.Converters;
 using PalpiteApi.Api.ExceptionHandlers;
 using PalpiteApi.Api.Extensions;
+using PalpiteApi.Api.Middlewares;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -48,6 +49,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.InitiaizeDatabase();
+app.UseMiddleware<UserContextMiddleware>();
 app.MapEndpoints();
 app.UseExceptionHandler();
 

@@ -20,5 +20,6 @@ public static class ServiceCollectionExtensions
         services.AddTransient<ITeamsGamesRepository, TeamsGameRepository>();
         services.AddTransient<ITeamsRepository, TeamsRepository>();
         services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<IPalpitationRepository, PalpitationRepository>();
     }
 }

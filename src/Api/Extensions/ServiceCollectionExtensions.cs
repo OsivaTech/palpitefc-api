@@ -3,6 +3,7 @@ using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using PalpiteApi.Application;
 using PalpiteApi.Application.Extensions;
 using PalpiteApi.Application.Mappings;
 using PalpiteApi.Application.Validators;
@@ -20,6 +21,8 @@ public static class ServiceCollectionExtensions
         services.AddDatabase();
         services.AddCustomMappings();
         services.AddMemoryCache();
+
+        services.AddScoped<UserContext>();
     }
 
     public static void ConfigureApiSecurity(this IServiceCollection services, IConfiguration configuration)
