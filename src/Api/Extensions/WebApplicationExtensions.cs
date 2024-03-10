@@ -20,6 +20,7 @@ public static class WebApplicationExtensions
         app.MapAuthUserEndpoints();
         app.MapAuthConfigEndpoints();
         app.MapAuthChampionshipEndpoints();
+        app.MapAuthNewsEndpoint();
     }
 
     public static async void InitiaizeDatabase(this WebApplication app)

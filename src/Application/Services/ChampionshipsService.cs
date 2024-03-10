@@ -34,7 +34,7 @@ public class ChampionshipsService : IChampionshipsService
 
     public async Task<ChampionshipResponse> CreateOrUpdateAsync(ChampionshipRequest request, CancellationToken cancellationToken)
     {
-        var championship = new Championships();
+        var id = request.Championship!.Id;
 
         if (request.Championship!.Id > 0)
         {
@@ -42,21 +42,21 @@ public class ChampionshipsService : IChampionshipsService
         }
         else
         {
-            var id = await _repository.InsertAndGetId(request.Championship.Adapt<Championships>());
-
-            championship = await _repository.Select(id);
+            id = await _repository.InsertAndGetId(request.Championship.Adapt<Championships>());
         }
+
+        var championship = await _repository.Select(id);
 
         return championship.Adapt<ChampionshipResponse>();
     }
 
-    public async Task<ChampionshipResponse> DeleteAsync(int id)
+    public async Task<IEnumerable<ChampionshipResponse>> DeleteAsync(int id)
     {
         await _repository.Delete(id);
 
         var championship = await _repository.Select();
 
-        return championship.Adapt<ChampionshipResponse>();
+        return championship.Adapt<IEnumerable<ChampionshipResponse>>();
     }
 
     #endregion

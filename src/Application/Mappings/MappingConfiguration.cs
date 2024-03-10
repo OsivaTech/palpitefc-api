@@ -17,7 +17,27 @@ public class MappingConfiguration : IRegister
         config.ForType<Match, GameResponse>().MapWith(MapMatchToGameResponse());
         config.ForType<Team, TeamGameResponse>().MapWith(MapTeamToTeamGameResponse());
 
+        config.ForType<(News, Users), NewsResponse>().MapWith(MapNewsAndUsersToNewsResponse());
+
         config.ForType<PalpitationRequest, Palpitations>().MapWith(MapPalpitationRequestToPalpitations());
+    }
+
+    private Expression<Func<(News, Users), NewsResponse>> MapNewsAndUsersToNewsResponse()
+    {
+        return src => new NewsResponse
+        {
+            Id = src.Item1.Id,
+            Title = src.Item1.Title,
+            Info = src.Item1.Info,
+            Content = src.Item1.Content,
+            UserId = src.Item1.UserId,
+            Author = new()
+            {
+                Id = src.Item2.Id,
+                Name = src.Item2.Name,
+                Team = src.Item2.Team,
+            }
+        };
     }
 
     private Expression<Func<PalpitationRequest, Palpitations>> MapPalpitationRequestToPalpitations()

@@ -7,9 +7,9 @@ public class NewsResponse
     public string? Content { get; set; }
     public string? Info { get; set; }
     public int UserId { get; set; }
-    public Author author { get; set; }
+    public AuthorInfo? Author { get; set; }
 
-    public class Author 
+    public class AuthorInfo
     {
         public int Id { get; set; }
         public string? Name { get; set; }
