@@ -17,6 +17,8 @@ public static class WebApplicationExtensions
         app.MapUrlVideoEndpoints();
         app.MapAuthPalpitationEndpoints();
         app.MapAuthOptionsEndpoints();
+        app.MapAuthUserEndpoints();
+        app.MapAuthConfigEndpoints();
     }
 
     public static async void InitiaizeDatabase(this WebApplication app)

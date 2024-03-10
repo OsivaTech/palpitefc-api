@@ -9,8 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Services\Interfaces\IUserService.cs" />
-    <Compile Remove="Services\UserService.cs" />
     <Compile Remove="Validators\UsersValidator.cs" />
   </ItemGroup>
 

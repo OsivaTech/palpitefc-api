@@ -16,5 +16,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IPalpitationService, PalpitationService>();
         services.AddScoped<IOptionsService, OptionsService>();
+        services.AddScoped<IConfigService, ConfigService>();
     }
 }
