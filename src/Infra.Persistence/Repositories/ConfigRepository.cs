@@ -48,14 +48,14 @@ public class ConfigRepository : IConfigRepository
 
     public async Task<IEnumerable<Config>> Select(string name)
     {
-        var query = "SELECT * FROM config WHERE name=@name";
+        var query = "SELECT * FROM config WHERE name = @name";
 
         return await _session.Connection.QueryAsync<Config>(query, new { name }, _session.Transaction);
     }
 
     public async Task Update(Config entity)
     {
-        var query = "UPDATE config SET value = @value WHERE name=@name";
+        var query = "UPDATE config SET value = @value WHERE name = @name, updatedAt = current_timestamp(3)";
 
         await _session.Connection.ExecuteAsync(query, new { entity.Value, entity.Name }, _session.Transaction);
     }

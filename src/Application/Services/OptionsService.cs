@@ -47,7 +47,7 @@ public class OptionsService : IOptionsService
             return ResultHelper.Failure<VoteResponse>(OptionsErros.EnqueteNotFound);
         }
 
-        await _optionsRepository.AddVote(option!.Count + 1, option);
+        await _optionsRepository.AddVote(option, option!.Count + 1);
 
 
         var response = new VoteResponse

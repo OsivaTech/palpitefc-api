@@ -28,7 +28,7 @@ public class OptionsRepository : IOptionsRepository
         throw new NotImplementedException();
     }
 
-    public Task Insert(Options obj)
+    public Task Insert(Options entity)
     {
         throw new NotImplementedException();
     }
@@ -43,19 +43,19 @@ public class OptionsRepository : IOptionsRepository
 
     public Task Update(int count)
     {
-        return _session.Connection.ExecuteAsync("UPDATE options SET count = @count", count, _session.Transaction);
+        throw new NotImplementedException();
     }
 
-    public Task<int> AddVote(int count, Options obj)
+    public Task<int> AddVote(Options entity, int count)
     {
-        return _session.Connection.ExecuteAsync("UPDATE options SET count = @count where id = @Id", new {count, obj.Id}, _session.Transaction);
+        return _session.Connection.ExecuteAsync("UPDATE options SET count = @count where id = @Id, updatedAt = current_timestamp(3)", new {count, entity.Id}, _session.Transaction);
 
     }
     public async Task<IEnumerable<Options>> SelectByVoteId(int voteId)
     {
         return await _session.Connection.QueryAsync<Options>("SELECT * FROM options WHERE voteId = @voteId", new { voteId }, _session.Transaction);
     }
-    public Task Update(Options obj)
+    public Task Update(Options entity)
     {
         throw new NotImplementedException();
     }

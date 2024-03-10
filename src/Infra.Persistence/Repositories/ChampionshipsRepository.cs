@@ -47,7 +47,7 @@ public class ChampionshipsRepository : IChampionshipsRepository
         => await _session.Connection.QuerySingleAsync<Championships>("SELECT * FROM championships WHERE id = @id", new { id }, _session.Transaction);
 
     public async Task Update(Championships entity)
-        => await _session.Connection.ExecuteAsync("UPDATE championships SET name = @name WHERE id = @id", new { entity.Name, entity.Id }, _session.Transaction);
+        => await _session.Connection.ExecuteAsync("UPDATE championships SET name = @name WHERE id = @id, updatedAt = current_timestamp(3)", new { entity.Name, entity.Id }, _session.Transaction);
 
     public Task Update(int id)
     {
