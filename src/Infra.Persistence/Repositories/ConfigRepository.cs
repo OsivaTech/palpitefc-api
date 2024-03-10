@@ -2,7 +2,6 @@
 using PalpiteApi.Domain.Entities;
 using PalpiteApi.Domain.Interfaces;
 using PalpiteApi.Infra.Persistence.Connection;
-using static Dapper.SqlMapper;
 
 namespace PalpiteApi.Infra.Persistence.Repositories;
 
