@@ -7,6 +7,6 @@ namespace PalpiteApi.Application.Services.Auth;
 public interface INewsService
 {
     Task<NewsResponse> CreateOrUpdateAsync(NewsRequest request);
-    Task<IEnumerable<NewsResponse>> DeleteAsync(int id, CancellationToken cancellationToken);
+    Task<NewsResponse> DeleteAsync(int id, CancellationToken cancellationToken);
     Task<IEnumerable<NewsResponse>> GetAsync(CancellationToken cancellationToken);
 }

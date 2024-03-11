@@ -50,13 +50,11 @@ public class ChampionshipsService : IChampionshipsService
         return championship.Adapt<ChampionshipResponse>();
     }
 
-    public async Task<IEnumerable<ChampionshipResponse>> DeleteAsync(int id)
+    public async Task<ChampionshipResponse> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         await _repository.Delete(id);
 
-        var championship = await _repository.Select();
-
-        return championship.Adapt<IEnumerable<ChampionshipResponse>>();
+        return new() { Id = id };
     }
 
     #endregion
