@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using PalpiteApi.Application.Requests;
+﻿using PalpiteApi.Application.Requests;
 using PalpiteApi.Application.Services.Interfaces;
 
 namespace PalpiteApi.Api.Endpoints.Authenticated;
@@ -8,15 +7,23 @@ public static class Options
 {
     public static void MapAuthOptionsEndpoints(this WebApplication app)
     {
-        app.MapPost("/auth/option", async (OptionsRequest request, IValidator<OptionsRequest> validator, IOptionsService service, CancellationToken cancellationToken) =>
+        app.MapPost("/auth/option", async (OptionsRequest request,
+                                           IOptionsService service,
+                                           CancellationToken cancellationToken) =>
         {
-            var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-            if (!validationResult.IsValid)
+            if (request.VoteId > 0)
             {
-                return Results.BadRequest(new { message = "Erro de validação" });
+                var resultCreate = await service.CreateAsync(request, cancellationToken);
+
+                if (resultCreate.IsFailure)
+                {
+                    return Results.BadRequest(new { message = resultCreate.Error.Description });
+                }
+
+                return Results.Ok(resultCreate.Value);
             }
-            var result = await service.SendOption(request, cancellationToken);
+
+            var result = await service.ComputeVoteAsync(request, cancellationToken);
 
             if (result.IsFailure)
             {
@@ -24,6 +31,7 @@ public static class Options
             }
 
             return Results.Ok(result.Value);
+
         }).RequireAuthorization();
     }
 }

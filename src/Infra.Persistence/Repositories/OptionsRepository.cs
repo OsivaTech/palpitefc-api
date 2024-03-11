@@ -28,9 +28,11 @@ public class OptionsRepository : IOptionsRepository
         throw new NotImplementedException();
     }
 
-    public Task Insert(Options entity)
+    public async Task Insert(Options entity)
     {
-        throw new NotImplementedException();
+        var query = "INSERT INTO options (title, count, voteId, createdAt, updatedAt) VALUES(@title, @count, @voteId, current_timestamp(3), current_timestamp(3))";
+
+        await _session.Connection.ExecuteAsync(query, new { entity.Title, entity.Count, entity.VoteId });
     }
 
     public async Task<IEnumerable<Options>> Select()
@@ -38,7 +40,7 @@ public class OptionsRepository : IOptionsRepository
 
     public async Task<Options> Select(int id)
     {
-       return await _session.Connection.QueryFirstAsync<Options>("SELECT * FROM options WHERE id = @id", new { id }, _session.Transaction);
+        return await _session.Connection.QuerySingleAsync<Options>("SELECT * FROM options WHERE id = @id", new { id }, _session.Transaction);
     }
 
     public Task Update(int count)
@@ -46,18 +48,18 @@ public class OptionsRepository : IOptionsRepository
         throw new NotImplementedException();
     }
 
-    public Task<int> AddVote(Options entity, int count)
-    {
-        return _session.Connection.ExecuteAsync("UPDATE options SET count = @count where id = @Id, updatedAt = current_timestamp(3)", new {count, entity.Id}, _session.Transaction);
-
-    }
     public async Task<IEnumerable<Options>> SelectByVoteId(int voteId)
-    {
-        return await _session.Connection.QueryAsync<Options>("SELECT * FROM options WHERE voteId = @voteId", new { voteId }, _session.Transaction);
-    }
+        => await _session.Connection.QueryAsync<Options>("SELECT * FROM options WHERE voteId = @voteId", new { voteId }, _session.Transaction);
+
     public Task Update(Options entity)
+        => _session.Connection.ExecuteAsync("UPDATE options SET title = @title, count = @count, voteId = @voteId, updatedAt = current_timestamp(3) WHERE id = @id", new { entity.Title, entity.Count, entity.VoteId, entity.Id });
+
+    public async Task<int> InsertAndGetId(Options entity)
     {
-        throw new NotImplementedException();
+        var query = @"INSERT INTO options (title, count, voteId, createdAt, updatedAt) VALUES(@title, @count, @voteId, current_timestamp(3), current_timestamp(3));
+                      SELECT LAST_INSERT_ID() as id; ";
+
+        return await _session.Connection.QuerySingleAsync<int>(query, new { entity.Title, entity.Count, entity.VoteId });
     }
 
     #endregion

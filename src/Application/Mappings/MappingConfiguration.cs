@@ -11,15 +11,24 @@ public class MappingConfiguration : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.ForType<(IEnumerable<Options>, Votes), VoteResponse>().MapWith(MapListOptonsAndVotesToVoteResponse());
-        config.ForType<(IEnumerable<Games>, Championships), ChampionshipResponse>().MapWith(MapListGamesAndChampionshipsToChampionshipResponse());
-
         config.ForType<Match, GameResponse>().MapWith(MapMatchToGameResponse());
         config.ForType<Team, TeamGameResponse>().MapWith(MapTeamToTeamGameResponse());
 
         config.ForType<(News, Users), NewsResponse>().MapWith(MapNewsAndUsersToNewsResponse());
 
         config.ForType<PalpitationRequest, Palpitations>().MapWith(MapPalpitationRequestToPalpitations());
+
+        config.ForType<(Votes, IEnumerable<Options>), VoteResponse>().MapWith(MapVotesAndListOfOptionsToVoteResponse());
+    }
+
+    private Expression<Func<(Votes, IEnumerable<Options>), VoteResponse>> MapVotesAndListOfOptionsToVoteResponse()
+    {
+        return src => new VoteResponse
+        {
+            Id = src.Item1.Id,
+            Title = src.Item1.Title,
+            Options = src.Item2.Adapt<IEnumerable<OptionsResponse>>()
+        };
     }
 
     private Expression<Func<(News, Users), NewsResponse>> MapNewsAndUsersToNewsResponse()

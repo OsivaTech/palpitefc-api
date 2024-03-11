@@ -1,6 +1,8 @@
 ﻿using Mapster;
+using PalpiteApi.Application.Requests;
 using PalpiteApi.Application.Responses;
 using PalpiteApi.Application.Services.Interfaces;
+using PalpiteApi.Domain.Entities;
 using PalpiteApi.Domain.Interfaces;
 
 namespace PalpiteApi.Application.Services;
@@ -34,14 +36,26 @@ public class VotesService : IVotesService
 
         foreach (var vote in votes)
         {
-            voteResponse.Add((options.Where(w => w.VoteId == vote.Id), vote).Adapt<VoteResponse>());
+            voteResponse.Add((vote, options.Where(w => w.VoteId == vote.Id)).Adapt<VoteResponse>());
         }
 
         return voteResponse;
     }
-    public Task<VoteResponse> GetAsync(int id, CancellationToken cancellationToken)
+
+    public async Task<VoteResponse> CreateAsync(VoteRequest request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var id = await _votesRepository.InsertAndGetId(request.Adapt<Votes>());
+
+        var vote = await _votesRepository.Select(id);
+
+        return vote.Adapt<VoteResponse>();
+    }
+
+    public async Task<VoteResponse> DeleteAsync(int id, CancellationToken cancellationToken)
+    {
+        await _votesRepository.Delete(id);
+
+        return new() { Id = id };
     }
 
     #endregion
