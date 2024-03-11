@@ -6,4 +6,5 @@ public interface IUserRepository : IBaseRepository<Users>
 {
     Task<int> Exists(string email);
     Task<IEnumerable<Users>> FindByEmail(string email);
+    Task<IEnumerable<Users>> SelectByPoints();
 }

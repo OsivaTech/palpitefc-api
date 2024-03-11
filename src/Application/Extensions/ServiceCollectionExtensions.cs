@@ -18,5 +18,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IOptionsService, OptionsService>();
         services.AddScoped<IConfigService, ConfigService>();
         services.AddScoped<INewsService, NewsService>();
+        services.AddScoped<IRankingService, RankingService>();
     }
 }
