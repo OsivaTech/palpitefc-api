@@ -29,29 +29,31 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
-    public async Task Insert(Users user)
+    public async Task Insert(Users entity)
     {
         await _session.Connection.ExecuteAsync("INSERT INTO users (name, email, password, role, userGuid) VALUES (@name, @email, @password, @role, @userGuid)",
-                           new { user.Name, user.Email, user.Password, user.Role, user.UserGuid }, _session.Transaction);
+                           new { entity.Name, entity.Email, entity.Password, entity.Role, entity.UserGuid }, _session.Transaction);
     }
 
     public async Task<IEnumerable<Users>> Select()
         => await _session.Connection.QueryAsync<Users>("SELECT * FROM users", null, _session.Transaction);
 
-    public Task<Users> Select(int id)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<Users> Select(int id)
+        => await _session.Connection.QuerySingleAsync<Users>("SELECT * FROM users WHERE id = @id", new { id }, _session.Transaction);
 
     public async Task<int> Exists(string email)
         => await _session.Connection.ExecuteAsync("SELECT * FROM users where email = @email", new { email }, _session.Transaction);
-    
+
     public async Task<IEnumerable<Users>> FindByEmail(string email)
         => await _session.Connection.QueryAsync<Users>("SELECT * FROM users where email = @email", new { email }, _session.Transaction);
 
-    public Task Update(Users obj)
+    public async Task Update(Users entity)
     {
-        throw new NotImplementedException();
+        var query = @"UPDATE users 
+                        SET name = @name, `role` = @role, points = @points, document = @document, team = @team, info = @info, `number` = @number, birthday = @birthday 
+                      WHERE id = @id;";
+
+        await _session.Connection.ExecuteAsync(query, new { entity.Name, entity.Role, entity.Points, entity.Document, entity.Team, entity.Info, entity.Number, entity.Birthday, entity.Id}, _session.Transaction);
     }
     public Task Update(int id) => throw new NotImplementedException();
 

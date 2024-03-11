@@ -15,6 +15,7 @@ public static class WebApplicationExtensions
         app.MapAuthEndpoints();
         app.MapRankingEndpoints();
         app.MapUrlVideoEndpoints();
+        app.MapUserEndpoints();
         app.MapAuthPalpitationEndpoints();
         app.MapAuthOptionsEndpoints();
         app.MapAuthUserEndpoints();
