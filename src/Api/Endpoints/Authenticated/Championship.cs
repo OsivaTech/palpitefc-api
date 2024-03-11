@@ -14,6 +14,6 @@ public static class Championship
             => await service.CreateOrUpdateAsync(request, cancellationToken)).RequireAuthorization();
 
         app.MapDelete("/auth/championship", async (int id, IChampionshipsService service, CancellationToken cancellationToken)
-            => await service.DeleteAsync(id)).RequireAuthorization();
+            => await service.DeleteAsync(id, cancellationToken)).RequireAuthorization();
     }
 }

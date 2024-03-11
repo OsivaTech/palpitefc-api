@@ -35,13 +35,11 @@ public class NewsService : INewsService
         return news.Adapt<NewsResponse>();
     }
 
-    public async Task<IEnumerable<NewsResponse>> DeleteAsync(int id, CancellationToken cancellationToken)
+    public async Task<NewsResponse> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         await _repository.Delete(id);
 
-        var news = await _repository.Select();
-
-        return news.Adapt<IEnumerable<NewsResponse>>();
+        return new() { Id = id };
     }
 
     public async Task<IEnumerable<NewsResponse>> GetAsync(CancellationToken cancellationToken)

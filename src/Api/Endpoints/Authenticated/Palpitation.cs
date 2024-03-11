@@ -24,7 +24,7 @@ public static class Palpitation
 
             if (result.IsFailure)
             {
-                return Results.Conflict(result.Error);
+                return Results.Conflict(new { message = result.Error });
             }
 
             return Results.Created();

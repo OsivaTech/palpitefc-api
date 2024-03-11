@@ -2,6 +2,7 @@
 using PalpiteApi.Application.Requests;
 using PalpiteApi.Application.Responses;
 using PalpiteApi.Application.Services.Interfaces;
+using PalpiteApi.Domain.Entities;
 using PalpiteApi.Domain.Errors;
 using PalpiteApi.Domain.Interfaces;
 using PalpiteApi.Domain.Result;
@@ -10,53 +11,65 @@ namespace PalpiteApi.Application.Services;
 
 public class OptionsService : IOptionsService
 {
+    #region Fields
+
     private readonly IOptionsRepository _optionsRepository;
     private readonly IVotesRepository _votesRepository;
+
+    #endregion
+
+    #region Constructors
 
     public OptionsService(IOptionsRepository optionsRepository, IVotesRepository votesRepository)
     {
         _optionsRepository = optionsRepository;
         _votesRepository = votesRepository;
     }
-    public async Task<Result<VoteResponse>> SendOption(OptionsRequest req, CancellationToken cancellationToken)
+
+    #endregion
+
+    #region Public Methods
+
+    public async Task<Result<OptionsResponse>> CreateAsync(OptionsRequest request, CancellationToken cancellationToken)
     {
+        var id = await _optionsRepository.InsertAndGetId(request.Adapt<Options>());
 
-        if (req.Id <= 0)
-        {
-            return ResultHelper.Failure<VoteResponse>(OptionsErros.MissingParams);
-        }
+        var option = await _optionsRepository.Select(id);
 
-        var option = await _optionsRepository.Select(req.Id);
+        return ResultHelper.Success(option.Adapt<OptionsResponse>());
+    }
 
-        if (option is null)
-        {
-            return ResultHelper.Failure<VoteResponse>(OptionsErros.OptionNotFound);
-        }
+    public async Task<Result<VoteResponse>> ComputeVoteAsync(OptionsRequest request, CancellationToken cancellationToken)
+    {
+        var currentOption = await _optionsRepository.Select(request.Id);
 
-        var options = await _optionsRepository.SelectByVoteId(option.VoteId);
-
-        if (options is null)
+        if (currentOption is null)
         {
             return ResultHelper.Failure<VoteResponse>(OptionsErros.OptionNotFound);
         }
 
-        var votes = await _votesRepository.Select(option.VoteId);
-
-        if (votes == null)
+        var updatedOption = new Options
         {
-            return ResultHelper.Failure<VoteResponse>(OptionsErros.EnqueteNotFound);
-        }
+            Id = currentOption.Id,
+            VoteId = currentOption.VoteId,
+            Title = currentOption.Title,
+            Count = currentOption.Count + 1,
+        };
 
-        await _optionsRepository.AddVote(option, option!.Count + 1);
+        await _optionsRepository.Update(updatedOption);
 
+        var votes = await _votesRepository.Select(updatedOption.VoteId);
+        var options = await _optionsRepository.SelectByVoteId(updatedOption.VoteId);
 
         var response = new VoteResponse
         {
             Id = votes.Id,
             Title = votes.Title,
-            Options = options.Adapt<IEnumerable<OptionsResponse>>()
+            Options = options.Where(w => w.VoteId == votes.Id).Adapt<IEnumerable<OptionsResponse>>()
         };
 
         return ResultHelper.Success(response);
     }
+
+    #endregion
 }

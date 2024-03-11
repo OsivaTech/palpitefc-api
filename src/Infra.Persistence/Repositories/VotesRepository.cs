@@ -24,21 +24,26 @@ public class VotesRepository : IVotesRepository
 
     #region Pubic Methods
 
-    public Task Delete(int id) => throw new NotImplementedException();
+    public async Task Delete(int id)
+        => await _session.Connection.ExecuteAsync("DELETE FROM votes WHERE id = @id", new { id }, _session.Transaction);
 
-    public Task Insert(Votes obj) => throw new NotImplementedException();
+    public Task Insert(Votes entity) => throw new NotImplementedException();
+
+    public async Task<int> InsertAndGetId(Votes entity)
+    {
+        var query = @"INSERT INTO votes (title, createdAt, updatedAt) VALUES(@title, current_timestamp(3), current_timestamp(3));
+                      SELECT LAST_INSERT_ID() as id;";
+
+        return await _session.Connection.QuerySingleAsync<int>(query, new { entity.Title }, _session.Transaction);
+    }
 
     public async Task<IEnumerable<Votes>> Select()
         => await _session.Connection.QueryAsync<Votes>("SELECT * FROM votes", null, _session.Transaction);
 
     public async Task<Votes> Select(int id)
-    {
-        return await _session.Connection.QueryFirstOrDefaultAsync<Votes>("SELECT * FROM votes WHERE id = @id", new { id }, _session.Transaction);
-    }
+        => await _session.Connection.QuerySingleAsync<Votes>("SELECT * FROM votes WHERE id = @id", new { id }, _session.Transaction);
 
-    public Task Update(Votes obj) => throw new NotImplementedException();
-    public Task Update(int id) => throw new NotImplementedException();
-
+    public Task Update(Votes entity) => throw new NotImplementedException();
 
     #endregion
 }

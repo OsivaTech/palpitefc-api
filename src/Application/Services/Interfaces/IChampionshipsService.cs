@@ -5,6 +5,6 @@ namespace PalpiteApi.Application.Services.Interfaces;
 public interface IChampionshipsService
 {
     Task<ChampionshipResponse> CreateOrUpdateAsync(ChampionshipRequest request, CancellationToken cancellationToken);
-    Task<IEnumerable<ChampionshipResponse>> DeleteAsync(int id);
+    Task<ChampionshipResponse> DeleteAsync(int id, CancellationToken cancellationToken);
     Task<IEnumerable<ChampionshipResponse>> GetAsync(CancellationToken cancellationToken);
 }
