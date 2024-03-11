@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using PalpiteApi.Application.Services.Interfaces;
-using PalpiteApi.Domain.Entities;
+using PalpiteApi.Application.Interfaces;
+using PalpiteApi.Domain.Entities.Database;
 using PalpiteApi.Domain.Settings;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

@@ -1,5 +1,5 @@
-﻿using PalpiteApi.Application.Requests;
-using PalpiteApi.Application.Services.Interfaces;
+﻿using PalpiteApi.Application.Interfaces;
+using PalpiteApi.Application.Requests;
 
 namespace PalpiteApi.Api.Endpoints.Authenticated;
 

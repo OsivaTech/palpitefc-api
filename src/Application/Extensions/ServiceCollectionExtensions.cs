@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PalpiteApi.Application.Interfaces;
 using PalpiteApi.Application.Services;
 using PalpiteApi.Application.Services.Auth;
-using PalpiteApi.Application.Services.Interfaces;
 
 namespace PalpiteApi.Application.Extensions;
 
@@ -18,7 +18,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IOptionsService, OptionsService>();
         services.AddScoped<IConfigService, ConfigService>();
         services.AddScoped<INewsService, NewsService>();
-        services.AddScoped<IRankingService, RankingService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IRankingService, RankingService>();
     }
 }

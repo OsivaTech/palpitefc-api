@@ -1,5 +1,5 @@
 ﻿using PalpiteApi.Domain.Entities.ApiFootball;
-using PalpiteApi.Domain.Interfaces;
+using PalpiteApi.Domain.Interfaces.Integrations;
 using System.Text.Json;
 
 namespace Infra.Integrations.ApiFootball;

@@ -1,6 +1,6 @@
 ﻿using PalpiteApi.Application.Requests.Auth;
 using PalpiteApi.Application.Responses;
-using PalpiteApi.Domain.Entities;
+using PalpiteApi.Domain.Entities.Database;
 
 namespace PalpiteApi.Application.Services.Auth;
 

@@ -1,0 +1,13 @@
+﻿namespace PalpiteApi.Domain.Entities.Database;
+
+public class Palpitations : BaseEntity
+{
+    public int FirstTeamId { get; set; }
+    public int FirstTeamGol { get; set; }
+    public int SecondTeamId { get; set; }
+    public int SecondTeamGol { get; set; }
+    public int UserId { get; set; }
+    public int GameId { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+}

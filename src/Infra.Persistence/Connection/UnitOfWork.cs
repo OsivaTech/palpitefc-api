@@ -1,4 +1,6 @@
-﻿namespace PalpiteApi.Infra.Persistence.Connection;
+﻿using PalpiteApi.Domain.Interfaces.Database;
+
+namespace PalpiteApi.Infra.Persistence.Connection;
 
 public sealed class UnitOfWork : IUnitOfWork
 {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using PalpiteApi.Domain.Interfaces;
+using PalpiteApi.Domain.Interfaces.Database;
 using PalpiteApi.Infra.Persistence.Connection;
 using PalpiteApi.Infra.Persistence.Repositories;
 

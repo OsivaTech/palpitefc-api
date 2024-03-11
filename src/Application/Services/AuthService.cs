@@ -1,11 +1,11 @@
 ﻿using Mapster;
+using PalpiteApi.Application.Interfaces;
 using PalpiteApi.Application.Requests;
 using PalpiteApi.Application.Responses;
-using PalpiteApi.Application.Services.Interfaces;
 using PalpiteApi.Application.Utils;
-using PalpiteApi.Domain.Entities;
+using PalpiteApi.Domain.Entities.Database;
 using PalpiteApi.Domain.Errors;
-using PalpiteApi.Domain.Interfaces;
+using PalpiteApi.Domain.Interfaces.Database;
 using PalpiteApi.Domain.Result;
 using System.Security.Cryptography;
 
@@ -32,13 +32,13 @@ public class AuthService : IAuthService
 
     #region Public Methods
 
-    public async Task<Result<AuthResponse>> SignUp(SignUpRequest signUpRequest, CancellationToken cancellationToken)
+    public async Task<Result<AuthResponse>> SignUp(SignUpRequest request, CancellationToken cancellationToken)
     {
         // instanciar a classe Hash
         var hash = new Hash(SHA512.Create());
 
         // verificar se o email já está cadastrado
-        if (await _userRepository.Exists(signUpRequest.Email!) > 0)
+        if (await _userRepository.Exists(request.Email!) > 0)
         {
             return ResultHelper.Failure<AuthResponse>(SignUpErrors.EmailAlreadyUsed);
         }
@@ -47,11 +47,11 @@ public class AuthService : IAuthService
 
         var user = new Users()
         {
-            Name = signUpRequest.Name,
-            Email = signUpRequest.Email,
-            Password = hash.EncryptPassword(signUpRequest.Password + guid.ToString()),
+            Name = request.Name,
+            Email = request.Email,
+            Password = hash.EncryptPassword(request.Password + guid.ToString()),
             UserGuid = guid.ToString(),
-            Role = signUpRequest.Role!.Value
+            Role = request.Role!.Value
         };
 
         // inserir o usuário no banco de dados
@@ -68,10 +68,10 @@ public class AuthService : IAuthService
         return ResultHelper.Success(authResponse);
     }
 
-    public async Task<Result<AuthResponse>> SignIn(SignInRequest signInRequest, CancellationToken cancellationToken)
+    public async Task<Result<AuthResponse>> SignIn(SignInRequest request, CancellationToken cancellationToken)
     {
         // validar se o email e senha estão corretos
-        var users = await _userRepository.FindByEmail(signInRequest.Email!);
+        var users = await _userRepository.FindByEmail(request.Email!);
 
         if (users.Any() is false)
         {
@@ -82,7 +82,7 @@ public class AuthService : IAuthService
         //verifica se a senha está correta
         var hash = new Hash(SHA512.Create());
 
-        if (hash.EncryptPassword(signInRequest.Password + users.First().UserGuid) != users.First().Password)
+        if (hash.EncryptPassword(request.Password + users.First().UserGuid) != users.First().Password)
         {
             return ResultHelper.Failure<AuthResponse>(SignInErrors.IncorretPassword);
         }

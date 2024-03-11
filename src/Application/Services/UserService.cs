@@ -1,9 +1,9 @@
 ﻿using Mapster;
+using PalpiteApi.Application.Interfaces;
 using PalpiteApi.Application.Requests;
 using PalpiteApi.Application.Responses;
-using PalpiteApi.Application.Services.Interfaces;
-using PalpiteApi.Domain.Entities;
-using PalpiteApi.Domain.Interfaces;
+using PalpiteApi.Domain.Entities.Database;
+using PalpiteApi.Domain.Interfaces.Database;
 using PalpiteApi.Domain.Result;
 
 namespace PalpiteApi.Application.Services;

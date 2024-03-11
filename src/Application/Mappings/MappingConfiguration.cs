@@ -1,8 +1,8 @@
 ﻿using Mapster;
 using PalpiteApi.Application.Requests;
 using PalpiteApi.Application.Responses;
-using PalpiteApi.Domain.Entities;
 using PalpiteApi.Domain.Entities.ApiFootball;
+using PalpiteApi.Domain.Entities.Database;
 using System.Linq.Expressions;
 
 namespace PalpiteApi.Application.Mappings;
@@ -13,11 +13,8 @@ public class MappingConfiguration : IRegister
     {
         config.ForType<Match, GameResponse>().MapWith(MapMatchToGameResponse());
         config.ForType<Team, TeamGameResponse>().MapWith(MapTeamToTeamGameResponse());
-
         config.ForType<(News, Users), NewsResponse>().MapWith(MapNewsAndUsersToNewsResponse());
-
         config.ForType<PalpitationRequest, Palpitations>().MapWith(MapPalpitationRequestToPalpitations());
-
         config.ForType<(Votes, IEnumerable<Options>), VoteResponse>().MapWith(MapVotesAndListOfOptionsToVoteResponse());
     }
 
@@ -83,27 +80,6 @@ public class MappingConfiguration : IRegister
             SecondTeam = src.Teams.Away.Adapt<TeamGameResponse>(),
             Start = src.Fixture.Date.Value,
             Finished = src.Fixture.Status.Long.Equals("Match Finished"),
-        };
-    }
-
-    private Expression<Func<(IEnumerable<Options>, Votes), VoteResponse>> MapListOptonsAndVotesToVoteResponse()
-    {
-        return src => new VoteResponse
-        {
-            Id = src.Item2.Id,
-            Title = src.Item2.Title,
-            Options = src.Item1.Adapt<IEnumerable<OptionsResponse>>()
-        };
-    }
-
-    private Expression<Func<(IEnumerable<Games>, Championships), ChampionshipResponse>> MapListGamesAndChampionshipsToChampionshipResponse()
-
-    {
-        return src => new ChampionshipResponse
-        {
-            Id = src.Item2.Id,
-            Name = src.Item2.Name,
-            Games = src.Item1.Adapt<IEnumerable<GameResponse>>()
         };
     }
 }

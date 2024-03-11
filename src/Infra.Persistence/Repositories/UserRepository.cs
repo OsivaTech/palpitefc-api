@@ -1,6 +1,6 @@
 ﻿using Dapper;
-using PalpiteApi.Domain.Entities;
-using PalpiteApi.Domain.Interfaces;
+using PalpiteApi.Domain.Entities.Database;
+using PalpiteApi.Domain.Interfaces.Database;
 using PalpiteApi.Infra.Persistence.Connection;
 
 namespace PalpiteApi.Infra.Persistence.Repositories;

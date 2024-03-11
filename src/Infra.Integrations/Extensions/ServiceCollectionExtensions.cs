@@ -1,7 +1,7 @@
 ﻿using Infra.Integrations.ApiFootball;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PalpiteApi.Domain.Interfaces;
+using PalpiteApi.Domain.Interfaces.Integrations;
 
 namespace Infra.Integrations.Extensions;
 

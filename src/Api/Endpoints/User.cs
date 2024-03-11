@@ -1,4 +1,4 @@
-﻿using PalpiteApi.Application.Services.Interfaces;
+﻿using PalpiteApi.Application.Interfaces;
 
 namespace PalpiteApi.Api.Endpoints;
 

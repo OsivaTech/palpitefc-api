@@ -1,8 +1,8 @@
 ﻿using Mapster;
 using Microsoft.Extensions.Caching.Memory;
+using PalpiteApi.Application.Interfaces;
 using PalpiteApi.Application.Responses;
-using PalpiteApi.Application.Services.Interfaces;
-using PalpiteApi.Domain.Interfaces;
+using PalpiteApi.Domain.Interfaces.Integrations;
 
 namespace PalpiteApi.Application.Services;
 
@@ -30,7 +30,7 @@ public class GamesService : IGamesService
 
     public async Task<IEnumerable<GameResponse>> GetAsync(CancellationToken cancellationToken)
     {
-        string[] champsIds = ["11", "13", "73", "475", "624", "629", "253", "642","265","239"];
+        string[] champsIds = ["11", "13", "73", "475", "624", "629"];
 
         var games = Enumerable.Empty<GameResponse>();
 
