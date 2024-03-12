@@ -1,4 +1,5 @@
-﻿using PalpiteApi.Application.Interfaces;
+﻿using PalpiteApi.Api.Extensions;
+using PalpiteApi.Application.Interfaces;
 
 namespace PalpiteApi.Api.Endpoints;
 
@@ -10,8 +11,7 @@ public static class User
         {
             var result = await service.GetAllAsync(cancellationToken);
 
-            return Results.Ok(result.Value);
-
+            return result.ToIResult();
         }).RequireAuthorization();
     }
 }

@@ -1,8 +1,9 @@
 ﻿using PalpiteApi.Domain.Entities.Database;
+using PalpiteApi.Domain.Result;
 
 namespace PalpiteApi.Application.Interfaces;
 
 public interface ITokenService
 {
-    string Generate(Users user);
+    Result<string> Generate(Users user);
 }

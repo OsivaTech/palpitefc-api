@@ -1,10 +1,12 @@
 ﻿using Mapster;
+using PalpiteApi.Application.Interfaces;
 using PalpiteApi.Application.Requests.Auth;
 using PalpiteApi.Application.Responses;
 using PalpiteApi.Domain.Entities.Database;
 using PalpiteApi.Domain.Interfaces.Database;
+using PalpiteApi.Domain.Result;
 
-namespace PalpiteApi.Application.Services.Auth;
+namespace PalpiteApi.Application.Services;
 
 public class NewsService : INewsService
 {
@@ -17,7 +19,7 @@ public class NewsService : INewsService
         _userRepository = userRepository;
     }
 
-    public async Task<NewsResponse> CreateOrUpdateAsync(NewsRequest request)
+    public async Task<Result<NewsResponse>> CreateOrUpdateAsync(NewsRequest request)
     {
         var id = request.News!.Id;
 
@@ -32,17 +34,17 @@ public class NewsService : INewsService
 
         var news = await _repository.Select(id);
 
-        return news.Adapt<NewsResponse>();
+        return ResultHelper.Success(news.Adapt<NewsResponse>());
     }
 
-    public async Task<NewsResponse> DeleteAsync(int id, CancellationToken cancellationToken)
+    public async Task<Result<NewsResponse>> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         await _repository.Delete(id);
 
-        return new() { Id = id };
+        return ResultHelper.Success<NewsResponse>(new() { Id = id });
     }
 
-    public async Task<IEnumerable<NewsResponse>> GetAsync(CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<NewsResponse>>> GetAsync(CancellationToken cancellationToken)
     {
         var news = await _repository.Select();
 
@@ -55,6 +57,6 @@ public class NewsService : INewsService
             response.Add((item, users.First(w => w.Id == item.UserId)).Adapt<NewsResponse>());
         }
 
-        return response;
+        return ResultHelper.Success<IEnumerable<NewsResponse>>(response);
     }
 }

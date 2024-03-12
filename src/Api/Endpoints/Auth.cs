@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using PalpiteApi.Api.Extensions;
 using PalpiteApi.Application.Interfaces;
 using PalpiteApi.Application.Requests;
 
@@ -13,7 +14,6 @@ public static class Auth
                                       IAuthService service,
                                       CancellationToken cancellationToken) =>
         {
-            //valida request
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
             if (!validationResult.IsValid)
@@ -23,12 +23,7 @@ public static class Auth
 
             var result = await service.SignUp(request, cancellationToken);
 
-            if (result.IsFailure)
-            {
-                Results.BadRequest(result.Error);
-            }
-
-            return Results.Ok(result.Value);
+            return result.ToIResult();
         });
 
         app.MapPost("/signin", async (SignInRequest request,
@@ -36,7 +31,6 @@ public static class Auth
                                       IAuthService service,
                                       CancellationToken cancellationToken) =>
         {
-            //valida request
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
             if (!validationResult.IsValid)
@@ -46,12 +40,7 @@ public static class Auth
 
             var result = await service.SignIn(request, cancellationToken);
 
-            if (result.IsFailure)
-            {
-                return Results.BadRequest(new { message = result.Error.Description });
-            }
-
-            return Results.Ok(result.Value);
+            return result.ToIResult();
         });
     }
 }

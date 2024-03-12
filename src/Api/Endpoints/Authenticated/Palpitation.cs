@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
+using PalpiteApi.Api.Extensions;
+using PalpiteApi.Application.Interfaces;
 using PalpiteApi.Application.Requests;
-using PalpiteApi.Application.Services.Auth;
 
 namespace PalpiteApi.Api.Endpoints.Authenticated;
 
@@ -22,13 +23,7 @@ public static class Palpitation
 
             var result = await service.Create(request, cancellationToken);
 
-            if (result.IsFailure)
-            {
-                return Results.Conflict(new { message = result.Error });
-            }
-
-            return Results.Created();
-
+            return result.ToIResult(StatusCodes.Status201Created);
         }).RequireAuthorization();
     }
 }

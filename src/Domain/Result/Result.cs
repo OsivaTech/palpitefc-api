@@ -2,28 +2,33 @@
 
 public class Result
 {
-    public bool IsSuccess { get; }
+    public bool IsSuccess { get; internal set; }
     public bool IsFailure => !IsSuccess;
-    public Error Error { get; }
+    public List<Message>? Messages { get; internal set; }
 
-    public Result(bool isSuccess, Error error)
+    public Result(bool isSuccess, List<Message>? messages = null)
     {
         IsSuccess = isSuccess;
-        Error = error;
+
+        if (messages is not null)
+        {
+            Messages = messages;
+        }
+    }
+
+    public void AddMessage(Message Message)
+    {
+        Messages ??= [];
+        Messages.Add(Message);
     }
 }
 
-public class Result<T>
+public class Result<T> : Result
 {
-    public bool IsSuccess { get; }
-    public bool IsFailure => !IsSuccess;
-    public T Value { get; }
-    public Error Error { get; }
+    public T Data { get; }
 
-    public Result(T value, bool isSuccess, Error error)
+    public Result(T data, bool isSuccess, List<Message>? Messages = null) : base(isSuccess, Messages)
     {
-        Value = value;
-        IsSuccess = isSuccess;
-        Error = error;
+        Data = data;
     }
 }

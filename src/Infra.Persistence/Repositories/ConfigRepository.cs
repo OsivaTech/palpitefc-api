@@ -55,7 +55,7 @@ public class ConfigRepository : IConfigRepository
 
     public async Task Update(Config entity)
     {
-        var query = "UPDATE config SET value = @value WHERE name = @name, updatedAt = current_timestamp(3)";
+        var query = "UPDATE config SET value = @value WHERE name = @name";
 
         await _session.Connection.ExecuteAsync(query, new { entity.Value, entity.Name }, _session.Transaction);
     }

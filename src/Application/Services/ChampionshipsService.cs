@@ -3,6 +3,7 @@ using PalpiteApi.Application.Interfaces;
 using PalpiteApi.Application.Responses;
 using PalpiteApi.Domain.Entities.Database;
 using PalpiteApi.Domain.Interfaces.Database;
+using PalpiteApi.Domain.Result;
 
 namespace PalpiteApi.Application.Services;
 
@@ -25,14 +26,14 @@ public class ChampionshipsService : IChampionshipsService
 
     #region Public Methods
 
-    public async Task<IEnumerable<ChampionshipResponse>> GetAsync(CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<ChampionshipResponse>>> GetAsync(CancellationToken cancellationToken)
     {
         var championships = await _repository.Select();
 
-        return championships.Adapt<IEnumerable<ChampionshipResponse>>();
+        return ResultHelper.Success(championships.Adapt<IEnumerable<ChampionshipResponse>>());
     }
 
-    public async Task<ChampionshipResponse> CreateOrUpdateAsync(ChampionshipRequest request, CancellationToken cancellationToken)
+    public async Task<Result<ChampionshipResponse>> CreateOrUpdateAsync(ChampionshipRequest request, CancellationToken cancellationToken)
     {
         var id = request.Championship!.Id;
 
@@ -47,14 +48,14 @@ public class ChampionshipsService : IChampionshipsService
 
         var championship = await _repository.Select(id);
 
-        return championship.Adapt<ChampionshipResponse>();
+        return ResultHelper.Success(championship.Adapt<ChampionshipResponse>());
     }
 
-    public async Task<ChampionshipResponse> DeleteAsync(int id, CancellationToken cancellationToken)
+    public async Task<Result<ChampionshipResponse>> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         await _repository.Delete(id);
 
-        return new() { Id = id };
+        return ResultHelper.Success<ChampionshipResponse>(new() { Id = id });
     }
 
     #endregion

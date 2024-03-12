@@ -61,7 +61,7 @@ public class AuthService : IAuthService
 
         var authResponse = new AuthResponse()
         {
-            AccessToken = token,
+            AccessToken = token.Data,
             User = user.Adapt<UserResponse>()
         };
 
@@ -91,7 +91,7 @@ public class AuthService : IAuthService
 
         var authResponse = new AuthResponse()
         {
-            AccessToken = token,
+            AccessToken = token.Data,
             User = users.First().Adapt<UserResponse>()
         };
 

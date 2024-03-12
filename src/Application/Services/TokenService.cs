@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using PalpiteApi.Application.Interfaces;
 using PalpiteApi.Domain.Entities.Database;
+using PalpiteApi.Domain.Result;
 using PalpiteApi.Domain.Settings;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -28,7 +29,7 @@ public class TokenService : ITokenService
 
     #region Public Methods
 
-    public string Generate(Users user)
+    public Result<string> Generate(Users user)
     {
         var handler = new JwtSecurityTokenHandler();
 
@@ -45,7 +46,7 @@ public class TokenService : ITokenService
 
         var token = handler.CreateToken(tokenDescriptor);
 
-        return handler.WriteToken(token);
+        return ResultHelper.Success(handler.WriteToken(token));
     }
 
     #endregion

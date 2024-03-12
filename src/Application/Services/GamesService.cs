@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using PalpiteApi.Application.Interfaces;
 using PalpiteApi.Application.Responses;
 using PalpiteApi.Domain.Interfaces.Integrations;
+using PalpiteApi.Domain.Result;
 
 namespace PalpiteApi.Application.Services;
 
@@ -28,7 +29,7 @@ public class GamesService : IGamesService
 
     #region Public Methods
 
-    public async Task<IEnumerable<GameResponse>> GetAsync(CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<GameResponse>>> GetAsync(CancellationToken cancellationToken)
     {
         string[] champsIds = ["11", "13", "73", "475", "624", "629"];
 
@@ -62,7 +63,7 @@ public class GamesService : IGamesService
 
         var response = games.Adapt<IEnumerable<GameResponse>>();
 
-        return response.OrderBy(x => x.Start);
+        return ResultHelper.Success<IEnumerable<GameResponse>>(response.OrderBy(x => x.Start));
     }
 
     #endregion

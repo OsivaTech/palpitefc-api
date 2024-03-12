@@ -1,4 +1,5 @@
-﻿using PalpiteApi.Application.Interfaces;
+﻿using PalpiteApi.Api.Extensions;
+using PalpiteApi.Application.Interfaces;
 using PalpiteApi.Application.Requests;
 
 namespace PalpiteApi.Api.Endpoints.Authenticated;
@@ -15,23 +16,12 @@ public static class Options
             {
                 var resultCreate = await service.CreateAsync(request, cancellationToken);
 
-                if (resultCreate.IsFailure)
-                {
-                    return Results.BadRequest(new { message = resultCreate.Error.Description });
-                }
-
-                return Results.Ok(resultCreate.Value);
+                return resultCreate.ToIResult();
             }
 
             var result = await service.ComputeVoteAsync(request, cancellationToken);
 
-            if (result.IsFailure)
-            {
-                return Results.BadRequest(new { message = result.Error.Description });
-            }
-
-            return Results.Ok(result.Value);
-
+            return result.ToIResult();
         }).RequireAuthorization();
     }
 }

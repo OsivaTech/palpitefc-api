@@ -52,7 +52,7 @@ public class UserRepository : IUserRepository
     public async Task Update(Users entity)
     {
         var query = @"UPDATE users 
-                        SET name = @name, `role` = @role, points = @points, document = @document, team = @team, info = @info, `number` = @number, birthday = @birthday 
+                        SET name = @name, role = @role, points = @points, document = @document, team = @team, info = @info, number = @number, birthday = @birthday  
                       WHERE id = @id;";
 
         await _session.Connection.ExecuteAsync(query, new { entity.Name, entity.Role, entity.Points, entity.Document, entity.Team, entity.Info, entity.Number, entity.Birthday, entity.Id}, _session.Transaction);

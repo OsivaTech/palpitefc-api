@@ -1,8 +1,9 @@
 ﻿using PalpiteApi.Application.Responses;
+using PalpiteApi.Domain.Result;
 
 namespace PalpiteApi.Application.Interfaces;
 
 public interface IGamesService
 {
-    Task<IEnumerable<GameResponse>> GetAsync(CancellationToken cancellationToken);
+    Task<Result<IEnumerable<GameResponse>>> GetAsync(CancellationToken cancellationToken);
 }

@@ -31,19 +31,29 @@ public class PalpitationRepository : IPalpitationRepository
 
     public async Task<IEnumerable<Palpitations>> SelectByUserIdAndGameId(int userId, int gameId)
     {
-        var query = @"SELECT * FROM PalpiteApi.palpitations
+        var query = @"SELECT * FROM palpitations
                         WHERE userId = @userId AND gameId = @gameId";
 
         return await _session.Connection.QueryAsync<Palpitations>(query, new { userId, gameId }, _session.Transaction);
     }
 
-    public async Task Insert(Palpitations palpitation)
+    public async Task Insert(Palpitations entity)
     {
-        var query = @"INSERT INTO PalpiteApi.palpitations
+        var query = @"INSERT INTO palpitations
                         (firstTeamId, firstTeamGol, secondTeamId, secondTeamGol, userId, gameId, createdAt, updatedAt)
                         VALUES(@firstTeamId, @firstTeamGol, @secondTeamId, @secondTeamGol, @userId, @gameId, current_timestamp(3), current_timestamp(3));";
 
-        await _session.Connection.ExecuteAsync(query, palpitation, _session.Transaction);
+        await _session.Connection.ExecuteAsync(query, entity, _session.Transaction);
+    }
+
+    public async Task<int> InsertAndGetId(Palpitations entity)
+    {
+        var query = @"INSERT INTO palpitations
+                        (firstTeamId, firstTeamGol, secondTeamId, secondTeamGol, userId, gameId, createdAt, updatedAt)
+                        VALUES(@firstTeamId, @firstTeamGol, @secondTeamId, @secondTeamGol, @userId, @gameId, current_timestamp(3), current_timestamp(3));
+                      SELECT LAST_INSERT_ID() as id;";
+
+        return await _session.Connection.QuerySingleAsync<int>(query, entity, _session.Transaction);
     }
 
     public Task<IEnumerable<Palpitations>> Select()
@@ -51,10 +61,8 @@ public class PalpitationRepository : IPalpitationRepository
         throw new NotImplementedException();
     }
 
-    public Task<Palpitations> Select(int id)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<Palpitations> Select(int id)
+        => await _session.Connection.QuerySingleAsync<Palpitations>("SELECT * FROM palpitations WHERE id = @id", new { id }, _session.Transaction);
 
     public Task Update(Palpitations obj)
     {

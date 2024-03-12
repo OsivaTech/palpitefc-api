@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PalpiteApi.Application.Interfaces;
 using PalpiteApi.Application.Services;
-using PalpiteApi.Application.Services.Auth;
 
 namespace PalpiteApi.Application.Extensions;
 

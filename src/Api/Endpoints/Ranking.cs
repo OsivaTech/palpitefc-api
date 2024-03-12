@@ -1,4 +1,5 @@
-﻿using PalpiteApi.Application.Interfaces;
+﻿using PalpiteApi.Api.Extensions;
+using PalpiteApi.Application.Interfaces;
 
 namespace PalpiteApi.Api.Endpoints;
 
@@ -9,7 +10,8 @@ public static class Ranking
         app.MapGet("/ranking", async (IRankingService service, CancellationToken cancellationToken) =>
         {
             var result = await service.GetAsync(cancellationToken);
-            return result.Value;
+
+            return result.ToIResult();
         });
     }
 }
