@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using PalpiteApi.Application.Interfaces;
 using PalpiteApi.Application.Responses;
+using PalpiteApi.Domain.Entities.ApiFootball;
 using PalpiteApi.Domain.Interfaces.Integrations;
 using PalpiteApi.Domain.Result;
 
@@ -32,38 +33,40 @@ public class GamesService : IGamesService
     public async Task<Result<IEnumerable<GameResponse>>> GetAsync(CancellationToken cancellationToken)
     {
         string[] champsIds = ["11", "13", "73", "475", "624", "629"];
+        var tasks = champsIds.Select(GetMatches);
+        var matchesArray = await Task.WhenAll(tasks);
 
-        var games = Enumerable.Empty<GameResponse>();
+        var matchesJoined = matchesArray.SelectMany(x => x);
+        var matches = matchesJoined.Adapt<IEnumerable<GameResponse>>().ToArray();
 
-        foreach (var champId in champsIds)
+        foreach (var match in matches)
         {
-            var cachedGames = await _cache.GetOrCreate(champId, async entry =>
-            {
-                entry.AbsoluteExpiration = DateTimeOffset.UtcNow.AddDays(1);
+            var correspondingMatch = matchesJoined.First(w => w.Fixture!.Id == match.Id);
 
-                return await _apiFootballProvider.GetMatchesByLeagueId(champId,
-                                                                       DateTime.UtcNow.ToString("yyyy-MM-dd"),
-                                                                       DateTime.UtcNow.AddDays(14).ToString("yyyy-MM-dd"));
-            })!;
-
-            var adaptedGame = cachedGames.Adapt<IEnumerable<GameResponse>>().ToArray();
-
-            for (int i = 0; i < adaptedGame.Length; i++)
-            {
-                var item = adaptedGame.ElementAt(i);
-
-                adaptedGame[i].FirstTeam.GameId = item.Id;
-                adaptedGame[i].SecondTeam.GameId = item.Id;
-                adaptedGame[i].FirstTeam.Gol = cachedGames.First(w => w.Fixture.Id.Value == item.Id).Goals.Home.GetValueOrDefault(0);
-                adaptedGame[i].SecondTeam.Gol = cachedGames.First(w => w.Fixture.Id.Value == item.Id).Goals.Away.GetValueOrDefault(0);
-            }
-
-            games = games.Concat(adaptedGame);
+            match.FirstTeam!.GameId = match.Id;
+            match.SecondTeam!.GameId = match.Id;
+            match.FirstTeam.Gol = correspondingMatch.Goals!.Home.GetValueOrDefault(0);
+            match.SecondTeam.Gol = correspondingMatch.Goals.Away.GetValueOrDefault(0);
         }
 
-        var response = games.Adapt<IEnumerable<GameResponse>>();
+        var response = matches.OrderBy(x => x.Start);
 
-        return ResultHelper.Success<IEnumerable<GameResponse>>(response.OrderBy(x => x.Start));
+        return ResultHelper.Success<IEnumerable<GameResponse>>(response);
+    }
+
+    private async Task<IEnumerable<Match>> GetMatches(string champId)
+    {
+        return await _cache.GetOrCreateAsync(champId, CreateFunc);
+
+        async Task<IEnumerable<Match>> CreateFunc(ICacheEntry entry)
+        {
+            var from = DateTime.UtcNow.ToString("yyyy-MM-dd");
+            var to = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd");
+
+            entry.AbsoluteExpiration = DateTime.Parse(to).ToUniversalTime();
+
+            return await _apiFootballProvider.GetMatchesByLeagueId(champId, from, to);
+        }
     }
 
     #endregion
