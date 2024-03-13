@@ -42,7 +42,6 @@ var app = builder.Build();
 app.UsePathBase(new PathString("/api"));
 app.UseRouting();
 
-app.UseHttpsRedirection();
 app.UseCors("cors");
 
 app.UseAuthentication();
