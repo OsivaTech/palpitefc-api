@@ -36,7 +36,7 @@ public class GamesService : IGamesService
         var tasks = champsIds.Select(GetMatches);
         var matchesArray = await Task.WhenAll(tasks);
 
-        var matchesJoined = matchesArray.SelectMany(x => x);
+        var matchesJoined = matchesArray.Where(x => x is not null).SelectMany(x => x);
         var matches = matchesJoined.Adapt<IEnumerable<GameResponse>>().ToArray();
 
         foreach (var match in matches)
