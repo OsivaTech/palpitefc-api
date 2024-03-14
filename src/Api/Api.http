@@ -1,38 +1,197 @@
 @Api_HostAddress = http://localhost:5113
+@Access_Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwIiwibmFtZSI6IkV4ZW1wbG8iLCJlbWFpbCI6ImV4ZW1wbG9AZW1haWwuY29tIiwicm9sZSI6IjMwMCIsInBvaW50cyI6IjAiLCJiaXJ0aGRheSI6IiIsImluZm8iOiIiLCJudW1iZXIiOiIiLCJ0ZWFtIjoiIiwibmJmIjoxNzEwNDU4NzQ3LCJleHAiOjE3MTA1NDUxNDcsImlhdCI6MTcxMDQ1ODc0N30.U2eP5BESsDjpqed_onTTuMVw2qLCOtRgtByTWYZ8oXY
 
-GET {{Api_HostAddress}}/vote
-Accept: application/json
-
-###
-
-GET {{Api_HostAddress}}/championship
-Accept: application/json
-
-###
-
-GET {{Api_HostAddress}}/game
-Accept: application/json
-
-###
-
-GET {{Api_HostAddress}}/ranking
-Accept: application/json
-
-###
-
-POST {{Api_HostAddress}}/auth/palpitation
+### Auth ###
+POST {{Api_HostAddress}}/signin
 Content-Type: application/json
 
 {
-    "gameId"": 1181746,
-    "firstTeam"": {
-        "id": 0,
-        "gol": ""
-    },
-    secondTeam: {
-        "id": 0,
-        "gol": ""
+    "email": "exemplo@email.com",
+    "password": "123456"
+}
+
+###
+
+POST {{Api_HostAddress}}/signup
+Content-Type: application/json
+
+{
+    "name": "Exemplo",
+    "email": "exemplo@email.com",
+    "password": "123456",
+    "role": 300,
+    "info": "",
+    "team": "",
+    "document": "",
+    "birthday": "",
+    "number": "31987654321",
+    "points": 0
+}
+
+### Championship ###
+GET {{Api_HostAddress}}/championship
+Accept: application/json
+
+### Game ###
+GET {{Api_HostAddress}}/game
+Accept: application/json
+
+### News ###
+GET {{Api_HostAddress}}/news
+Accept: application/json
+
+### Ranking ###
+GET {{Api_HostAddress}}/ranking
+Accept: application/json
+
+### URLvideo ###
+GET {{Api_HostAddress}}/urlvideo
+Accept: application/json
+
+### User ###
+GET {{Api_HostAddress}}/user
+Accept: application/json
+Authorization: Bearer {{Access_Token}}
+
+### Vote ###
+GET {{Api_HostAddress}}/vote
+Accept: application/json
+
+### Auth Championship ###
+GET {{Api_HostAddress}}/auth/championship
+Authorization: Bearer {{Access_Token}}
+Accept: application/json
+
+###
+POST {{Api_HostAddress}}/auth/championship
+Authorization: Bearer {{Access_Token}}
+Content-Type: application/json
+
+{
+    "championship":{
+        "id": 111,
+        "name": "Teste"
     }
 }
- 
+
 ###
+DELETE {{Api_HostAddress}}/auth/championship?id=1
+Authorization: Bearer {{Access_Token}}
+Accept: application/json
+
+### Auth Config ###
+GET {{Api_HostAddress}}/auth/config?name=URLvideo
+Authorization: Bearer {{Access_Token}}
+Accept: application/json
+
+###
+POST {{Api_HostAddress}}/auth/config
+Authorization: Bearer {{Access_Token}}
+Content-Type: application/json
+
+{
+    "id": 111,
+    "name": "Teste",
+    "value": "123"
+}
+
+### Auth News ###
+GET {{Api_HostAddress}}/auth/news
+Authorization: Bearer {{Access_Token}}
+Accept: application/json
+
+###
+POST {{Api_HostAddress}}/auth/news
+Authorization: Bearer {{Access_Token}}
+Content-Type: application/json
+
+{
+    "news":{
+        "id": 111,
+        "title": "Teste",
+        "content": "123",
+        "userId": 1
+    }
+}
+
+###
+DELETE {{Api_HostAddress}}/auth/news?id=1
+Authorization: Bearer {{Access_Token}}
+Accept: application/json
+
+### Auth Options ###
+POST {{Api_HostAddress}}/auth/option
+Authorization: Bearer {{Access_Token}}
+Content-Type: application/json
+
+{
+    "id": 111,
+    "voteId": 1,
+    "Title": "123",
+    "Count": 1
+}
+
+### Auth Palpitation ###
+POST {{Api_HostAddress}}/auth/palpitation
+Authorization: Bearer {{Access_Token}}
+Content-Type: application/json
+
+{
+    "gameId": 1181746,
+    "firstTeam": {
+        "id": 0,
+        "gol": 0
+    },
+    "secondTeam": {
+        "id": 0,
+        "gol": 0
+    }
+}
+
+### Auth User ###
+GET {{Api_HostAddress}}/auth/user
+Authorization: Bearer {{Access_Token}}
+Accept: application/json
+
+###
+POST {{Api_HostAddress}}/auth/user
+Authorization: Bearer {{Access_Token}}
+Content-Type: application/json
+
+{
+    "id": 1,
+    "name": "Exemplo",
+    "email": "exemplo@email.com",
+    "role": 100,
+    "points": 1000,
+    "team": "",
+    "document": "",
+    "birthday": ""
+}
+
+### Auth Vote ###
+GET {{Api_HostAddress}}/auth/vote
+Authorization: Bearer {{Access_Token}}
+Accept: application/json
+
+###
+POST {{Api_HostAddress}}/auth/vote
+Authorization: Bearer {{Access_Token}}
+Content-Type: application/json
+
+{
+    "Title": "Teste",
+    "Options":[
+        {
+            "Title": "Sim"
+        },
+        {
+            "Title": "Não"
+        }
+    ]
+}
+
+###
+DELETE {{Api_HostAddress}}/auth/vote?id=1
+Authorization: Bearer {{Access_Token}}
+Accept: application/json
