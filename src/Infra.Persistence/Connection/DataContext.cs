@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 using PalpiteApi.Domain.Settings;
 using System.Data;
+using System.Text;
 
 namespace PalpiteApi.Infra.Persistence.Connection;
 
@@ -52,20 +53,24 @@ public class DataContext
         // create tables if they don't exist
         using var connection = CreateConnection();
 
-        await InitChampionshipTeamPoints();
-        await InitChampionships();
-        await InitConfig();
-        await InitGames();
-        await InitNews();
-        await InitOptions();
-        await InitPalpitations();
-        await InitTeams();
-        await InitTeamsGame();
-        await InitUserVotes();
-        await InitUsers();
-        await InitVotes();
+        var query = new StringBuilder();
 
-        async Task InitChampionshipTeamPoints()
+        InitChampionshipTeamPoints();
+        InitChampionships();
+        InitConfig();
+        InitGames();
+        InitNews();
+        InitOptions();
+        InitPalpitations();
+        InitTeams();
+        InitTeamsGame();
+        InitUserVotes();
+        InitUsers();
+        InitVotes();
+
+        await connection.ExecuteAsync(query.ToString());
+
+        void InitChampionshipTeamPoints()
         {
             var sql = @"CREATE TABLE IF NOT EXISTS `championshipTeamPoints` (
                 `id` int NOT NULL AUTO_INCREMENT,
@@ -82,10 +87,10 @@ public class DataContext
                 CHARSET utf8mb4,
                 COLLATE utf8mb4_unicode_ci;";
 
-            await connection.ExecuteAsync(sql);
+            query.AppendLine(sql);
         }
 
-        async Task InitChampionships()
+        void InitChampionships()
         {
             var sql = @"CREATE TABLE IF NOT EXISTS `championships` (
                 `id` int NOT NULL AUTO_INCREMENT,
@@ -97,11 +102,11 @@ public class DataContext
                 CHARSET utf8mb4,
                 COLLATE utf8mb4_unicode_ci;";
 
-            await connection.ExecuteAsync(sql);
+            query.AppendLine(sql);
         }
 
 
-        async Task InitConfig()
+        void InitConfig()
         {
             var sql = @"CREATE TABLE IF NOT EXISTS `config` (
                 `id` int NOT NULL AUTO_INCREMENT,
@@ -113,10 +118,10 @@ public class DataContext
                 CHARSET utf8mb4,
                 COLLATE utf8mb4_unicode_ci;";
 
-            await connection.ExecuteAsync(sql);
+            query.AppendLine(sql);
         }
 
-        async Task InitGames()
+        void InitGames()
         {
             var sql = @"CREATE TABLE IF NOT EXISTS `games` (
                 `id` int NOT NULL AUTO_INCREMENT,
@@ -132,10 +137,10 @@ public class DataContext
                 CHARSET utf8mb4,
                 COLLATE utf8mb4_unicode_ci;";
 
-            await connection.ExecuteAsync(sql);
+            query.AppendLine(sql);
         }
 
-        async Task InitNews()
+        void InitNews()
         {
             var sql = @"CREATE TABLE IF NOT EXISTS `news` (
                 `id` int NOT NULL AUTO_INCREMENT,
@@ -151,10 +156,10 @@ public class DataContext
                 CHARSET utf8mb4,
                 COLLATE utf8mb4_unicode_ci;";
 
-            await connection.ExecuteAsync(sql);
+            query.AppendLine(sql);
         }
 
-        async Task InitOptions()
+        void InitOptions()
         {
             var sql = @"CREATE TABLE IF NOT EXISTS `options` (
                 `id` int NOT NULL AUTO_INCREMENT,
@@ -169,10 +174,10 @@ public class DataContext
                 CHARSET utf8mb4,
                 COLLATE utf8mb4_unicode_ci;";
 
-            await connection.ExecuteAsync(sql);
+            query.AppendLine(sql);
         }
 
-        async Task InitPalpitations()
+        void InitPalpitations()
         {
             var sql = @"CREATE TABLE IF NOT EXISTS `palpitations` (
                 `id` int NOT NULL AUTO_INCREMENT,
@@ -191,10 +196,10 @@ public class DataContext
                 CHARSET utf8mb4,
                 COLLATE utf8mb4_unicode_ci;";
 
-            await connection.ExecuteAsync(sql);
+            query.AppendLine(sql);
         }
 
-        async Task InitTeams()
+        void InitTeams()
         {
             var sql = @"CREATE TABLE IF NOT EXISTS `teams` (
                 `id` int NOT NULL AUTO_INCREMENT,
@@ -207,10 +212,10 @@ public class DataContext
                 CHARSET utf8mb4,
                 COLLATE utf8mb4_unicode_ci;";
 
-            await connection.ExecuteAsync(sql);
+            query.AppendLine(sql);
         }
 
-        async Task InitTeamsGame()
+        void InitTeamsGame()
         {
             var sql = @"CREATE TABLE IF NOT EXISTS `teamsGame` (
                 `id` int NOT NULL AUTO_INCREMENT,
@@ -226,10 +231,10 @@ public class DataContext
                 CHARSET utf8mb4,
                 COLLATE utf8mb4_unicode_ci;";
 
-            await connection.ExecuteAsync(sql);
+            query.AppendLine(sql);
         }
 
-        async Task InitUserVotes()
+        void InitUserVotes()
         {
             var sql = @"CREATE TABLE IF NOT EXISTS `userVote` (
                 `id` int NOT NULL AUTO_INCREMENT,
@@ -243,10 +248,10 @@ public class DataContext
                 CHARSET utf8mb4,
                 COLLATE utf8mb4_unicode_ci;";
 
-            await connection.ExecuteAsync(sql);
+            query.AppendLine(sql);
         }
 
-        async Task InitUsers()
+        void InitUsers()
         {
             var sql = @"CREATE TABLE IF NOT EXISTS `users` (
                 `id` int NOT NULL AUTO_INCREMENT,
@@ -267,10 +272,10 @@ public class DataContext
                 CHARSET utf8mb4,
                 COLLATE utf8mb4_unicode_ci;";
 
-            await connection.ExecuteAsync(sql);
+            query.AppendLine(sql);
         }
 
-        async Task InitVotes()
+        void InitVotes()
         {
             var sql = @"CREATE TABLE IF NOT EXISTS `votes` (
                 `id` int NOT NULL AUTO_INCREMENT,
@@ -282,7 +287,7 @@ public class DataContext
                 CHARSET utf8mb4,
                 COLLATE utf8mb4_unicode_ci;";
 
-            await connection.ExecuteAsync(sql);
+            query.AppendLine(sql);
         }
     }
 
