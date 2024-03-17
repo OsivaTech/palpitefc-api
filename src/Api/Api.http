@@ -1,5 +1,5 @@
 @Api_HostAddress = http://localhost:5113
-@Access_Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwIiwibmFtZSI6IkV4ZW1wbG8iLCJlbWFpbCI6ImV4ZW1wbG9AZW1haWwuY29tIiwicm9sZSI6IjMwMCIsInBvaW50cyI6IjAiLCJiaXJ0aGRheSI6IiIsImluZm8iOiIiLCJudW1iZXIiOiIiLCJ0ZWFtIjoiIiwibmJmIjoxNzEwNDU4NzQ3LCJleHAiOjE3MTA1NDUxNDcsImlhdCI6MTcxMDQ1ODc0N30.U2eP5BESsDjpqed_onTTuMVw2qLCOtRgtByTWYZ8oXY
+@Access_Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE4IiwibmFtZSI6InRlc3RlIiwiZW1haWwiOiJAIiwicm9sZSI6IjEwMCIsInBvaW50cyI6IjEwIiwiYmlydGhkYXkiOiIiLCJpbmZvIjoiIiwibnVtYmVyIjoiIiwidGVhbSI6ImF0bGV0aWNvIiwibmJmIjoxNzEwNjkzNzU3LCJleHAiOjE3MTA3ODAxNTcsImlhdCI6MTcxMDY5Mzc1N30.SbcxslDlTht6a2dwDbuPnmsKwxppv4fbaDw09ff-AnY
 
 ### Auth ###
 POST {{Api_HostAddress}}/signin
@@ -44,6 +44,11 @@ Accept: application/json
 GET {{Api_HostAddress}}/ranking
 Accept: application/json
 
+### TeamsPoints ###
+GET {{Api_HostAddress}}/championshipTeamPoints
+Accept: application/json
+
+
 ### URLvideo ###
 GET {{Api_HostAddress}}/urlvideo
 Accept: application/json
@@ -69,13 +74,13 @@ Content-Type: application/json
 
 {
     "championship":{
-        "id": 111,
+        "id": 120,
         "name": "Teste"
     }
 }
 
 ###
-DELETE {{Api_HostAddress}}/auth/championship?id=1
+DELETE {{Api_HostAddress}}/auth/championship?id=120
 Authorization: Bearer {{Access_Token}}
 Accept: application/json
 
@@ -94,6 +99,36 @@ Content-Type: application/json
     "name": "Teste",
     "value": "123"
 }
+
+### Auth Game ###
+GET {{Api_HostAddress}}/auth/game
+Authorization: Bearer {{Access_Token}}
+Accept: application/json
+
+###
+POST {{Api_HostAddress}}/auth/game
+Authorization: Bearer {{Access_Token}}
+Content-Type: application/json
+
+{
+    "id": null,
+    "name": "jogo 2",
+    "championshipId": 475,
+    "start": "2024-03-17T19:29:00Z",
+    "firstTeam": {
+        "id": 129,
+        "gol": 0
+    },
+    "secondTeam": {
+        "id": 134,
+        "gol": 0
+    }
+}
+
+###
+DELETE {{Api_HostAddress}}/auth/game?id=1
+Authorization: Bearer {{Access_Token}}
+Accept: application/json
 
 ### Auth News ###
 GET {{Api_HostAddress}}/auth/news
@@ -146,6 +181,28 @@ Content-Type: application/json
         "id": 0,
         "gol": 0
     }
+}
+
+### Auth Team ###
+GET {{Api_HostAddress}}/auth/team
+Authorization: Bearer {{Access_Token}}
+Accept: application/json
+
+### Auth TeamsPoints ###
+GET {{Api_HostAddress}}/auth/championshipTeamPoints
+Authorization: Bearer {{Access_Token}}
+Accept: application/json
+
+###
+POST {{Api_HostAddress}}/auth/championshipTeamPoints
+Authorization: Bearer {{Access_Token}}
+Content-Type: application/json
+
+{
+    "teamId": 129,
+    "championshipId": 475,
+    "position": 0,
+    "points": 10
 }
 
 ### Auth User ###

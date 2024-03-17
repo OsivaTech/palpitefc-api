@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using PalpiteApi.Application.Requests;
+using PalpiteApi.Application.Requests.Auth;
 using PalpiteApi.Application.Responses;
 using PalpiteApi.Domain.Entities.ApiFootball;
 using PalpiteApi.Domain.Entities.Database;
@@ -12,10 +13,23 @@ public class MappingConfiguration : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.ForType<Match, GameResponse>().MapWith(MapMatchToGameResponse());
-        config.ForType<Team, TeamGameResponse>().MapWith(MapTeamToTeamGameResponse());
+        config.ForType<Domain.Entities.ApiFootball.Team, TeamGameResponse>().MapWith(MapTeamToTeamGameResponse());
         config.ForType<(News, Users), NewsResponse>().MapWith(MapNewsAndUsersToNewsResponse());
         config.ForType<PalpitationRequest, Palpitations>().MapWith(MapPalpitationRequestToPalpitations());
         config.ForType<(Votes, IEnumerable<Options>), VoteResponse>().MapWith(MapVotesAndListOfOptionsToVoteResponse());
+        config.ForType<ChampionshipTeamsPointsRequest, ChampionshipTeamPoints>().MapWith(MapChampionshipTeamsPointsRequestToChampoionshipTeamPoints());
+    }
+
+    private Expression<Func<ChampionshipTeamsPointsRequest, ChampionshipTeamPoints>> MapChampionshipTeamsPointsRequestToChampoionshipTeamPoints()
+    {
+        return src => new ChampionshipTeamPoints
+        {
+            Id = src.Id,
+            ChampionshipsId = src.ChampionshipId,
+            Points = src.Points,
+            Position = src.Position.ToString(),
+            TeamId = src.TeamId
+        };
     }
 
     private Expression<Func<(Votes, IEnumerable<Options>), VoteResponse>> MapVotesAndListOfOptionsToVoteResponse()
@@ -59,7 +73,7 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private Expression<Func<Team, TeamGameResponse>> MapTeamToTeamGameResponse()
+    private Expression<Func<Domain.Entities.ApiFootball.Team, TeamGameResponse>> MapTeamToTeamGameResponse()
     {
         return src => new TeamGameResponse
         {

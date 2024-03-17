@@ -16,6 +16,8 @@ public static class WebApplicationExtensions
         app.MapRankingEndpoints();
         app.MapUrlVideoEndpoints();
         app.MapUserEndpoints();
+        app.MapTeamPointsEndpoints();
+
         app.MapAuthPalpitationEndpoints();
         app.MapAuthOptionsEndpoints();
         app.MapAuthUserEndpoints();
@@ -23,6 +25,9 @@ public static class WebApplicationExtensions
         app.MapAuthChampionshipEndpoints();
         app.MapAuthNewsEndpoint();
         app.MapAuthVoteEndpoints();
+        app.MapAuthTeamEndpoints();
+        app.MapAuthGameEndpoints();
+        app.MapAuthTeamPointsEntpoints();
     }
 
     public static async Task InitiaizeDatabase(this WebApplication app)

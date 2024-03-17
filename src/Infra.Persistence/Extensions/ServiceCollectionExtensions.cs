@@ -23,5 +23,6 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IPalpitationRepository, PalpitationRepository>();
         services.AddTransient<IConfigRepository, ConfigRepository>();
         services.AddTransient<INewsRepository, NewsRepository>();
+        services.AddTransient<IChampionshipTeamPointsRepository, ChampionshipTeamPointsRepository>();
     }
 }

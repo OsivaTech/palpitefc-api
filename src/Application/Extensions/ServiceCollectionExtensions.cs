@@ -19,5 +19,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<INewsService, NewsService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRankingService, RankingService>();
+        services.AddScoped<ITeamService, TeamService>();
+        services.AddScoped<ITeamsPointsService, TeamsPointsService>();
     }
 }

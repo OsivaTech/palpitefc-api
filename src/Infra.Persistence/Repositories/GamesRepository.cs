@@ -2,6 +2,7 @@
 using PalpiteApi.Domain.Entities.Database;
 using PalpiteApi.Domain.Interfaces.Database;
 using PalpiteApi.Infra.Persistence.Connection;
+using static Dapper.SqlMapper;
 
 namespace PalpiteApi.Infra.Persistence.Repositories;
 
@@ -24,28 +25,30 @@ public class GamesRepository : IGamesRepository
 
     #region Public Methods
 
-    public Task Delete(int id)
+    public async Task Delete(int id)
+        => await _session.Connection.ExecuteAsync("DELETE FROM games WHERE id = @id", new { id }, _session.Transaction);
+
+    public Task Insert(Games entity)
+        => throw new NotImplementedException();
+
+    public async Task<int> InsertAndGetId(Games entity)
     {
-        throw new NotImplementedException();
+        var query = @"INSERT INTO games (name, championshipId, start, createdAt, updatedAt) VALUES(@name, @championshipId, @start, current_timestamp(3), current_timestamp(3));
+                      SELECT LAST_INSERT_ID() as id;";
+
+        return await _session.Connection.QuerySingleAsync<int>(query, new { entity.Name, entity.ChampionshipId, entity.Start }, _session.Transaction);
     }
 
-    public Task Insert(Games obj)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<IEnumerable<Games>> Select() 
+    public async Task<IEnumerable<Games>> Select()
         => await _session.Connection.QueryAsync<Games>("SELECT * FROM games", null, _session.Transaction);
 
-    public Task<Games> Select(int id)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<Games> Select(int id)
+        => await _session.Connection.QuerySingleAsync<Games>("SELECT * FROM games WHERE id = @id", new { id }, _session.Transaction);
 
-    public Task Update(Games obj)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task Update(Games entity)
+        => await _session.Connection.ExecuteAsync("UPDATE games SET name = @name, championshipId = @championshipId, start = @start, finished = @finished, updatedAt = current_timestamp(3) WHERE id = @id",
+            new { entity.Name, entity.ChampionshipId, entity.Start, entity.Finished, entity.Id }, _session.Transaction);
+
     public Task Update(int id) => throw new NotImplementedException();
 
     #endregion
