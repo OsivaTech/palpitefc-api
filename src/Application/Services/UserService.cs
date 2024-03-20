@@ -32,4 +32,11 @@ public class UserService : IUserService
 
         return ResultHelper.Success(user.Adapt<UserResponse>());
     }
+
+    public async Task<Result<UserResponse>> GetByEmail(string email)
+    {
+        var user = await _repository.SelectByEmail(email);
+
+        return ResultHelper.Success(user.Adapt<UserResponse>());
+    }
 }

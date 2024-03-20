@@ -30,24 +30,23 @@ public class UserRepository : IUserRepository
     }
 
     public async Task Insert(Users entity)
-    {
-        await _session.Connection.ExecuteAsync("INSERT INTO users (name, email, password, role, userGuid) VALUES (@name, @email, @password, @role, @userGuid)",
-                           new { entity.Name, entity.Email, entity.Password, entity.Role, entity.UserGuid }, _session.Transaction);
-    }
-
-    public async Task<IEnumerable<Users>> Select()
-        => await _session.Connection.QueryAsync<Users>("SELECT * FROM users", null, _session.Transaction);
-    public async Task<IEnumerable<Users>> SelectByPoints()
-    => await _session.Connection.QueryAsync<Users>("SELECT * FROM users where points >= 1 order by points desc", null, _session.Transaction);
+        => await _session.Connection.ExecuteAsync("INSERT INTO users (name, email, password, role, userGuid) VALUES (@name, @email, @password, @role, @userGuid)",
+            new { entity.Name, entity.Email, entity.Password, entity.Role, entity.UserGuid }, _session.Transaction);
 
     public async Task<Users> Select(int id)
         => await _session.Connection.QuerySingleAsync<Users>("SELECT * FROM users WHERE id = @id", new { id }, _session.Transaction);
 
-    public async Task<int> Exists(string email)
-        => await _session.Connection.ExecuteAsync("SELECT * FROM users where email = @email", new { email }, _session.Transaction);
+    public async Task<IEnumerable<Users>> Select()
+        => await _session.Connection.QueryAsync<Users>("SELECT * FROM users", null, _session.Transaction);
 
-    public async Task<IEnumerable<Users>> FindByEmail(string email)
-        => await _session.Connection.QueryAsync<Users>("SELECT * FROM users where email = @email", new { email }, _session.Transaction);
+    public async Task<IEnumerable<Users>> SelectByPoints()
+        => await _session.Connection.QueryAsync<Users>("SELECT * FROM users WHERE points >= 1 order by points desc", null, _session.Transaction);
+
+    public async Task<Users?> SelectByEmail(string email)
+        => await _session.Connection.QuerySingleOrDefaultAsync<Users>("SELECT * FROM users WHERE email = @email", new { email }, _session.Transaction);
+
+    public async Task UpdatePassword(string email, string password)
+        => await _session.Connection.ExecuteAsync("UPDATE users SET password = @password WHERE email = @email", new { email, password }, _session.Transaction);
 
     public async Task Update(Users entity)
     {
@@ -55,9 +54,8 @@ public class UserRepository : IUserRepository
                         SET name = @name, role = @role, points = @points, document = @document, team = @team, info = @info, number = @number, birthday = @birthday  
                       WHERE id = @id;";
 
-        await _session.Connection.ExecuteAsync(query, new { entity.Name, entity.Role, entity.Points, entity.Document, entity.Team, entity.Info, entity.Number, entity.Birthday, entity.Id}, _session.Transaction);
+        await _session.Connection.ExecuteAsync(query, new { entity.Name, entity.Role, entity.Points, entity.Document, entity.Team, entity.Info, entity.Number, entity.Birthday, entity.Id }, _session.Transaction);
     }
-    public Task Update(int id) => throw new NotImplementedException();
 
     #endregion
 }

@@ -1,13 +1,12 @@
 ﻿using Mapster;
+using Microsoft.Extensions.Caching.Memory;
 using PalpiteApi.Application.Interfaces;
 using PalpiteApi.Application.Requests;
 using PalpiteApi.Application.Responses;
-using PalpiteApi.Application.Utils;
 using PalpiteApi.Domain.Entities.Database;
 using PalpiteApi.Domain.Errors;
 using PalpiteApi.Domain.Interfaces.Database;
 using PalpiteApi.Domain.Result;
-using System.Security.Cryptography;
 
 namespace PalpiteApi.Application.Services;
 
@@ -17,15 +16,19 @@ public class AuthService : IAuthService
 
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
+    private readonly IHashService _hashService;
+    private readonly IMemoryCache _cache;
 
     #endregion
 
     #region Constructor
 
-    public AuthService(IUserRepository usersRepository, ITokenService tokenService)
+    public AuthService(IUserRepository usersRepository, ITokenService tokenService, IHashService hashService, IMemoryCache cache)
     {
         _userRepository = usersRepository;
         _tokenService = tokenService;
+        _hashService = hashService;
+        _cache = cache;
     }
 
     #endregion
@@ -34,11 +37,7 @@ public class AuthService : IAuthService
 
     public async Task<Result<AuthResponse>> SignUp(SignUpRequest request, CancellationToken cancellationToken)
     {
-        // instanciar a classe Hash
-        var hash = new Hash(SHA512.Create());
-
-        // verificar se o email já está cadastrado
-        if (await _userRepository.Exists(request.Email!) > 0)
+        if (await _userRepository.SelectByEmail(request.Email!) is not null)
         {
             return ResultHelper.Failure<AuthResponse>(SignUpErrors.EmailAlreadyUsed);
         }
@@ -49,12 +48,11 @@ public class AuthService : IAuthService
         {
             Name = request.Name,
             Email = request.Email,
-            Password = hash.EncryptPassword(request.Password + guid.ToString()),
+            Password = _hashService.EncryptPassword(request.Password + guid.ToString()),
             UserGuid = guid.ToString(),
-            Role = request.Role!.Value
+            Role = request.Role
         };
 
-        // inserir o usuário no banco de dados
         await _userRepository.Insert(user);
 
         var token = _tokenService.Generate(user);
@@ -70,32 +68,45 @@ public class AuthService : IAuthService
 
     public async Task<Result<AuthResponse>> SignIn(SignInRequest request, CancellationToken cancellationToken)
     {
-        // validar se o email e senha estão corretos
-        var users = await _userRepository.FindByEmail(request.Email!);
+        var user = await _userRepository.SelectByEmail(request.Email!);
 
-        if (users.Any() is false)
+        if (user is null)
         {
-            //verifica se o usuário existe
             return ResultHelper.Failure<AuthResponse>(SignInErrors.UserNotFound);
         }
 
-        //verifica se a senha está correta
-        var hash = new Hash(SHA512.Create());
-
-        if (hash.EncryptPassword(request.Password + users.First().UserGuid) != users.First().Password)
+        if (_hashService.EncryptPassword(request.Password + user.UserGuid) != user.Password)
         {
             return ResultHelper.Failure<AuthResponse>(SignInErrors.IncorretPassword);
         }
 
-        var token = _tokenService.Generate(users.First());
+        var token = _tokenService.Generate(user);
 
         var authResponse = new AuthResponse()
         {
             AccessToken = token.Data,
-            User = users.First().Adapt<UserResponse>()
+            User = user.Adapt<UserResponse>()
         };
 
         return ResultHelper.Success(authResponse);
+    }
+
+    public async Task<Result<UserResponse>> ResetPassword(ResetPasswordRequest request, CancellationToken cancellationToken)
+    {
+        var cacheEntry = _cache.Get<string>($"PasswordReset:{request.Email}");
+
+        if (cacheEntry != request.Code)
+        {
+            return ResultHelper.Failure<UserResponse>(ResetPasswordErrors.InvalidCode);
+        }
+
+        var user = await _userRepository.SelectByEmail(request.Email!);
+
+        var newPassword = _hashService.EncryptPassword(request.Password + user.UserGuid);
+
+        await _userRepository.UpdatePassword(request.Email!, newPassword);
+
+        return ResultHelper.Success(user.Adapt<UserResponse>());
     }
 
     #endregion

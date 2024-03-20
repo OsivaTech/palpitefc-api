@@ -1,9 +1,10 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using PalpiteApi.Application.Interfaces;
 
-namespace PalpiteApi.Application.Utils;
+namespace PalpiteApi.Application.Services;
 
-public class Hash
+public class HashService : IHashService
 {
     #region Fields
 
@@ -13,7 +14,7 @@ public class Hash
 
     #region Constructors
 
-    public Hash(HashAlgorithm hashAlgorithm)
+    public HashService(HashAlgorithm hashAlgorithm)
     {
         _hashAlgorithm = hashAlgorithm;
     }
@@ -22,15 +23,15 @@ public class Hash
 
     #region Public Methods
 
-    public string EncryptPassword(string senha)
+    public string EncryptPassword(string password)
     {
-        var encodedValue = Encoding.UTF8.GetBytes(senha);
+        var encodedValue = Encoding.UTF8.GetBytes(password);
         var encryptedPassword = _hashAlgorithm.ComputeHash(encodedValue);
 
         var sb = new StringBuilder();
-        foreach (var caracter in encryptedPassword)
+        foreach (var character in encryptedPassword)
         {
-            sb.Append(caracter.ToString("X2"));
+            sb.Append(character.ToString("X2"));
         }
 
         return sb.ToString();

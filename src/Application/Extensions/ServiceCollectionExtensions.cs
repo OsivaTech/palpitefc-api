@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PalpiteApi.Application.Interfaces;
 using PalpiteApi.Application.Services;
+using System.Security.Cryptography;
 
 namespace PalpiteApi.Application.Extensions;
 
@@ -21,5 +22,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IRankingService, RankingService>();
         services.AddScoped<ITeamService, TeamService>();
         services.AddScoped<ITeamsPointsService, TeamsPointsService>();
+        services.AddScoped<IEmailService, EmailService>();
+
+        services.AddSingleton<IHashService, HashService>(_ => new HashService(SHA512.Create()));
     }
 }

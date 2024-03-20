@@ -42,5 +42,12 @@ public static class Auth
 
             return result.ToIResult();
         });
+
+        app.MapPost("/resetpassword", async (ResetPasswordRequest request, IAuthService service, CancellationToken cancellationToken) =>
+        {
+            var result = await service.ResetPassword(request, cancellationToken);
+
+            return result.ToIResult();
+        });
     }
 }

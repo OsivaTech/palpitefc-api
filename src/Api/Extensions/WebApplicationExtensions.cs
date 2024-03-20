@@ -17,6 +17,7 @@ public static class WebApplicationExtensions
         app.MapUrlVideoEndpoints();
         app.MapUserEndpoints();
         app.MapTeamPointsEndpoints();
+        app.MapSendEmailEndpoints();
 
         app.MapAuthPalpitationEndpoints();
         app.MapAuthOptionsEndpoints();
