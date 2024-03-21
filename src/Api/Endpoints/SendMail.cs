@@ -1,7 +1,7 @@
-﻿using PalpiteApi.Application.Interfaces;
-using PalpiteApi.Application.Requests;
+﻿using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Application.Requests;
 
-namespace PalpiteApi.Api.Endpoints;
+namespace PalpiteFC.Api.Endpoints;
 
 public static class SendMail
 {

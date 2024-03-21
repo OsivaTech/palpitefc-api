@@ -1,4 +1,4 @@
-﻿namespace PalpiteApi.Domain.Settings;
+﻿namespace PalpiteFC.Api.Domain.Settings;
 
 public class DbSettings
 {

@@ -1,12 +1,12 @@
 ﻿using Mapster;
-using PalpiteApi.Application.Requests;
-using PalpiteApi.Application.Requests.Auth;
-using PalpiteApi.Application.Responses;
-using PalpiteApi.Domain.Entities.ApiFootball;
-using PalpiteApi.Domain.Entities.Database;
+using PalpiteFC.Api.Application.Requests;
+using PalpiteFC.Api.Application.Requests.Auth;
+using PalpiteFC.Api.Application.Responses;
+using PalpiteFC.Api.Domain.Entities.ApiFootball;
+using PalpiteFC.Api.Domain.Entities.Database;
 using System.Linq.Expressions;
 
-namespace PalpiteApi.Application.Mappings;
+namespace PalpiteFC.Api.Application.Mappings;
 
 public class MappingConfiguration : IRegister
 {

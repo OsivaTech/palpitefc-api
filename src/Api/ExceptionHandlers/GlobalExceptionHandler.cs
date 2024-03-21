@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace PalpiteApi.Api.ExceptionHandlers;
+namespace PalpiteFC.Api.ExceptionHandlers;
 
 public class GlobalExceptionHandler : IExceptionHandler
 {

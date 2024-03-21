@@ -1,8 +1,8 @@
-﻿using PalpiteApi.Api.Extensions;
-using PalpiteApi.Application.Interfaces;
-using PalpiteApi.Application.Requests;
+﻿using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Application.Requests;
+using PalpiteFC.Api.Extensions;
 
-namespace PalpiteApi.Api.Endpoints.Authenticated;
+namespace PalpiteFC.Api.Endpoints.Authenticated;
 
 public static class Vote
 {

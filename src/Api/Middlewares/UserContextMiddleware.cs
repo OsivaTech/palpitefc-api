@@ -1,7 +1,7 @@
-﻿using PalpiteApi.Application;
+﻿using PalpiteFC.Api.Application.Utils;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace PalpiteApi.Api.Middlewares;
+namespace PalpiteFC.Api.Middlewares;
 
 public class UserContextMiddleware
 {

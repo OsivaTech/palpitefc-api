@@ -1,6 +1,6 @@
-﻿using PalpiteApi.Domain.Result;
+﻿using PalpiteFC.Api.Domain.Result;
 
-namespace PalpiteApi.Domain.Errors;
+namespace PalpiteFC.Api.Domain.Errors;
 public static class RankingErrors
 {
     public static readonly Message PointNotFound = new("Ranking.PointNotFound", "No one has point yet");

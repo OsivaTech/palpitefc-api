@@ -1,6 +1,6 @@
-﻿using PalpiteApi.Domain.Result;
+﻿using PalpiteFC.Api.Domain.Result;
 
-namespace PalpiteApi.Domain.Errors;
+namespace PalpiteFC.Api.Domain.Errors;
 public static class PalpitationErrors
 {
     public static readonly Message PalpitationAlreadyExists = new("Palpitation.Exists", "There is already a palpitation for this game.");

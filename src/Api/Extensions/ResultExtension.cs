@@ -1,6 +1,6 @@
-﻿using PalpiteApi.Domain.Result;
+﻿using PalpiteFC.Api.Domain.Result;
 
-namespace PalpiteApi.Api.Extensions;
+namespace PalpiteFC.Api.Extensions;
 
 public static class ResultExtension
 {

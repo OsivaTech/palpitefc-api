@@ -1,7 +1,7 @@
-﻿using PalpiteApi.Api.Extensions;
-using PalpiteApi.Application.Interfaces;
+﻿using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Extensions;
 
-namespace PalpiteApi.Api.Endpoints;
+namespace PalpiteFC.Api.Endpoints;
 
 public static class Championship
 {

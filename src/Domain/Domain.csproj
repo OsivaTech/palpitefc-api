@@ -4,8 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>PalpiteApi.Domain</AssemblyName>
-    <RootNamespace>PalpiteApi.Domain</RootNamespace>
+    <AssemblyName>PalpiteFC.Api.Domain</AssemblyName>
+    <RootNamespace>PalpiteFC.Api.Domain</RootNamespace>
   </PropertyGroup>
 
 </Project>

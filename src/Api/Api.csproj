@@ -6,8 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>04668b67-e46a-4bb4-b613-c13811e0f651</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <AssemblyName>PalpiteApi.Api</AssemblyName>
-    <RootNamespace>PalpiteApi.Api</RootNamespace>
+    <AssemblyName>PalpiteFC.Api</AssemblyName>
+    <RootNamespace>PalpiteFC.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,8 +20,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
-    <ProjectReference Include="..\Infra.Integrations\Infra.Integrations.csproj" />
-    <ProjectReference Include="..\Infra.Persistence\Infra.Persistence.csproj" />
+    <ProjectReference Include="..\Infra.Integrations\Integrations.csproj" />
+    <ProjectReference Include="..\Infra.Persistence\Persistence.csproj" />
+    <ProjectReference Include="..\Integrations\Integrations.csproj" />
+    <ProjectReference Include="..\Persistence\Persistence.csproj" />
   </ItemGroup>
 
 </Project>

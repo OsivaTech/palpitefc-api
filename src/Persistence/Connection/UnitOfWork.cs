@@ -1,6 +1,6 @@
-﻿using PalpiteApi.Domain.Interfaces.Database;
+﻿using PalpiteFC.Api.Domain.Interfaces.Database;
 
-namespace PalpiteApi.Infra.Persistence.Connection;
+namespace PalpiteFC.Api.Persistence.Connection;
 
 public sealed class UnitOfWork : IUnitOfWork
 {
@@ -20,7 +20,7 @@ public sealed class UnitOfWork : IUnitOfWork
     #endregion
 
     #region Public Methods
-    
+
     public void BeginTransaction()
     {
         _session.Transaction = _session.Connection.BeginTransaction();

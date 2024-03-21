@@ -1,8 +1,8 @@
-﻿using PalpiteApi.Api.Endpoints;
-using PalpiteApi.Api.Endpoints.Authenticated;
-using PalpiteApi.Infra.Persistence.Connection;
+﻿using PalpiteFC.Api.Endpoints;
+using PalpiteFC.Api.Endpoints.Authenticated;
+using PalpiteFC.Api.Persistence.Connection;
 
-namespace PalpiteApi.Api.Extensions;
+namespace PalpiteFC.Api.Extensions;
 
 public static class WebApplicationExtensions
 {

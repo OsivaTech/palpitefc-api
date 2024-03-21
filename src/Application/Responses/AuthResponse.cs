@@ -1,4 +1,4 @@
-﻿namespace PalpiteApi.Application.Responses;
+﻿namespace PalpiteFC.Api.Application.Responses;
 
 public sealed class AuthResponse
 {

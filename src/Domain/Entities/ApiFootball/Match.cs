@@ -1,4 +1,4 @@
-﻿namespace PalpiteApi.Domain.Entities.ApiFootball;
+﻿namespace PalpiteFC.Api.Domain.Entities.ApiFootball;
 
 public class Match
 {

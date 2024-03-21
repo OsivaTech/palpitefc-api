@@ -1,8 +1,8 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using PalpiteApi.Application.Interfaces;
+using PalpiteFC.Api.Application.Interfaces;
 
-namespace PalpiteApi.Application.Services;
+namespace PalpiteFC.Api.Application.Services;
 
 public class HashService : IHashService
 {

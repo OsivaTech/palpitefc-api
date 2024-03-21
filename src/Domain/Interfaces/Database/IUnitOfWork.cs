@@ -1,4 +1,4 @@
-﻿namespace PalpiteApi.Domain.Interfaces.Database;
+﻿namespace PalpiteFC.Api.Domain.Interfaces.Database;
 
 public interface IUnitOfWork : IDisposable
 {

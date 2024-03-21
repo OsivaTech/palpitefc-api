@@ -1,9 +1,9 @@
 ﻿using Dapper;
-using PalpiteApi.Domain.Entities.Database;
-using PalpiteApi.Domain.Interfaces.Database;
-using PalpiteApi.Infra.Persistence.Connection;
+using PalpiteFC.Api.Domain.Entities.Database;
+using PalpiteFC.Api.Domain.Interfaces.Database;
+using PalpiteFC.Api.Persistence.Connection;
 
-namespace PalpiteApi.Infra.Persistence.Repositories;
+namespace PalpiteFC.Api.Persistence.Repositories;
 
 public class NewsRepository : INewsRepository
 {
@@ -24,7 +24,7 @@ public class NewsRepository : INewsRepository
 
     #region Public Methods
 
-    public async Task Delete(int id) 
+    public async Task Delete(int id)
         => await _session.Connection.ExecuteAsync("DELETE FROM news WHERE id = @id", new { id }, _session.Transaction);
 
     public Task Insert(News entity)

@@ -1,4 +1,4 @@
-﻿namespace PalpiteApi.Domain.Result;
+﻿namespace PalpiteFC.Api.Domain.Result;
 
 public sealed record Message(string Code, string Description)
 {

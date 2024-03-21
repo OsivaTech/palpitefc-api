@@ -1,10 +1,10 @@
-﻿using PalpiteApi.Api.Extensions;
-using PalpiteApi.Application;
-using PalpiteApi.Application.Interfaces;
-using PalpiteApi.Application.Requests;
-using PalpiteApi.Domain.Result;
+﻿using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Application.Requests;
+using PalpiteFC.Api.Application.Utils;
+using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.Extensions;
 
-namespace PalpiteApi.Api.Endpoints.Authenticated;
+namespace PalpiteFC.Api.Endpoints.Authenticated;
 
 public static class User
 {

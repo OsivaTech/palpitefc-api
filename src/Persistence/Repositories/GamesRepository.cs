@@ -1,10 +1,9 @@
 ﻿using Dapper;
-using PalpiteApi.Domain.Entities.Database;
-using PalpiteApi.Domain.Interfaces.Database;
-using PalpiteApi.Infra.Persistence.Connection;
-using static Dapper.SqlMapper;
+using PalpiteFC.Api.Domain.Entities.Database;
+using PalpiteFC.Api.Domain.Interfaces.Database;
+using PalpiteFC.Api.Persistence.Connection;
 
-namespace PalpiteApi.Infra.Persistence.Repositories;
+namespace PalpiteFC.Api.Persistence.Repositories;
 
 public class GamesRepository : IGamesRepository
 {

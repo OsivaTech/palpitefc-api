@@ -1,4 +1,4 @@
-﻿namespace PalpiteApi.Application.Services;
+﻿namespace PalpiteFC.Api.Application.Requests;
 
 
 public class ChampionshipRequest

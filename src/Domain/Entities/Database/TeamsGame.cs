@@ -1,4 +1,4 @@
-﻿namespace PalpiteApi.Domain.Entities.Database;
+﻿namespace PalpiteFC.Api.Domain.Entities.Database;
 
 public class TeamsGame : BaseEntity
 {

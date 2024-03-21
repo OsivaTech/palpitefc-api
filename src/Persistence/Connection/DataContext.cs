@@ -1,11 +1,11 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
-using PalpiteApi.Domain.Settings;
+using PalpiteFC.Api.Domain.Settings;
 using System.Data;
 using System.Text;
 
-namespace PalpiteApi.Infra.Persistence.Connection;
+namespace PalpiteFC.Api.Persistence.Connection;
 
 public class DataContext
 {

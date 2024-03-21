@@ -2,13 +2,13 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using PalpiteApi.Application.Interfaces;
-using PalpiteApi.Application.Requests;
-using PalpiteApi.Domain.Errors;
-using PalpiteApi.Domain.Result;
-using PalpiteApi.Domain.Settings;
+using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Application.Requests;
+using PalpiteFC.Api.Domain.Errors;
+using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.Domain.Settings;
 
-namespace PalpiteApi.Application.Services;
+namespace PalpiteFC.Api.Application.Services;
 
 public class EmailService : IEmailService
 {

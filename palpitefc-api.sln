@@ -17,11 +17,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "etc", "etc", "{D6C4459F-FC6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Application\Application.csproj", "{11A202F5-479D-4373-9140-5F37113A8641}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infra.Persistence", "src\Infra.Persistence\Infra.Persistence.csproj", "{BE096677-E52E-44FD-9D4F-018D055A6BB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "src\Persistence\Persistence.csproj", "{BE096677-E52E-44FD-9D4F-018D055A6BB7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Domain\Domain.csproj", "{D8024131-E30F-4CA8-98DD-4D361B26C72A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra.Integrations", "src\Infra.Integrations\Infra.Integrations.csproj", "{BF580420-CDCA-4756-91A0-58DBFAF0EC34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Integrations", "src\Integrations\Integrations.csproj", "{BF580420-CDCA-4756-91A0-58DBFAF0EC34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

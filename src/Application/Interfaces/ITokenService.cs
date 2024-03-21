@@ -1,7 +1,7 @@
-﻿using PalpiteApi.Domain.Entities.Database;
-using PalpiteApi.Domain.Result;
+﻿using PalpiteFC.Api.Domain.Entities.Database;
+using PalpiteFC.Api.Domain.Result;
 
-namespace PalpiteApi.Application.Interfaces;
+namespace PalpiteFC.Api.Application.Interfaces;
 
 public interface ITokenService
 {

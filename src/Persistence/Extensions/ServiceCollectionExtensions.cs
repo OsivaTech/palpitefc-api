@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using PalpiteApi.Domain.Interfaces.Database;
-using PalpiteApi.Infra.Persistence.Connection;
-using PalpiteApi.Infra.Persistence.Repositories;
+using PalpiteFC.Api.Domain.Interfaces.Database;
+using PalpiteFC.Api.Persistence.Connection;
+using PalpiteFC.Api.Persistence.Repositories;
 
-namespace PalpiteApi.Infra.Persistence.Extensions;
+namespace PalpiteFC.Api.Persistence.Extensions;
 
 public static class ServiceCollectionExtensions
 {

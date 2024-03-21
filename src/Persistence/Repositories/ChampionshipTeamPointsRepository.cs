@@ -1,10 +1,10 @@
 ﻿using Dapper;
-using PalpiteApi.Domain.Entities.Database;
-using PalpiteApi.Domain.Interfaces.Database;
-using PalpiteApi.Infra.Persistence.Connection;
+using PalpiteFC.Api.Domain.Entities.Database;
+using PalpiteFC.Api.Domain.Interfaces.Database;
+using PalpiteFC.Api.Persistence.Connection;
 using static Dapper.SqlMapper;
 
-namespace PalpiteApi.Infra.Persistence.Repositories;
+namespace PalpiteFC.Api.Persistence.Repositories;
 
 public class ChampionshipTeamPointsRepository : IChampionshipTeamPointsRepository
 {

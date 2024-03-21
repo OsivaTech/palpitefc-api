@@ -1,4 +1,4 @@
-﻿namespace PalpiteApi.Application.Interfaces;
+﻿namespace PalpiteFC.Api.Application.Interfaces;
 
 public interface IHashService
 {

@@ -1,6 +1,6 @@
-﻿using PalpiteApi.Domain.Result;
+﻿using PalpiteFC.Api.Domain.Result;
 
-namespace PalpiteApi.Domain.Errors;
+namespace PalpiteFC.Api.Domain.Errors;
 public static class OptionsErros
 {
     public static readonly Message MissingParams = new("Options.MissingParams", "Missing Params");

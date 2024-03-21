@@ -1,6 +1,6 @@
-﻿using PalpiteApi.Domain.Entities.ApiFootball;
+﻿using PalpiteFC.Api.Domain.Entities.ApiFootball;
 
-namespace PalpiteApi.Domain.Interfaces.Integrations;
+namespace PalpiteFC.Api.Domain.Interfaces.Integrations;
 
 public interface IApiFootballProvider
 {

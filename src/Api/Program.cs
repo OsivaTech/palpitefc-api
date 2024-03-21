@@ -1,8 +1,8 @@
-using Infra.Integrations.Extensions;
-using PalpiteApi.Api.Converters;
-using PalpiteApi.Api.ExceptionHandlers;
-using PalpiteApi.Api.Extensions;
-using PalpiteApi.Api.Middlewares;
+using PalpiteFC.Api.Converters;
+using PalpiteFC.Api.ExceptionHandlers;
+using PalpiteFC.Api.Extensions;
+using PalpiteFC.Api.Integrations.Extensions;
+using PalpiteFC.Api.Middlewares;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 

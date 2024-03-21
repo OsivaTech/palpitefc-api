@@ -1,14 +1,14 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using PalpiteApi.Application.Interfaces;
-using PalpiteApi.Domain.Entities.Database;
-using PalpiteApi.Domain.Result;
-using PalpiteApi.Domain.Settings;
+using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Domain.Entities.Database;
+using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.Domain.Settings;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace PalpiteApi.Application.Services;
+namespace PalpiteFC.Api.Application.Services;
 
 public class TokenService : ITokenService
 {

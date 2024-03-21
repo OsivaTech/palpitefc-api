@@ -1,8 +1,8 @@
-﻿using PalpiteApi.Api.Extensions;
-using PalpiteApi.Application.Interfaces;
-using PalpiteApi.Application.Requests.Auth;
+﻿using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Application.Requests.Auth;
+using PalpiteFC.Api.Extensions;
 
-namespace PalpiteApi.Api.Endpoints.Authenticated;
+namespace PalpiteFC.Api.Endpoints.Authenticated;
 
 public static class News
 {
@@ -18,7 +18,7 @@ public static class News
         app.MapPost("/auth/news", async (NewsRequest request, INewsService service, CancellationToken cancellationToken) =>
         {
             var result = await service.CreateOrUpdateAsync(request);
-            
+
             return result.ToIResult();
         }).RequireAuthorization();
 

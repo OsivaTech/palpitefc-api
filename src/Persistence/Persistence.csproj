@@ -4,8 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>PalpiteApi.Infra.Persistence</AssemblyName>
-    <RootNamespace>PalpiteApi.Infra.Persistence</RootNamespace>
+    <AssemblyName>PalpiteFC.Api.Persistence</AssemblyName>
+    <RootNamespace>PalpiteFC.Api.Persistence</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

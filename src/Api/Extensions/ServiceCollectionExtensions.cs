@@ -3,15 +3,15 @@ using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using PalpiteApi.Application;
-using PalpiteApi.Application.Extensions;
-using PalpiteApi.Application.Mappings;
-using PalpiteApi.Application.Validators;
-using PalpiteApi.Domain.Settings;
-using PalpiteApi.Infra.Persistence.Extensions;
+using PalpiteFC.Api.Application.Extensions;
+using PalpiteFC.Api.Application.Mappings;
+using PalpiteFC.Api.Application.Utils;
+using PalpiteFC.Api.Application.Validators;
+using PalpiteFC.Api.Domain.Settings;
+using PalpiteFC.Api.Persistence.Extensions;
 using System.Text;
 
-namespace PalpiteApi.Api.Extensions;
+namespace PalpiteFC.Api.Extensions;
 
 public static class ServiceCollectionExtensions
 {

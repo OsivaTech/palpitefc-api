@@ -1,4 +1,4 @@
-﻿namespace PalpiteApi.Application.Requests.Auth;
+﻿namespace PalpiteFC.Api.Application.Requests.Auth;
 
 public class ChampionshipTeamsPointsRequest
 {

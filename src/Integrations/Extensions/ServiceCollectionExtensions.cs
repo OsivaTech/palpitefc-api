@@ -1,9 +1,9 @@
-﻿using Infra.Integrations.ApiFootball;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PalpiteApi.Domain.Interfaces.Integrations;
+using PalpiteFC.Api.Domain.Interfaces.Integrations;
+using PalpiteFC.Api.Integrations.ApiFootball;
 
-namespace Infra.Integrations.Extensions;
+namespace PalpiteFC.Api.Integrations.Extensions;
 
 public static class ServiceCollectionExtensions
 {

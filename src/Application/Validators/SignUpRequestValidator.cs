@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using PalpiteApi.Application.Requests;
+using PalpiteFC.Api.Application.Requests;
 
-namespace PalpiteApi.Application.Validators;
+namespace PalpiteFC.Api.Application.Validators;
 
 public class SignUpRequestValidator : AbstractValidator<SignUpRequest>
 {

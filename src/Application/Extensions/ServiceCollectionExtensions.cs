@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using PalpiteApi.Application.Interfaces;
-using PalpiteApi.Application.Services;
+using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Application.Services;
 using System.Security.Cryptography;
 
-namespace PalpiteApi.Application.Extensions;
+namespace PalpiteFC.Api.Application.Extensions;
 
 public static class ServiceCollectionExtensions
 {

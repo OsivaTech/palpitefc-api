@@ -1,4 +1,4 @@
-﻿namespace PalpiteApi.Application.Requests.Auth;
+﻿namespace PalpiteFC.Api.Application.Requests.Auth;
 
 public class ConfigRequest
 {
@@ -6,4 +6,3 @@ public class ConfigRequest
     public string? Name { get; set; }
     public string? Value { get; set; }
 }
-

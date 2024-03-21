@@ -1,7 +1,7 @@
-﻿using PalpiteApi.Api.Extensions;
-using PalpiteApi.Application.Interfaces;
+﻿using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Extensions;
 
-namespace PalpiteApi.Api.Endpoints.Authenticated;
+namespace PalpiteFC.Api.Endpoints.Authenticated;
 
 public static class Team
 {

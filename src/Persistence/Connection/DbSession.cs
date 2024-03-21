@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
-using PalpiteApi.Domain.Settings;
+using PalpiteFC.Api.Domain.Settings;
 using System.Data;
 
-namespace PalpiteApi.Infra.Persistence.Connection;
+namespace PalpiteFC.Api.Persistence.Connection;
 
 public sealed class DbSession : IDisposable
 {

@@ -1,4 +1,4 @@
-﻿namespace PalpiteApi.Application;
+﻿namespace PalpiteFC.Api.Application.Utils;
 
 public class UserContext
 {

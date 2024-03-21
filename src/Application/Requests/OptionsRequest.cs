@@ -1,4 +1,4 @@
-﻿namespace PalpiteApi.Application.Requests;
+﻿namespace PalpiteFC.Api.Application.Requests;
 
 public class OptionsRequest
 {

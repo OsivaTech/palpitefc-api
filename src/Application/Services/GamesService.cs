@@ -1,15 +1,15 @@
 ﻿using Mapster;
 using Microsoft.Extensions.Caching.Memory;
-using PalpiteApi.Application.Interfaces;
-using PalpiteApi.Application.Requests.Auth;
-using PalpiteApi.Application.Responses;
-using PalpiteApi.Domain.Entities.ApiFootball;
-using PalpiteApi.Domain.Entities.Database;
-using PalpiteApi.Domain.Interfaces.Database;
-using PalpiteApi.Domain.Interfaces.Integrations;
-using PalpiteApi.Domain.Result;
+using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Application.Requests.Auth;
+using PalpiteFC.Api.Application.Responses;
+using PalpiteFC.Api.Domain.Entities.ApiFootball;
+using PalpiteFC.Api.Domain.Entities.Database;
+using PalpiteFC.Api.Domain.Interfaces.Database;
+using PalpiteFC.Api.Domain.Interfaces.Integrations;
+using PalpiteFC.Api.Domain.Result;
 
-namespace PalpiteApi.Application.Services;
+namespace PalpiteFC.Api.Application.Services;
 
 public class GamesService : IGamesService
 {
