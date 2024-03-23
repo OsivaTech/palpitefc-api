@@ -18,6 +18,20 @@ public class MappingConfiguration : IRegister
         config.ForType<PalpitationRequest, Palpitations>().MapWith(MapPalpitationRequestToPalpitations());
         config.ForType<(Votes, IEnumerable<Options>), VoteResponse>().MapWith(MapVotesAndListOfOptionsToVoteResponse());
         config.ForType<ChampionshipTeamsPointsRequest, ChampionshipTeamPoints>().MapWith(MapChampionshipTeamsPointsRequestToChampoionshipTeamPoints());
+        config.ForType<(IEnumerable<Teams>, TeamsGame), TeamGameResponse>().MapWith(MapListTeamsAndTeamsGameToTeamGameResponse());
+    }
+
+    private static Expression<Func<(IEnumerable<Teams>, TeamsGame), TeamGameResponse>> MapListTeamsAndTeamsGameToTeamGameResponse()
+    {
+        return src => new TeamGameResponse
+        {
+            GameId = src.Item2.GameId,
+            Gol = src.Item2.Gol,
+            Id = src.Item2.Id,
+            TeamId = src.Item2.TeamId,
+            Image = src.Item1.First(w => w.Id == src.Item2.TeamId).Image,
+            Name = src.Item1.First(w => w.Id == src.Item2.TeamId).Name
+        };
     }
 
     private Expression<Func<ChampionshipTeamsPointsRequest, ChampionshipTeamPoints>> MapChampionshipTeamsPointsRequestToChampoionshipTeamPoints()

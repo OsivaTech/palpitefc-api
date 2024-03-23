@@ -44,6 +44,9 @@ public class GamesRepository : IGamesRepository
     public async Task<Games> Select(int id)
         => await _session.Connection.QuerySingleAsync<Games>("SELECT * FROM games WHERE id = @id", new { id }, _session.Transaction);
 
+    public async Task<IEnumerable<Games>> Select(string from, string to)
+        => await _session.Connection.QueryAsync<Games>("SELECT * FROM games WHERE start BETWEEN @from AND @to;", new { from, to }, _session.Transaction);
+
     public async Task Update(Games entity)
         => await _session.Connection.ExecuteAsync("UPDATE games SET name = @name, championshipId = @championshipId, start = @start, finished = @finished, updatedAt = current_timestamp(3) WHERE id = @id",
             new { entity.Name, entity.ChampionshipId, entity.Start, entity.Finished, entity.Id }, _session.Transaction);

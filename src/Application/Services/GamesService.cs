@@ -3,10 +3,8 @@ using Microsoft.Extensions.Caching.Memory;
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests.Auth;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Domain.Entities.ApiFootball;
 using PalpiteFC.Api.Domain.Entities.Database;
 using PalpiteFC.Api.Domain.Interfaces.Database;
-using PalpiteFC.Api.Domain.Interfaces.Integrations;
 using PalpiteFC.Api.Domain.Result;
 
 namespace PalpiteFC.Api.Application.Services;
@@ -15,19 +13,21 @@ public class GamesService : IGamesService
 {
     #region Fields
 
-
-    private readonly IApiFootballProvider _apiFootballProvider;
-    private readonly IGamesRepository _repository;
+    private readonly IGamesRepository _gamesRepository;
+    private readonly ITeamsGamesRepository _teamsGamesRepository;
+    private readonly ITeamsRepository _teamsRepository;
     private readonly IMemoryCache _cache;
+    private const string _cacheKey = "PalpiteFC.Api:Fixtures";
 
     #endregion
 
     #region Contructors
 
-    public GamesService(IApiFootballProvider apiFootballProvider, IGamesRepository repository, IMemoryCache cache)
+    public GamesService(IGamesRepository gamesRepository, ITeamsGamesRepository teamsGamesRepository, ITeamsRepository teamsRepository, IMemoryCache cache)
     {
-        _apiFootballProvider = apiFootballProvider;
-        _repository = repository;
+        _gamesRepository = gamesRepository;
+        _teamsGamesRepository = teamsGamesRepository;
+        _teamsRepository = teamsRepository;
         _cache = cache;
     }
 
@@ -37,26 +37,12 @@ public class GamesService : IGamesService
 
     public async Task<Result<IEnumerable<GameResponse>>> GetAsync(CancellationToken cancellationToken)
     {
-        string[] champsIds = ["11", "13", "73", "475", "624", "629"];
-        var tasks = champsIds.Select(GetMatches);
-        var matchesArray = await Task.WhenAll(tasks);
+        var from = DateTime.Now.ToString("yyyy-MM-dd");
+        var to = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
 
-        var matchesJoined = matchesArray.Where(x => x is not null).SelectMany(x => x);
-        var matches = matchesJoined.Adapt<IEnumerable<GameResponse>>().ToArray();
+        var fixtures = await _cache.GetOrCreateAsync(_cacheKey, entry => CreateFunc(entry, from, to));
 
-        foreach (var match in matches)
-        {
-            var correspondingMatch = matchesJoined.First(w => w.Fixture!.Id == match.Id);
-
-            match.FirstTeam!.GameId = match.Id;
-            match.SecondTeam!.GameId = match.Id;
-            match.FirstTeam.Gol = correspondingMatch.Goals!.Home.GetValueOrDefault(0);
-            match.SecondTeam.Gol = correspondingMatch.Goals.Away.GetValueOrDefault(0);
-        }
-
-        var response = matches.OrderBy(x => x.Start);
-
-        return ResultHelper.Success<IEnumerable<GameResponse>>(response);
+        return ResultHelper.Success(fixtures!);
     }
 
     public async Task<Result<GameResponse>> CreateOrUpdateAsync(GameRequest request, CancellationToken cancellationToken)
@@ -65,21 +51,21 @@ public class GamesService : IGamesService
 
         if (id > 0)
         {
-            await _repository.Update(request.Adapt<Games>());
+            await _gamesRepository.Update(request.Adapt<Games>());
         }
         else
         {
-            id = await _repository.InsertAndGetId(request.Adapt<Games>());
+            id = await _gamesRepository.InsertAndGetId(request.Adapt<Games>());
         }
 
-        var championship = await _repository.Select(id);
+        var championship = await _gamesRepository.Select(id);
 
         return ResultHelper.Success(championship.Adapt<GameResponse>());
     }
 
     public async Task<Result<GameResponse>> DeleteAsync(int id, CancellationToken cancellationToken)
     {
-        await _repository.Delete(id);
+        await _gamesRepository.Delete(id);
 
         return ResultHelper.Success<GameResponse>(new() { Id = id });
     }
@@ -88,19 +74,31 @@ public class GamesService : IGamesService
 
     #region Non-Public Methods
 
-    private async Task<IEnumerable<Match>> GetMatches(string champId)
+    private async Task<IEnumerable<GameResponse>> CreateFunc(ICacheEntry entry, string from, string to)
     {
-        return await _cache.GetOrCreateAsync(champId, CreateFunc);
+        entry.AbsoluteExpiration = DateTime.UtcNow.AddHours(1);
 
-        async Task<IEnumerable<Match>> CreateFunc(ICacheEntry entry)
+        var games = await _gamesRepository.Select(from, to);
+        var teamsGame = await _teamsGamesRepository.Select();
+        var teams = await _teamsRepository.Select();
+
+        var gamesResponse = new List<GameResponse>();
+
+        foreach (var game in games)
         {
-            var from = DateTime.UtcNow.ToString("yyyy-MM-dd");
-            var to = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd");
-
-            entry.AbsoluteExpiration = DateTime.Parse(to).ToUniversalTime();
-
-            return await _apiFootballProvider.GetMatchesByLeagueId(champId, from, to);
+            gamesResponse.Add(new GameResponse()
+            {
+                Id = game.Id,
+                ChampionshipId = game.ChampionshipId,
+                Name = game.Name,
+                Start = game.Start,
+                Finished = game.Finished,
+                FirstTeam = (teams, teamsGame.Where(w => w.GameId == game.Id).ElementAt(0)).Adapt<TeamGameResponse>(),
+                SecondTeam = (teams, teamsGame.Where(w => w.GameId == game.Id).ElementAt(1)).Adapt<TeamGameResponse>(),
+            });
         }
+
+        return gamesResponse.AsEnumerable();
     }
 
     #endregion
