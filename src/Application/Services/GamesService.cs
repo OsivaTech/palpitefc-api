@@ -98,7 +98,7 @@ public class GamesService : IGamesService
             });
         }
 
-        return gamesResponse.AsEnumerable();
+        return gamesResponse.OrderBy(x => x.Start);
     }
 
     #endregion
