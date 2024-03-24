@@ -67,6 +67,7 @@ public class DataContext
         InitUserVotes();
         InitUsers();
         InitVotes();
+        InitUserPoints();
 
         await connection.ExecuteAsync(query.ToString());
 
@@ -218,18 +219,19 @@ public class DataContext
         void InitTeamsGame()
         {
             var sql = @"CREATE TABLE IF NOT EXISTS `teamsGame` (
-                `id` int NOT NULL AUTO_INCREMENT,
-                `gol` int NOT NULL DEFAULT '0',
-                `teamId` int NOT NULL,
-                `gameId` int NOT NULL,
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `gol` int(11) NOT NULL DEFAULT 0,
+                `teamId` int(11) NOT NULL,
+                `gameId` int(11) NOT NULL,
                 `createdAt` datetime(3) NOT NULL DEFAULT current_timestamp(3),
                 `updatedAt` datetime(3) NOT NULL,
                 PRIMARY KEY (`id`),
                 KEY `teamsGame_gameId_idx` (`gameId`),
-                KEY `teamsGame_teamId_idx` (`teamId`)
-                ) ENGINE InnoDB,
-                CHARSET utf8mb4,
-                COLLATE utf8mb4_unicode_ci;";
+                KEY `teamsGame_teamId_idx` (`teamId`),
+                CONSTRAINT `teamsGame_teamsId_gameId_unq` UNIQUE (`teamId`, `gameId`)
+                ) ENGINE=InnoDB, 
+                CHARSET=utf8mb4,
+                COLLATE=utf8mb4_unicode_ci;";
 
             query.AppendLine(sql);
         }
@@ -266,6 +268,7 @@ public class DataContext
                 `number` varchar(191),
                 `birthday` varchar(191),
                 `code` varchar(191),
+                `userGuid` varchar(36),
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `users_email_key` (`email`)
                 ) ENGINE InnoDB,
@@ -286,6 +289,24 @@ public class DataContext
                 ) ENGINE InnoDB,
                 CHARSET utf8mb4,
                 COLLATE utf8mb4_unicode_ci;";
+
+            query.AppendLine(sql);
+        }
+
+        void InitUserPoints()
+        {
+            var sql = @"CREATE TABLE `userPoints` (
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `userId` int(11) NOT NULL,
+                `gameId` int(11) NOT NULL,
+                `points` int(11) NOT NULL,
+                `createdAt` datetime(3) NOT NULL DEFAULT current_timestamp(3),
+                `updatedAt` datetime(3) NOT NULL,
+                PRIMARY KEY (`id`),
+                KEY `userPoints_gameId_idx` (`gameId`)
+                ) ENGINE=InnoDB, 
+                CHARSET=utf8mb4,
+                COLLATE=utf8mb4_unicode_ci;";
 
             query.AppendLine(sql);
         }
