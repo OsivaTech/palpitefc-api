@@ -23,8 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
-    <ProjectReference Include="..\Infra.Integrations\Integrations.csproj" />
-    <ProjectReference Include="..\Infra.Persistence\Persistence.csproj" />
     <ProjectReference Include="..\Integrations\Integrations.csproj" />
     <ProjectReference Include="..\Persistence\Persistence.csproj" />
   </ItemGroup>
