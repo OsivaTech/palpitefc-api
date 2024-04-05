@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Options;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using PalpiteFC.Api.Domain.Settings;
 using System.Data;
 using System.Text;
@@ -41,7 +41,7 @@ public class DataContext
     private async Task InitDatabase()
     {
         // create database if it doesn't exist
-        using var connection = new MySqlConnection(_dbSettings.ToConnectionString());
+        using var connection = CreateConnection();
 
         var sql = $"CREATE DATABASE IF NOT EXISTS `{_dbSettings.Database}`;";
 

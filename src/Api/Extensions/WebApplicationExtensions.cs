@@ -31,7 +31,7 @@ public static class WebApplicationExtensions
         app.MapAuthTeamPointsEntpoints();
     }
 
-    public static async Task InitiaizeDatabase(this WebApplication app)
+    public static async void InitiaizeDatabase(this WebApplication app)
     {
         using var scope = app.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<DataContext>();
