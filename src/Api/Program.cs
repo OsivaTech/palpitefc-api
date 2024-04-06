@@ -63,7 +63,7 @@ try
     app.UseAuthentication();
     app.UseAuthorization();
 
-    app.InitiaizeDatabase();
+    await app.InitiaizeDatabase();
     app.UseMiddleware<UserContextMiddleware>();
     app.MapEndpoints();
     app.UseExceptionHandler();

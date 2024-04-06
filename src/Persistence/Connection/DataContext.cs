@@ -295,7 +295,7 @@ public class DataContext
 
         void InitUserPoints()
         {
-            var sql = @"CREATE TABLE `userPoints` (
+            var sql = @"CREATE TABLE IF NOT EXISTS `userPoints` (
                 `id` int(11) NOT NULL AUTO_INCREMENT,
                 `userId` int(11) NOT NULL,
                 `gameId` int(11) NOT NULL,
