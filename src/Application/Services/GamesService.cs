@@ -1,10 +1,12 @@
 ﻿using Mapster;
+using Microsoft.Extensions.Options;
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests.Auth;
 using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Domain.Entities.Database;
 using PalpiteFC.Api.Domain.Interfaces.Database;
 using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.Domain.Settings;
 
 namespace PalpiteFC.Api.Application.Services;
 
@@ -16,18 +18,23 @@ public class GamesService : IGamesService
     private readonly ITeamsGamesRepository _teamsGamesRepository;
     private readonly ITeamsRepository _teamsRepository;
     private readonly ICacheService _cache;
-    private const string _cacheKey = "PalpiteFC.Api:Fixtures";
+    private readonly IOptions<FixturesSettings> _options;
 
     #endregion
 
     #region Contructors
 
-    public GamesService(IGamesRepository gamesRepository, ITeamsGamesRepository teamsGamesRepository, ITeamsRepository teamsRepository, ICacheService cache)
+    public GamesService(IGamesRepository gamesRepository,
+                        ITeamsGamesRepository teamsGamesRepository,
+                        ITeamsRepository teamsRepository,
+                        ICacheService cache,
+                        IOptions<FixturesSettings> options)
     {
         _gamesRepository = gamesRepository;
         _teamsGamesRepository = teamsGamesRepository;
         _teamsRepository = teamsRepository;
         _cache = cache;
+        _options = options;
     }
 
     #endregion
@@ -37,11 +44,13 @@ public class GamesService : IGamesService
     public async Task<Result<IEnumerable<GameResponse>>> GetAsync(CancellationToken cancellationToken)
     {
         var from = DateTime.Now.ToString("yyyy-MM-dd");
-        var to = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
+        var to = DateTime.Now.AddDays(_options.Value.DaysToSearch).ToString("yyyy-MM-dd");
 
-        var fixtures = await _cache.GetOrCreateAsync(_cacheKey, () => GetFixtures(from, to), DateTime.Now.AddHours(1));
+        var fixtures = await _cache.GetOrCreateAsync(_options.Value.CacheKey ?? "PalpiteFC:Fixtures",
+                                                     () => GetFixtures(from, to),
+                                                     _options.Value.CacheExpiration);
 
-        return ResultHelper.Success(fixtures!);
+        return ResultHelper.Success(fixtures);
     }
 
     public async Task<Result<GameResponse>> CreateOrUpdateAsync(GameRequest request, CancellationToken cancellationToken)

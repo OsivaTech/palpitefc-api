@@ -58,6 +58,7 @@ public static class ServiceCollectionExtensions
         services.Configure<DbSettings>(configuration.GetSection("Settings:Database:MySql"));
         services.Configure<JwtSettings>(configuration.GetSection("Settings:Jwt"));
         services.Configure<MailingSettings>(configuration.GetSection("Settings:Mailing"));
+        services.Configure<FixturesSettings>(configuration.GetSection("Settings:Fixtures"));
     }
 
     private static void AddCustomMappings(this IServiceCollection services)

@@ -49,6 +49,7 @@ jobs:
           Settings.Mailing.Password: ${{ secrets.MAILING_PASSWORD }}
           Settings.Integrations.ApiFootball.Key: ${{ secrets.APIFOOTBALL_KEY }}
           Settings.Redis.ConnectionString: ${{ secrets.REDIS_CONNECTIONSTRING }}
+          Settings.Games.CacheKey: ${{ vars.FIXTURES_CACHEKEY }}
           Serilog.WriteTo.1.Args.credentials.password: ${{ secrets.LOKI_PASSWORD }}
 
       - name: Create systemd service file for Api
