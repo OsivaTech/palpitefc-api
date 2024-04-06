@@ -51,6 +51,11 @@ try
     builder.Services.ConfigureIOptions(builder.Configuration);
     builder.Services.ConfigureApiSecurity(builder.Configuration);
 
+    builder.Services.AddStackExchangeRedisCache(options =>
+    {
+        options.Configuration = builder.Configuration.GetValue<string>("Settings:Redis:ConnectionString");
+    });
+
     var app = builder.Build();
 
     app.UseSerilogRequestLogging();

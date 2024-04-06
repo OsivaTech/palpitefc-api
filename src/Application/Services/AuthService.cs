@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
@@ -17,13 +18,13 @@ public class AuthService : IAuthService
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
     private readonly IHashService _hashService;
-    private readonly IMemoryCache _cache;
+    private readonly IDistributedCache _cache;
 
     #endregion
 
     #region Constructor
 
-    public AuthService(IUserRepository usersRepository, ITokenService tokenService, IHashService hashService, IMemoryCache cache)
+    public AuthService(IUserRepository usersRepository, ITokenService tokenService, IHashService hashService, IDistributedCache cache)
     {
         _userRepository = usersRepository;
         _tokenService = tokenService;
@@ -93,7 +94,7 @@ public class AuthService : IAuthService
 
     public async Task<Result<UserResponse>> ResetPassword(ResetPasswordRequest request, CancellationToken cancellationToken)
     {
-        var cacheEntry = _cache.Get<string>($"PasswordReset:{request.Email}");
+        var cacheEntry = _cache.GetString($"PasswordReset:{request.Email}");
 
         if (cacheEntry != request.Code)
         {

@@ -1,5 +1,4 @@
 ﻿using Mapster;
-using Microsoft.Extensions.Caching.Memory;
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests.Auth;
 using PalpiteFC.Api.Application.Responses;
@@ -16,14 +15,14 @@ public class GamesService : IGamesService
     private readonly IGamesRepository _gamesRepository;
     private readonly ITeamsGamesRepository _teamsGamesRepository;
     private readonly ITeamsRepository _teamsRepository;
-    private readonly IMemoryCache _cache;
+    private readonly ICacheService _cache;
     private const string _cacheKey = "PalpiteFC.Api:Fixtures";
 
     #endregion
 
     #region Contructors
 
-    public GamesService(IGamesRepository gamesRepository, ITeamsGamesRepository teamsGamesRepository, ITeamsRepository teamsRepository, IMemoryCache cache)
+    public GamesService(IGamesRepository gamesRepository, ITeamsGamesRepository teamsGamesRepository, ITeamsRepository teamsRepository, ICacheService cache)
     {
         _gamesRepository = gamesRepository;
         _teamsGamesRepository = teamsGamesRepository;
@@ -40,7 +39,7 @@ public class GamesService : IGamesService
         var from = DateTime.Now.ToString("yyyy-MM-dd");
         var to = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
 
-        var fixtures = await _cache.GetOrCreateAsync(_cacheKey, entry => CreateFunc(entry, from, to));
+        var fixtures = await _cache.GetOrCreateAsync(_cacheKey, () => GetFixtures(from, to), DateTime.Now.AddHours(1));
 
         return ResultHelper.Success(fixtures!);
     }
@@ -74,10 +73,8 @@ public class GamesService : IGamesService
 
     #region Non-Public Methods
 
-    private async Task<IEnumerable<GameResponse>> CreateFunc(ICacheEntry entry, string from, string to)
+    private async Task<IEnumerable<GameResponse>> GetFixtures(string from, string to)
     {
-        entry.AbsoluteExpiration = DateTime.UtcNow.AddHours(1);
-
         var games = await _gamesRepository.Select(from, to);
         var teamsGame = await _teamsGamesRepository.Select();
         var teams = await _teamsRepository.Select();

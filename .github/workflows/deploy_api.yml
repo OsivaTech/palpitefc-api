@@ -48,6 +48,7 @@ jobs:
           Settings.Jwt.SecurityKey: ${{ secrets.JWT_SECURITYKEY }}
           Settings.Mailing.Password: ${{ secrets.MAILING_PASSWORD }}
           Settings.Integrations.ApiFootball.Key: ${{ secrets.APIFOOTBALL_KEY }}
+          Settings.Redis.ConnectionString: ${{ secrets.REDIS_CONNECTIONSTRING }}
           Serilog.WriteTo.1.Args.credentials.password: ${{ secrets.LOKI_PASSWORD }}
 
       - name: Create systemd service file for Api
@@ -57,7 +58,7 @@ jobs:
 
           [Service]
           WorkingDirectory=${{ env.APP_DIRECTORY }}
-          ExecStart=/usr/bin/dotnet ${{ env.APP_DIRECTORY }}/${{ env.DLL_NAME }} --urls "http://144.217.94.131:5113"
+          ExecStart=/usr/bin/dotnet ${{ env.APP_DIRECTORY }}/${{ env.DLL_NAME }} --urls "${{ vars.API_URLS }}"
           Restart=always
           RestartSec=10
           KillSignal=SIGINT

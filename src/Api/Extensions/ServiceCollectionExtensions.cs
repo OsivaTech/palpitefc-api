@@ -20,7 +20,6 @@ public static class ServiceCollectionExtensions
         services.AddServices();
         services.AddDatabase();
         services.AddCustomMappings();
-        services.AddMemoryCache();
 
         services.AddScoped<UserContext>();
     }

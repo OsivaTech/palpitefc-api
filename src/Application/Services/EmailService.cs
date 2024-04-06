@@ -1,5 +1,5 @@
 ﻿using MailKit.Net.Smtp;
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using PalpiteFC.Api.Application.Interfaces;
@@ -13,10 +13,10 @@ namespace PalpiteFC.Api.Application.Services;
 public class EmailService : IEmailService
 {
     private readonly IUserService _userService;
-    private readonly IMemoryCache _cache;
+    private readonly IDistributedCache _cache;
     private readonly IOptions<MailingSettings> _options;
 
-    public EmailService(IUserService userService, IMemoryCache cache, IOptions<MailingSettings> options)
+    public EmailService(IUserService userService, IDistributedCache cache, IOptions<MailingSettings> options)
     {
         _userService = userService;
         _cache = cache;
@@ -60,7 +60,7 @@ public class EmailService : IEmailService
 
         client.Disconnect(true, cancellationToken);
 
-        _cache.Set($"PasswordReset:{request.Email}", code, expiration);
+        _cache.SetString($"PasswordReset:{request.Email}", code, new() { AbsoluteExpiration = expiration });
 
         return ResultHelper.Success($"O código foi enviado para o email {request.Email}");
     }
