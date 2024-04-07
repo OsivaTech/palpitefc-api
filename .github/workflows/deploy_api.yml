@@ -21,7 +21,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Create Api Directory
+      - name: Create Directory
         run: mkdir -p ${{ env.APP_DIRECTORY }}
 
       - name: Setup .NET Core SDK
@@ -32,27 +32,22 @@ jobs:
       - name: Install Dependencies
         run: dotnet restore
 
-      - name: Build Api
+      - name: Build
         run: dotnet build ${{ env.CSPROJ_FILE }} --configuration Release --no-restore
 
-      - name: Publish Api
+      - name: Publish
         run: dotnet publish ${{ env.CSPROJ_FILE }} -c Release -o ${{ env.APP_DIRECTORY }}
 
       - name: App Settings Variable Substitution
-        uses: microsoft/variable-substitution@v1
+        uses: qetza/replacetokens-action@v1.1.2
         with:
-          files: '${{ env.APP_DIRECTORY }}/appsettings.json'
-        env:
-          Settings.Database.MySql.UserId: ${{ secrets.MYSQL_USERID }}
-          Settings.Database.MySql.Password: ${{ secrets.MYSQL_PASSWORD }}
-          Settings.Jwt.SecurityKey: ${{ secrets.JWT_SECURITYKEY }}
-          Settings.Mailing.Password: ${{ secrets.MAILING_PASSWORD }}
-          Settings.Integrations.ApiFootball.Key: ${{ secrets.APIFOOTBALL_KEY }}
-          Settings.Redis.ConnectionString: ${{ secrets.REDIS_CONNECTIONSTRING }}
-          Settings.Games.CacheKey: ${{ vars.FIXTURES_CACHEKEY }}
-          Serilog.WriteTo.1.Args.credentials.password: ${{ secrets.LOKI_PASSWORD }}
+          sources: '${{ env.APP_DIRECTORY }}/appsettings.Production.json'
+          variables: '[${{ toJSON(vars) }},${{ toJSON(secrets) }}]'
 
-      - name: Create systemd service file for Api
+      - name: Remove escaped quotes from JSON
+        run: sed -i 's/\\"/"/g' ${{ env.APP_DIRECTORY }}/appsettings.Production.json
+
+      - name: Create systemd service file
         run: |
           echo "[Unit]
           Description=PalpiteFC Api
@@ -70,7 +65,7 @@ jobs:
           [Install]
           WantedBy=default.target" > ~/.config/systemd/user/${{ env.APP_NAME }}.service
 
-      - name: Start Api Service
+      - name: Start Service
         run: |
           export XDG_RUNTIME_DIR=/run/user/$(id -u)
           systemctl --user daemon-reload
