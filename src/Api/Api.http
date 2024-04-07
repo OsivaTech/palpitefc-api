@@ -1,6 +1,6 @@
 @Api_HostAddress = http://localhost:5113
-@Access_Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE4IiwibmFtZSI6InRlc3RlIiwiZW1haWwiOiJAIiwicm9sZSI6IjEwMCIsInBvaW50cyI6IjEwIiwiYmlydGhkYXkiOiIiLCJpbmZvIjoiIiwibnVtYmVyIjoiIiwidGVhbSI6ImF0bGV0aWNvIiwibmJmIjoxNzEwNjkzNzU3LCJleHAiOjE3MTA3ODAxNTcsImlhdCI6MTcxMDY5Mzc1N30.SbcxslDlTht6a2dwDbuPnmsKwxppv4fbaDw09ff-AnY
-
+@Access_Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQiLCJuYW1lIjoidGVzdGUiLCJlbWFpbCI6ImV4ZW1wbG9AZW1haWwuY29tIiwicm9sZSI6IjMwMCIsInBvaW50cyI6IjAiLCJiaXJ0aGRheSI6IiIsImluZm8iOiIiLCJudW1iZXIiOiIiLCJ0ZWFtIjoiIiwibmJmIjoxNzEyNTE2NzIzLCJleHAiOjE3MTI2MDMxMjMsImlhdCI6MTcxMjUxNjcyM30.ivzGHsp_gs-YfUOrOcIJsp_QCAj95G2gynwXF8AOWCY
+ 
 ### Auth ###
 POST {{Api_HostAddress}}/signin
 Content-Type: application/json
@@ -182,6 +182,43 @@ Content-Type: application/json
         "gol": 0
     }
 }
+
+### Auth PointSeasons ###
+
+GET {{Api_HostAddress}}/auth/pointSeasons
+Authorization: Bearer {{Access_Token}}
+Accept: application/json
+
+###
+GET {{Api_HostAddress}}/auth/pointSeasons/current
+Authorization: Bearer {{Access_Token}}
+Accept: application/json
+
+###
+POST {{Api_HostAddress}}/auth/pointSeasons
+Authorization: Bearer {{Access_Token}}
+Content-Type: application/json
+
+{
+    "StartDate": "2024-02-01T00:00:00Z",
+    "EndDate": "2024-06-30T23:59:59Z"
+}
+
+###
+PUT {{Api_HostAddress}}/auth/pointSeasons
+Authorization: Bearer {{Access_Token}}
+Content-Type: application/json
+
+{
+    "Id": 1,
+    "StartDate": "2024-03-01T00:00:00Z",
+    "EndDate": "2024-04-21T23:59:59Z"
+}
+
+###
+DELETE {{Api_HostAddress}}/auth/pointSeasons?id=4
+Authorization: Bearer {{Access_Token}}
+Accept: application/json
 
 ### Auth Team ###
 GET {{Api_HostAddress}}/auth/team

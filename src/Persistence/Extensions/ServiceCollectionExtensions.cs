@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PalpiteFC.Api.Domain.Interfaces;
 using PalpiteFC.Api.Domain.Interfaces.Database;
 using PalpiteFC.Api.Persistence.Connection;
 using PalpiteFC.Api.Persistence.Repositories;
@@ -24,5 +25,6 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IConfigRepository, ConfigRepository>();
         services.AddTransient<INewsRepository, NewsRepository>();
         services.AddTransient<IChampionshipTeamPointsRepository, ChampionshipTeamPointsRepository>();
+        services.AddTransient<IPointSeasonsRepository, PointSeasonsRepository>();
     }
 }

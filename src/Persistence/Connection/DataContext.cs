@@ -68,6 +68,7 @@ public class DataContext
         InitUsers();
         InitVotes();
         InitUserPoints();
+        InitPointSeasons();
 
         await connection.ExecuteAsync(query.ToString());
 
@@ -300,6 +301,7 @@ public class DataContext
                 `userId` int(11) NOT NULL,
                 `gameId` int(11) NOT NULL,
                 `points` int(11) NOT NULL,
+                `pointSeasonId` int(11) NOT NULL,
                 `createdAt` datetime(3) NOT NULL DEFAULT current_timestamp(3),
                 `updatedAt` datetime(3) NOT NULL,
                 PRIMARY KEY (`id`),
@@ -310,8 +312,23 @@ public class DataContext
 
             query.AppendLine(sql);
         }
-    }
 
+        void InitPointSeasons()
+        {
+            var sql = @"CREATE TABLE IF NOT EXISTS `pointSeasons` (
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `startDate` datetime(3) NOT NULL,
+                `endDate` datetime(3) NOT NULL,
+                `createdAt` datetime(3) NOT NULL DEFAULT current_timestamp(3),
+                `updatedAt` datetime(3) NOT NULL,
+                PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB, 
+                CHARSET=utf8mb4,
+                COLLATE=utf8mb4_unicode_ci;";
+
+            query.AppendLine(sql);
+        }
+    }
     #endregion
 }
 

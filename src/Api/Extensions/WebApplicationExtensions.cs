@@ -29,6 +29,7 @@ public static class WebApplicationExtensions
         app.MapAuthTeamEndpoints();
         app.MapAuthGameEndpoints();
         app.MapAuthTeamPointsEntpoints();
+        app.MapAuthPointSeasonsEndpoints();
     }
 
     public static async Task InitiaizeDatabase(this WebApplication app)
