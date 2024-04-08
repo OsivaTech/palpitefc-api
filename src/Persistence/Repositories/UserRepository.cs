@@ -39,9 +39,6 @@ public class UserRepository : IUserRepository
     public async Task<IEnumerable<Users>> Select()
         => await _session.Connection.QueryAsync<Users>("SELECT * FROM users", null, _session.Transaction);
 
-    public async Task<IEnumerable<Users>> SelectByPoints()
-        => await _session.Connection.QueryAsync<Users>("SELECT * FROM users WHERE points >= 1 order by points desc", null, _session.Transaction);
-
     public async Task<Users?> SelectByEmail(string email)
         => await _session.Connection.QuerySingleOrDefaultAsync<Users>("SELECT * FROM users WHERE email = @email", new { email }, _session.Transaction);
 

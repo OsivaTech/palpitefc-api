@@ -305,7 +305,8 @@ public class DataContext
                 `createdAt` datetime(3) NOT NULL DEFAULT current_timestamp(3),
                 `updatedAt` datetime(3) NOT NULL,
                 PRIMARY KEY (`id`),
-                KEY `userPoints_gameId_idx` (`gameId`)
+                KEY `userPoints_gameId_idx` (`gameId`),
+                KEY `userPoints_pointSeasonId_idx` (`pointSeasonId`)
                 ) ENGINE=InnoDB, 
                 CHARSET=utf8mb4,
                 COLLATE=utf8mb4_unicode_ci;";

@@ -26,5 +26,6 @@ public static class ServiceCollectionExtensions
         services.AddTransient<INewsRepository, NewsRepository>();
         services.AddTransient<IChampionshipTeamPointsRepository, ChampionshipTeamPointsRepository>();
         services.AddTransient<IPointSeasonsRepository, PointSeasonsRepository>();
+        services.AddTransient<IUserPointsRepository, UserPointsRepository>();
     }
 }

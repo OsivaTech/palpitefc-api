@@ -5,5 +5,5 @@ namespace PalpiteFC.Api.Application.Interfaces;
 
 public interface IRankingService
 {
-    Task<Result<IEnumerable<UserResponse>>> GetAsync(CancellationToken cancellationToken);
+    Task<Result<IEnumerable<RankingResponse>>> GetAsync(CancellationToken cancellationToken);
 }
