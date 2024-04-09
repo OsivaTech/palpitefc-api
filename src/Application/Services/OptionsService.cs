@@ -2,10 +2,9 @@
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Domain.Entities.Database;
-using PalpiteFC.Api.Domain.Errors;
-using PalpiteFC.Api.Domain.Interfaces.Database;
-using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.CrossCutting.Errors;
+using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
 namespace PalpiteFC.Api.Application.Services;
 
@@ -14,13 +13,13 @@ public class OptionsService : IOptionsService
     #region Fields
 
     private readonly IOptionsRepository _optionsRepository;
-    private readonly IVotesRepository _votesRepository;
+    private readonly IPollsRepository _votesRepository;
 
     #endregion
 
     #region Constructors
 
-    public OptionsService(IOptionsRepository optionsRepository, IVotesRepository votesRepository)
+    public OptionsService(IOptionsRepository optionsRepository, IPollsRepository votesRepository)
     {
         _optionsRepository = optionsRepository;
         _votesRepository = votesRepository;
@@ -32,7 +31,7 @@ public class OptionsService : IOptionsService
 
     public async Task<Result<OptionsResponse>> CreateAsync(OptionsRequest request, CancellationToken cancellationToken)
     {
-        var id = await _optionsRepository.InsertAndGetId(request.Adapt<Options>());
+        var id = await _optionsRepository.InsertAndGetId(request.Adapt<Libraries.Persistence.Abstractions.Entities.Option>());
 
         var option = await _optionsRepository.Select(id);
 
@@ -48,7 +47,7 @@ public class OptionsService : IOptionsService
             return ResultHelper.Failure<VoteResponse>(OptionsErros.OptionNotFound);
         }
 
-        var updatedOption = new Options
+        var updatedOption = new Libraries.Persistence.Abstractions.Entities.Option
         {
             Id = currentOption.Id,
             VoteId = currentOption.VoteId,

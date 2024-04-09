@@ -1,13 +1,12 @@
 ﻿using Mapster;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Domain.Entities.Database;
-using PalpiteFC.Api.Domain.Errors;
-using PalpiteFC.Api.Domain.Interfaces.Database;
-using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.CrossCutting.Errors;
+using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
+using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
 namespace PalpiteFC.Api.Application.Services;
 
@@ -15,7 +14,7 @@ public class AuthService : IAuthService
 {
     #region Fields
 
-    private readonly IUserRepository _userRepository;
+    private readonly IUsersRepository _userRepository;
     private readonly ITokenService _tokenService;
     private readonly IHashService _hashService;
     private readonly IDistributedCache _cache;
@@ -24,7 +23,7 @@ public class AuthService : IAuthService
 
     #region Constructor
 
-    public AuthService(IUserRepository usersRepository, ITokenService tokenService, IHashService hashService, IDistributedCache cache)
+    public AuthService(IUsersRepository usersRepository, ITokenService tokenService, IHashService hashService, IDistributedCache cache)
     {
         _userRepository = usersRepository;
         _tokenService = tokenService;
@@ -45,7 +44,7 @@ public class AuthService : IAuthService
 
         var guid = Guid.NewGuid();
 
-        var user = new Users()
+        var user = new User()
         {
             Name = request.Name,
             Email = request.Email,

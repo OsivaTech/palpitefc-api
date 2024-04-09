@@ -1,8 +1,8 @@
 ﻿using Mapster;
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Domain.Interfaces.Database;
-using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
 namespace PalpiteFC.Api.Application.Services;
 

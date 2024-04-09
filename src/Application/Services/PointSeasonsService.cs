@@ -2,10 +2,10 @@
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Domain.Entities.Database;
-using PalpiteFC.Api.Domain.Errors;
-using PalpiteFC.Api.Domain.Interfaces;
-using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.CrossCutting.Errors;
+using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
+using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
 namespace PalpiteFC.Api.Application.Services;
 
@@ -37,7 +37,7 @@ public class PointSeasonsService : IPointSeasonsService
             return ResultHelper.Failure<PointSeasonsResponse>(PointSeasonsErrors.ConflictDate);
         }
 
-        var id = await _repository.InsertAndGetId(request.Adapt<PointSeasons>());
+        var id = await _repository.InsertAndGetId(request.Adapt<PointSeason>());
 
         var response = request.Adapt<PointSeasonsResponse>();
         response.Id = id;
@@ -75,7 +75,7 @@ public class PointSeasonsService : IPointSeasonsService
             return ResultHelper.Failure<PointSeasonsResponse>(PointSeasonsErrors.ConflictDate);
         }
 
-        await _repository.Update(request.Adapt<PointSeasons>());
+        await _repository.Update(request.Adapt<PointSeason>());
 
         return ResultHelper.Success(request.Adapt<PointSeasonsResponse>());
     }
@@ -84,7 +84,7 @@ public class PointSeasonsService : IPointSeasonsService
 
     #region Non-Public Methods
 
-    private static bool CheckIfDatesConflicts(PointSeasonsRequest request, IEnumerable<PointSeasons> pointSeasons) 
+    private static bool CheckIfDatesConflicts(PointSeasonsRequest request, IEnumerable<PointSeason> pointSeasons) 
         => pointSeasons.Any(w => w.StartDate <= request.StartDate && w.EndDate >= request.StartDate 
                               || w.StartDate <= request.EndDate && w.EndDate >= request.EndDate);
 

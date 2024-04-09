@@ -1,4 +1,4 @@
-﻿using PalpiteFC.Api.Domain.Result;
+﻿using PalpiteFC.Api.CrossCutting.Result;
 
 namespace PalpiteFC.Api.Extensions;
 

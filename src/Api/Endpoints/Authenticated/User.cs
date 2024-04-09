@@ -1,7 +1,7 @@
 ﻿using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Utils;
-using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.CrossCutting.Result;
 using PalpiteFC.Api.Extensions;
 
 namespace PalpiteFC.Api.Endpoints.Authenticated;

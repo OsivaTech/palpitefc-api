@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PalpiteFC.Api.Application.Interfaces;
-using PalpiteFC.Api.Domain.Entities.Database;
-using PalpiteFC.Api.Domain.Result;
-using PalpiteFC.Api.Domain.Settings;
+using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Api.CrossCutting.Settings;
+using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -29,7 +29,7 @@ public class TokenService : ITokenService
 
     #region Public Methods
 
-    public Result<string> Generate(Users user)
+    public Result<string> Generate(User user)
     {
         var handler = new JwtSecurityTokenHandler();
 
@@ -53,7 +53,7 @@ public class TokenService : ITokenService
 
     #region Non-public Methods
 
-    private static ClaimsIdentity GetClaimsIdentity(Users user)
+    private static ClaimsIdentity GetClaimsIdentity(User user)
     {
         var ci = new ClaimsIdentity();
 

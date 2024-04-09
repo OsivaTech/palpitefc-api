@@ -2,17 +2,17 @@
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests.Auth;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Domain.Entities.Database;
-using PalpiteFC.Api.Domain.Interfaces.Database;
-using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
+using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
 namespace PalpiteFC.Api.Application.Services;
 
 public class TeamsPointsService : ITeamsPointsService
 {
-    private readonly IChampionshipTeamPointsRepository _repository;
+    private readonly IStandingsRepository _repository;
 
-    public TeamsPointsService(IChampionshipTeamPointsRepository repository)
+    public TeamsPointsService(IStandingsRepository repository)
     {
         _repository = repository;
     }
@@ -30,11 +30,11 @@ public class TeamsPointsService : ITeamsPointsService
 
         if (id > 0)
         {
-            await _repository.Update(request.Adapt<ChampionshipTeamPoints>());
+            await _repository.Update(request.Adapt<Standing>());
         }
         else
         {
-            id = await _repository.InsertAndGetId(request.Adapt<ChampionshipTeamPoints>());
+            id = await _repository.InsertAndGetId(request.Adapt<Standing>());
         }
 
         var teamsPoints = await _repository.Select(id);

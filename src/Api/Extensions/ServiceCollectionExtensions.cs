@@ -7,8 +7,9 @@ using PalpiteFC.Api.Application.Extensions;
 using PalpiteFC.Api.Application.Mappings;
 using PalpiteFC.Api.Application.Utils;
 using PalpiteFC.Api.Application.Validators;
-using PalpiteFC.Api.Domain.Settings;
-using PalpiteFC.Api.Persistence.Extensions;
+using PalpiteFC.Api.CrossCutting.Settings;
+using PalpiteFC.Libraries.Persistence.Database.Extensions;
+using PalpiteFC.Libraries.Persistence.Database.Settings;
 using System.Text;
 
 namespace PalpiteFC.Api.Extensions;

@@ -2,23 +2,24 @@
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Domain.Entities.Database;
-using PalpiteFC.Api.Domain.Interfaces.Database;
-using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
+using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
 namespace PalpiteFC.Api.Application.Services;
+
 public class VotesService : IVotesService
 {
     #region Fields
 
-    private readonly IVotesRepository _votesRepository;
+    private readonly IPollsRepository _votesRepository;
     private readonly IOptionsRepository _optionsRepository;
 
     #endregion
 
     #region Constructors
 
-    public VotesService(IVotesRepository repository, IOptionsRepository optionsRepository)
+    public VotesService(IPollsRepository repository, IOptionsRepository optionsRepository)
     {
         _votesRepository = repository;
         _optionsRepository = optionsRepository;
@@ -45,7 +46,7 @@ public class VotesService : IVotesService
 
     public async Task<Result<VoteResponse>> CreateAsync(VoteRequest request, CancellationToken cancellationToken)
     {
-        var id = await _votesRepository.InsertAndGetId(request.Adapt<Votes>());
+        var id = await _votesRepository.InsertAndGetId(request.Adapt<Poll>());
 
         var vote = await _votesRepository.Select(id);
 

@@ -1,7 +1,7 @@
 ﻿using PalpiteFC.Api.Application.Requests.Auth;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Domain.Entities.Database;
-using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
 
 namespace PalpiteFC.Api.Application.Interfaces;
 

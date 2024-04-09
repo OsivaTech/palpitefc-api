@@ -1,6 +1,6 @@
 ﻿using PalpiteFC.Api.Endpoints;
 using PalpiteFC.Api.Endpoints.Authenticated;
-using PalpiteFC.Api.Persistence.Connection;
+using PalpiteFC.Libraries.Persistence.Database.Connection;
 
 namespace PalpiteFC.Api.Extensions;
 

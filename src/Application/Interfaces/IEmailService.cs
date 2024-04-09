@@ -1,5 +1,5 @@
 ﻿using PalpiteFC.Api.Application.Requests;
-using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.CrossCutting.Result;
 
 namespace PalpiteFC.Api.Application.Interfaces;
 

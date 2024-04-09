@@ -1,6 +1,6 @@
 ﻿using PalpiteFC.Api.Application.Requests.Auth;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.CrossCutting.Result;
 
 namespace PalpiteFC.Api.Application.Interfaces;
 

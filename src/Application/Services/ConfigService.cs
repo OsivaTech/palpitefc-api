@@ -2,16 +2,16 @@
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests.Auth;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Domain.Entities.Database;
-using PalpiteFC.Api.Domain.Interfaces.Database;
-using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
+using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
 namespace PalpiteFC.Api.Application.Services;
 public class ConfigService : IConfigService
 {
-    private readonly IConfigRepository _repository;
+    private readonly IConfigsRepository _repository;
 
-    public ConfigService(IConfigRepository repository)
+    public ConfigService(IConfigsRepository repository)
     {
         _repository = repository;
     }

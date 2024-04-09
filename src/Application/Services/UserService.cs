@@ -2,17 +2,17 @@
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Domain.Entities.Database;
-using PalpiteFC.Api.Domain.Interfaces.Database;
-using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
+using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
 namespace PalpiteFC.Api.Application.Services;
 
 public class UserService : IUserService
 {
-    private readonly IUserRepository _repository;
+    private readonly IUsersRepository _repository;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IUsersRepository userRepository)
     {
         _repository = userRepository;
     }
@@ -26,7 +26,7 @@ public class UserService : IUserService
 
     public async Task<Result<UserResponse>> UpdateAsync(UserRequest request, CancellationToken cancellationToken)
     {
-        await _repository.Update(request.Adapt<Users>());
+        await _repository.Update(request.Adapt<User>());
 
         var user = await _repository.Select(request.Id);
 

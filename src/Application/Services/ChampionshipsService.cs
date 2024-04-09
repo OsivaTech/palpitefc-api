@@ -2,9 +2,9 @@
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Domain.Entities.Database;
-using PalpiteFC.Api.Domain.Interfaces.Database;
-using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
+using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
 namespace PalpiteFC.Api.Application.Services;
 
@@ -12,13 +12,13 @@ public class ChampionshipsService : IChampionshipsService
 {
     #region Fields
 
-    private readonly IChampionshipsRepository _repository;
+    private readonly ILeaguesRepository _repository;
 
     #endregion
 
     #region Constructor
 
-    public ChampionshipsService(IChampionshipsRepository rerpository)
+    public ChampionshipsService(ILeaguesRepository rerpository)
     {
         _repository = rerpository;
     }
@@ -40,11 +40,11 @@ public class ChampionshipsService : IChampionshipsService
 
         if (request.Championship!.Id > 0)
         {
-            await _repository.Update(request.Championship.Adapt<Championships>());
+            await _repository.Update(request.Championship.Adapt<League>());
         }
         else
         {
-            id = await _repository.InsertAndGetId(request.Championship.Adapt<Championships>());
+            id = await _repository.InsertAndGetId(request.Championship.Adapt<League>());
         }
 
         var championship = await _repository.Select(id);

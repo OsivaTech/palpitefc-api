@@ -4,9 +4,9 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
-using PalpiteFC.Api.Domain.Errors;
-using PalpiteFC.Api.Domain.Result;
-using PalpiteFC.Api.Domain.Settings;
+using PalpiteFC.Api.CrossCutting.Errors;
+using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Api.CrossCutting.Settings;
 
 namespace PalpiteFC.Api.Application.Services;
 

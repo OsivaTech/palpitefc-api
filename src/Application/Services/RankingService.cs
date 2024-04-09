@@ -1,9 +1,8 @@
 ﻿using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Domain.Errors;
-using PalpiteFC.Api.Domain.Interfaces;
-using PalpiteFC.Api.Domain.Interfaces.Database;
-using PalpiteFC.Api.Domain.Result;
+using PalpiteFC.Api.CrossCutting.Errors;
+using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
 namespace PalpiteFC.Api.Application.Services;
 

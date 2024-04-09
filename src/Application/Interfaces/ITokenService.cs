@@ -1,9 +1,9 @@
-﻿using PalpiteFC.Api.Domain.Entities.Database;
-using PalpiteFC.Api.Domain.Result;
+﻿using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
 
 namespace PalpiteFC.Api.Application.Interfaces;
 
 public interface ITokenService
 {
-    Result<string> Generate(Users user);
+    Result<string> Generate(User user);
 }

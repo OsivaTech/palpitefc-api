@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PalpiteFC.Api.Domain.Interfaces.Integrations;
 using PalpiteFC.Api.Integrations.ApiFootball;
+using PalpiteFC.Api.Integrations.Interfaces;
 
 namespace PalpiteFC.Api.Integrations.Extensions;
 

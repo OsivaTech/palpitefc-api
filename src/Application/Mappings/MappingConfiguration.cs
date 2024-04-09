@@ -2,9 +2,10 @@
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Requests.Auth;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Domain.Entities.ApiFootball;
-using PalpiteFC.Api.Domain.Entities.Database;
 using System.Linq.Expressions;
+using ApiFootball = PalpiteFC.Api.Integrations.ApiFootball.Responses;
+using Database = PalpiteFC.Libraries.Persistence.Abstractions.Entities;
+
 
 namespace PalpiteFC.Api.Application.Mappings;
 
@@ -12,16 +13,16 @@ public class MappingConfiguration : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.ForType<Match, GameResponse>().MapWith(MapMatchToGameResponse());
-        config.ForType<Domain.Entities.ApiFootball.Team, TeamGameResponse>().MapWith(MapTeamToTeamGameResponse());
-        config.ForType<(News, Users), NewsResponse>().MapWith(MapNewsAndUsersToNewsResponse());
-        config.ForType<PalpitationRequest, Palpitations>().MapWith(MapPalpitationRequestToPalpitations());
-        config.ForType<(Votes, IEnumerable<Options>), VoteResponse>().MapWith(MapVotesAndListOfOptionsToVoteResponse());
-        config.ForType<ChampionshipTeamsPointsRequest, ChampionshipTeamPoints>().MapWith(MapChampionshipTeamsPointsRequestToChampoionshipTeamPoints());
-        config.ForType<(IEnumerable<Teams>, TeamsGame), TeamGameResponse>().MapWith(MapListTeamsAndTeamsGameToTeamGameResponse());
+        config.ForType<ApiFootball.Match, GameResponse>().MapWith(MapMatchToGameResponse());
+        config.ForType<ApiFootball.Team, TeamGameResponse>().MapWith(MapTeamToTeamGameResponse());
+        config.ForType<(Database.News, Database.User), NewsResponse>().MapWith(MapNewsAndUsersToNewsResponse());
+        config.ForType<PalpitationRequest, Database.Guess>().MapWith(MapPalpitationRequestToPalpitations());
+        config.ForType<(Database.Poll, IEnumerable<Database.Option>), VoteResponse>().MapWith(MapVotesAndListOfOptionsToVoteResponse());
+        config.ForType<ChampionshipTeamsPointsRequest, Database.Standing>().MapWith(MapChampionshipTeamsPointsRequestToChampoionshipTeamPoints());
+        config.ForType<(IEnumerable<Database.Team>, Database.Match), TeamGameResponse>().MapWith(MapListTeamsAndTeamsGameToTeamGameResponse());
     }
 
-    private static Expression<Func<(IEnumerable<Teams>, TeamsGame), TeamGameResponse>> MapListTeamsAndTeamsGameToTeamGameResponse()
+    private static Expression<Func<(IEnumerable<Database.Team>, Database.Match), TeamGameResponse>> MapListTeamsAndTeamsGameToTeamGameResponse()
     {
         return src => new TeamGameResponse
         {
@@ -34,9 +35,9 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private Expression<Func<ChampionshipTeamsPointsRequest, ChampionshipTeamPoints>> MapChampionshipTeamsPointsRequestToChampoionshipTeamPoints()
+    private Expression<Func<ChampionshipTeamsPointsRequest, Database.Standing>> MapChampionshipTeamsPointsRequestToChampoionshipTeamPoints()
     {
-        return src => new ChampionshipTeamPoints
+        return src => new Database.Standing
         {
             Id = src.Id,
             ChampionshipsId = src.ChampionshipId,
@@ -46,7 +47,7 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private Expression<Func<(Votes, IEnumerable<Options>), VoteResponse>> MapVotesAndListOfOptionsToVoteResponse()
+    private Expression<Func<(Database.Poll, IEnumerable<Database.Option>), VoteResponse>> MapVotesAndListOfOptionsToVoteResponse()
     {
         return src => new VoteResponse
         {
@@ -56,7 +57,7 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private Expression<Func<(News, Users), NewsResponse>> MapNewsAndUsersToNewsResponse()
+    private Expression<Func<(Database.News, Database.User), NewsResponse>> MapNewsAndUsersToNewsResponse()
     {
         return src => new NewsResponse
         {
@@ -74,9 +75,9 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private Expression<Func<PalpitationRequest, Palpitations>> MapPalpitationRequestToPalpitations()
+    private Expression<Func<PalpitationRequest, Database.Guess>> MapPalpitationRequestToPalpitations()
     {
-        return src => new Palpitations
+        return src => new Database.Guess
         {
             GameId = src.GameId,
             FirstTeamId = src.FirstTeam.Id,
@@ -87,7 +88,7 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private Expression<Func<Domain.Entities.ApiFootball.Team, TeamGameResponse>> MapTeamToTeamGameResponse()
+    private Expression<Func<ApiFootball.Team, TeamGameResponse>> MapTeamToTeamGameResponse()
     {
         return src => new TeamGameResponse
         {
@@ -97,7 +98,7 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private Expression<Func<Match, GameResponse>> MapMatchToGameResponse()
+    private Expression<Func<ApiFootball.Match, GameResponse>> MapMatchToGameResponse()
     {
         return src => new GameResponse
         {

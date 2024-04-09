@@ -3,10 +3,10 @@ using Microsoft.Extensions.Options;
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests.Auth;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Domain.Entities.Database;
-using PalpiteFC.Api.Domain.Interfaces.Database;
-using PalpiteFC.Api.Domain.Result;
-using PalpiteFC.Api.Domain.Settings;
+using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Api.CrossCutting.Settings;
+using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
+using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
 namespace PalpiteFC.Api.Application.Services;
 
@@ -14,7 +14,7 @@ public class GamesService : IGamesService
 {
     #region Fields
 
-    private readonly IGamesRepository _gamesRepository;
+    private readonly IFixturesRepository _gamesRepository;
     private readonly ITeamsGamesRepository _teamsGamesRepository;
     private readonly ITeamsRepository _teamsRepository;
     private readonly ICacheService _cache;
@@ -24,7 +24,7 @@ public class GamesService : IGamesService
 
     #region Contructors
 
-    public GamesService(IGamesRepository gamesRepository,
+    public GamesService(IFixturesRepository gamesRepository,
                         ITeamsGamesRepository teamsGamesRepository,
                         ITeamsRepository teamsRepository,
                         ICacheService cache,
@@ -59,11 +59,11 @@ public class GamesService : IGamesService
 
         if (id > 0)
         {
-            await _gamesRepository.Update(request.Adapt<Games>());
+            await _gamesRepository.Update(request.Adapt<Fixture>());
         }
         else
         {
-            id = await _gamesRepository.InsertAndGetId(request.Adapt<Games>());
+            id = await _gamesRepository.InsertAndGetId(request.Adapt<Fixture>());
         }
 
         var championship = await _gamesRepository.Select(id);
