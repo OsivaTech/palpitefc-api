@@ -12,8 +12,8 @@ jobs:
     runs-on: self-hosted
 
     env:
-      APP_NAME: palpitefc-api
-      APP_DIRECTORY: /home/www/palpitefc-api
+      APP_NAME: ${{ vars.APP_NAME }}
+      APP_DIRECTORY: ${{ vars.INSTALLATION_DIR }}/${{ vars.APP_NAME }}
       DLL_NAME: PalpiteFC.Api.dll
       CSPROJ_FILE: src/Api/Api.csproj
 
