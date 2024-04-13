@@ -12,4 +12,3 @@ public class PalpitationTeam
     public int Id { get; set; }
     public int Gol { get; set; }
 }
-

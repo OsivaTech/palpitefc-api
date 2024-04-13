@@ -2,6 +2,7 @@
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Requests.Auth;
 using PalpiteFC.Api.Application.Responses;
+using PalpiteFC.DataContracts.MessageTypes;
 using System.Linq.Expressions;
 using ApiFootball = PalpiteFC.Api.Integrations.ApiFootball.Responses;
 using Database = PalpiteFC.Libraries.Persistence.Abstractions.Entities;
@@ -20,6 +21,19 @@ public class MappingConfiguration : IRegister
         config.ForType<(Database.Poll, IEnumerable<Database.Option>), VoteResponse>().MapWith(MapVotesAndListOfOptionsToVoteResponse());
         config.ForType<ChampionshipTeamsPointsRequest, Database.Standing>().MapWith(MapChampionshipTeamsPointsRequestToChampoionshipTeamPoints());
         config.ForType<(IEnumerable<Database.Team>, Database.Match), TeamGameResponse>().MapWith(MapListTeamsAndTeamsGameToTeamGameResponse());
+        config.ForType<GuessRequest, GuessMessage>().MapWith(MapGuessRequestToGuessMessage());
+    }
+
+    private Expression<Func<GuessRequest, GuessMessage>> MapGuessRequestToGuessMessage()
+    {
+        return src => new GuessMessage
+        {
+            GameId = src.GameId,
+            FirstTeamId = src.FirstTeam!.Id,
+            FirstTeamGol = src.FirstTeam.Gol,
+            SecondTeamId = src.SecondTeam!.Id,
+            SecondTeamGol = src.SecondTeam.Gol
+        };
     }
 
     private static Expression<Func<(IEnumerable<Database.Team>, Database.Match), TeamGameResponse>> MapListTeamsAndTeamsGameToTeamGameResponse()

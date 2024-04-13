@@ -69,10 +69,7 @@ try
                 h.Password("guest");
             });
 
-            cfg.Publish<GuessRequest>(x =>
-            {
-                x.ExchangeType = ExchangeType.Direct;
-            });
+            cfg.Publish<GuessRequest>();
         });
     });
 

@@ -1,10 +1,12 @@
-﻿using MassTransit;
+﻿using Mapster;
+using MassTransit;
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Application.Utils;
 using PalpiteFC.Api.CrossCutting.Errors;
 using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.DataContracts.MessageTypes;
 using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
 namespace PalpiteFC.Api.Application.Services;
@@ -59,10 +61,14 @@ public class GuessService : IGuessService
             return ResultHelper.Failure<GuessResponse>(GuessErrors.GuessAlreadyExists);
         }
 
-        await _publishEndpoint.Publish(request, cancellationToken);
+        var message = request.Adapt<GuessMessage>();
+
+        message.UserId = _userContext.Id;
+
+        await _publishEndpoint.Publish(message, cancellationToken);
 
         await _cacheService.CreateAsync(cacheKey,
-                                        request,
+                                        message,
                                         absoluteExpiration: DateTime.Now.Date.AddDays(1).AddTicks(-1),
                                         cancellationToken: cancellationToken);
 
