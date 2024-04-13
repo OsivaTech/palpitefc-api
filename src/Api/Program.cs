@@ -5,7 +5,6 @@ using PalpiteFC.Api.ExceptionHandlers;
 using PalpiteFC.Api.Extensions;
 using PalpiteFC.Api.Integrations.Extensions;
 using PalpiteFC.Api.Middlewares;
-using RabbitMQ.Client;
 using Serilog;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -63,10 +62,10 @@ try
     {
         x.UsingRabbitMq((context, cfg) =>
         {
-            cfg.Host("148.113.183.239", "/", h =>
+            cfg.Host(builder.Configuration.GetValue<string>("Settings:RabbitMQ:Host"), "/", h =>
             {
-                h.Username("guest");
-                h.Password("guest");
+                h.Username(builder.Configuration.GetValue<string>("Settings:RabbitMQ:Username"));
+                h.Password(builder.Configuration.GetValue<string>("Settings:RabbitMQ:Password"));
             });
 
             cfg.Publish<GuessRequest>();
