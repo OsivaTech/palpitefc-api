@@ -3,9 +3,9 @@ using PalpiteFC.Api.Application.Requests;
 
 namespace PalpiteFC.Api.Application.Validators;
 
-public class PalpitationRequestValidator : AbstractValidator<GuessRequest>
+public class GuessRequestValidator : AbstractValidator<GuessRequest>
 {
-    public PalpitationRequestValidator()
+    public GuessRequestValidator()
     {
         RuleFor(x => x).NotEmpty();
 

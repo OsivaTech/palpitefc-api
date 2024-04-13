@@ -38,13 +38,13 @@ public class OptionsService : IOptionsService
         return ResultHelper.Success(option.Adapt<OptionsResponse>());
     }
 
-    public async Task<Result<VoteResponse>> ComputeVoteAsync(OptionsRequest request, CancellationToken cancellationToken)
+    public async Task<Result<PollResponse>> ComputeVoteAsync(OptionsRequest request, CancellationToken cancellationToken)
     {
         var currentOption = await _optionsRepository.Select(request.Id);
 
         if (currentOption is null)
         {
-            return ResultHelper.Failure<VoteResponse>(OptionsErros.OptionNotFound);
+            return ResultHelper.Failure<PollResponse>(OptionsErros.OptionNotFound);
         }
 
         var updatedOption = new Libraries.Persistence.Abstractions.Entities.Option
@@ -60,7 +60,7 @@ public class OptionsService : IOptionsService
         var votes = await _votesRepository.Select(updatedOption.VoteId);
         var options = await _optionsRepository.SelectByVoteId(updatedOption.VoteId);
 
-        var response = new VoteResponse
+        var response = new PollResponse
         {
             Id = votes.Id,
             Title = votes.Title,

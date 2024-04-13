@@ -4,25 +4,25 @@ using PalpiteFC.Api.Extensions;
 
 namespace PalpiteFC.Api.Endpoints.Authenticated;
 
-public static class Vote
+public static class League
 {
-    public static void MapAuthVoteEndpoints(this WebApplication app)
+    public static void MapAuthLeagueEndpoints(this WebApplication app)
     {
-        app.MapGet("/auth/vote", async (IVotesService service, CancellationToken cancellationToken) =>
+        app.MapGet("/auth/championship", async (ILeagueService service, CancellationToken cancellationToken) =>
         {
             var result = await service.GetAsync(cancellationToken);
 
             return result.ToIResult();
         }).RequireAuthorization();
 
-        app.MapPost("/auth/vote", async (VoteRequest request, IVotesService service, CancellationToken cancellationToken) =>
+        app.MapPost("/auth/championship", async (LeagueRequest request, ILeagueService service, CancellationToken cancellationToken) =>
         {
-            var result = await service.CreateAsync(request, cancellationToken);
+            var result = await service.CreateOrUpdateAsync(request, cancellationToken);
 
             return result.ToIResult();
         }).RequireAuthorization();
 
-        app.MapDelete("/auth/vote", async (int id, IVotesService service, CancellationToken cancellationToken) =>
+        app.MapDelete("/auth/championship", async (int id, ILeagueService service, CancellationToken cancellationToken) =>
         {
             var result = await service.DeleteAsync(id, cancellationToken);
 

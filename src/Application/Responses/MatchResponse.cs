@@ -1,6 +1,6 @@
 ﻿namespace PalpiteFC.Api.Application.Responses;
 
-public class TeamGameResponse
+public class MatchResponse
 {
     public int Id { get; set; }
     public int Gol { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace PalpiteFC.Api.Application.Requests;
 
-public class VoteRequest
+public class PollRequest
 {
     public string? Title { get; set; }
     public IEnumerable<Option>? Options { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace PalpiteFC.Api.Application.Requests.Auth;
 
-public class ChampionshipTeamsPointsRequest
+public class StandingRequest
 {
     public int Id { get; set; }
     public int TeamId { get; set; }

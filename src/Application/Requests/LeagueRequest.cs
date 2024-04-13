@@ -1,7 +1,7 @@
 ﻿namespace PalpiteFC.Api.Application.Requests;
 
 
-public class ChampionshipRequest
+public class LeagueRequest
 {
     public Championship? Championship { get; set; }
 }

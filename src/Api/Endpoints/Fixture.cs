@@ -3,11 +3,11 @@ using PalpiteFC.Api.Extensions;
 
 namespace PalpiteFC.Api.Endpoints;
 
-public static class TeamPoints
+public static class Fixture
 {
-    public static void MapTeamPointsEndpoints(this WebApplication app)
+    public static void MapFixtureEndpoints(this WebApplication app)
     {
-        app.MapGet("/championshipTeamPoints", async (ITeamsPointsService service, CancellationToken cancellationToken) =>
+        app.MapGet("/game", async (IFixtureService service, CancellationToken cancellationToken) =>
         {
             var result = await service.GetAsync(cancellationToken);
 

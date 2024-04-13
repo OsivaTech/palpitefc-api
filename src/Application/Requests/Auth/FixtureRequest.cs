@@ -1,6 +1,6 @@
 ﻿namespace PalpiteFC.Api.Application.Requests.Auth;
 
-public class GameRequest
+public class FixtureRequest
 {
     public int? Id { get; set; }
     public string? Name { get; set; }
@@ -12,6 +12,6 @@ public class GameRequest
 
 public class Team
 {
-    public int id { get; set; }
-    public int gol { get; set; }
+    public int Id { get; set; }
+    public int Gol { get; set; }
 }

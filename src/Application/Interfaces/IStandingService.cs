@@ -4,8 +4,8 @@ using PalpiteFC.Api.CrossCutting.Result;
 
 namespace PalpiteFC.Api.Application.Interfaces;
 
-public interface ITeamsPointsService
+public interface IStandingService
 {
-    Task<Result<ChampoionshipTeamPointsResponse>> CreateOrUpdateAsync(ChampionshipTeamsPointsRequest request, CancellationToken cancellationToken);
+    Task<Result<ChampoionshipTeamPointsResponse>> CreateOrUpdateAsync(StandingRequest request, CancellationToken cancellationToken);
     Task<Result<IEnumerable<ChampoionshipTeamPointsResponse>>> GetAsync(CancellationToken cancellationToken);
 }

@@ -1,6 +1,6 @@
 ﻿namespace PalpiteFC.Api.Application.Responses;
 
-public class VoteResponse
+public class PollResponse
 {
     public int Id { get; set; }
     public string? Title { get; set; }

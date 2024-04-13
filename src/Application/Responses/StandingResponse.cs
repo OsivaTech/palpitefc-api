@@ -9,5 +9,5 @@ public class ChampoionshipTeamPointsResponse
     public int TeamId { get; set; }
     public int ChampionshipsId { get; set; }
     public TeamResponse? Team { get; set; }
-    public ChampionshipResponse? Championships { get; set; }
+    public LeagueResponse? Championships { get; set; }
 }

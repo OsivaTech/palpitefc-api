@@ -9,9 +9,9 @@ public static class ServiceCollectionExtensions
 {
     public static void AddServices(this IServiceCollection services)
     {
-        services.AddScoped<IVotesService, VotesService>();
-        services.AddScoped<IChampionshipsService, ChampionshipsService>();
-        services.AddScoped<IGamesService, GamesService>();
+        services.AddScoped<IPollService, PollService>();
+        services.AddScoped<ILeagueService, LeagueService>();
+        services.AddScoped<IFixtureService, FixtureService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IGuessService, GuessService>();
@@ -21,7 +21,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRankingService, RankingService>();
         services.AddScoped<ITeamService, TeamService>();
-        services.AddScoped<ITeamsPointsService, TeamsPointsService>();
+        services.AddScoped<IStandingService, StandingService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IPointSeasonsService, PointSeasonsService>();
         services.AddScoped<ICacheService, DistributedCacheService>();

@@ -8,27 +8,27 @@ public static class WebApplicationExtensions
 {
     public static void MapEndpoints(this WebApplication app)
     {
-        app.MapVoteEndpoints();
-        app.MapChampionshipEndpoints();
-        app.MapGameEndpoints();
+        app.MapPollEndpoints();
+        app.MapLeagueEndpoints();
+        app.MapFixtureEndpoints();
         app.MapNewsEndpoints();
         app.MapAuthEndpoints();
         app.MapRankingEndpoints();
         app.MapUrlVideoEndpoints();
         app.MapUserEndpoints();
-        app.MapTeamPointsEndpoints();
+        app.MapStandingEndpoints();
         app.MapSendEmailEndpoints();
 
         app.MapAuthGuessEndpoints();
         app.MapAuthOptionsEndpoints();
         app.MapAuthUserEndpoints();
         app.MapAuthConfigEndpoints();
-        app.MapAuthChampionshipEndpoints();
+        app.MapAuthLeagueEndpoints();
         app.MapAuthNewsEndpoint();
-        app.MapAuthVoteEndpoints();
+        app.MapAuthPollEndpoints();
         app.MapAuthTeamEndpoints();
-        app.MapAuthGameEndpoints();
-        app.MapAuthTeamPointsEntpoints();
+        app.MapAuthFixtureEndpoints();
+        app.MapAuthStandingEntpoints();
         app.MapAuthPointSeasonsEndpoints();
     }
 

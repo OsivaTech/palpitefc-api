@@ -8,23 +8,23 @@ using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
 namespace PalpiteFC.Api.Application.Services;
 
-public class TeamsPointsService : ITeamsPointsService
+public class StandingService : IStandingService
 {
     private readonly IStandingsRepository _repository;
 
-    public TeamsPointsService(IStandingsRepository repository)
+    public StandingService(IStandingsRepository repository)
     {
         _repository = repository;
     }
 
     public async Task<Result<IEnumerable<ChampoionshipTeamPointsResponse>>> GetAsync(CancellationToken cancellationToken)
     {
-        var teamsPoints = await _repository.Select();
+        var standings = await _repository.Select();
 
-        return ResultHelper.Success(teamsPoints.Adapt<IEnumerable<ChampoionshipTeamPointsResponse>>());
+        return ResultHelper.Success(standings.Adapt<IEnumerable<ChampoionshipTeamPointsResponse>>());
     }
 
-    public async Task<Result<ChampoionshipTeamPointsResponse>> CreateOrUpdateAsync(ChampionshipTeamsPointsRequest request, CancellationToken cancellationToken)
+    public async Task<Result<ChampoionshipTeamPointsResponse>> CreateOrUpdateAsync(StandingRequest request, CancellationToken cancellationToken)
     {
         var id = request.Id;
 

@@ -14,17 +14,17 @@ public class MappingConfiguration : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.ForType<ApiFootball.Match, GameResponse>().MapWith(MapMatchToGameResponse());
-        config.ForType<ApiFootball.Team, TeamGameResponse>().MapWith(MapTeamToTeamGameResponse());
+        config.ForType<ApiFootball.Match, FixtureResponse>().MapWith(MapMatchToFixtureResponse());
+        config.ForType<ApiFootball.Team, MatchResponse>().MapWith(MapTeamToMatchResponse());
         config.ForType<(Database.News, Database.User), NewsResponse>().MapWith(MapNewsAndUsersToNewsResponse());
-        config.ForType<GuessRequest, Database.Guess>().MapWith(MapPalpitationRequestToPalpitations());
-        config.ForType<(Database.Poll, IEnumerable<Database.Option>), VoteResponse>().MapWith(MapVotesAndListOfOptionsToVoteResponse());
-        config.ForType<ChampionshipTeamsPointsRequest, Database.Standing>().MapWith(MapChampionshipTeamsPointsRequestToChampoionshipTeamPoints());
-        config.ForType<(IEnumerable<Database.Team>, Database.Match), TeamGameResponse>().MapWith(MapListTeamsAndTeamsGameToTeamGameResponse());
+        config.ForType<GuessRequest, Database.Guess>().MapWith(MapGuessRequestToGuessEntity());
+        config.ForType<(Database.Poll, IEnumerable<Database.Option>), PollResponse>().MapWith(MapPollAndListOfOptionsToPollResponse());
+        config.ForType<StandingRequest, Database.Standing>().MapWith(MapStandingRequestToStandingEntity());
+        config.ForType<(IEnumerable<Database.Team>, Database.Match), MatchResponse>().MapWith(MapListTeamsAndMatchToMatchResponse());
         config.ForType<GuessRequest, GuessMessage>().MapWith(MapGuessRequestToGuessMessage());
     }
 
-    private Expression<Func<GuessRequest, GuessMessage>> MapGuessRequestToGuessMessage()
+    private static Expression<Func<GuessRequest, GuessMessage>> MapGuessRequestToGuessMessage()
     {
         return src => new GuessMessage
         {
@@ -36,9 +36,9 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private static Expression<Func<(IEnumerable<Database.Team>, Database.Match), TeamGameResponse>> MapListTeamsAndTeamsGameToTeamGameResponse()
+    private static Expression<Func<(IEnumerable<Database.Team>, Database.Match), MatchResponse>> MapListTeamsAndMatchToMatchResponse()
     {
-        return src => new TeamGameResponse
+        return src => new MatchResponse
         {
             GameId = src.Item2.GameId,
             Gol = src.Item2.Gol,
@@ -49,7 +49,7 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private Expression<Func<ChampionshipTeamsPointsRequest, Database.Standing>> MapChampionshipTeamsPointsRequestToChampoionshipTeamPoints()
+    private static Expression<Func<StandingRequest, Database.Standing>> MapStandingRequestToStandingEntity()
     {
         return src => new Database.Standing
         {
@@ -61,9 +61,9 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private Expression<Func<(Database.Poll, IEnumerable<Database.Option>), VoteResponse>> MapVotesAndListOfOptionsToVoteResponse()
+    private static Expression<Func<(Database.Poll, IEnumerable<Database.Option>), PollResponse>> MapPollAndListOfOptionsToPollResponse()
     {
-        return src => new VoteResponse
+        return src => new PollResponse
         {
             Id = src.Item1.Id,
             Title = src.Item1.Title,
@@ -71,7 +71,7 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private Expression<Func<(Database.News, Database.User), NewsResponse>> MapNewsAndUsersToNewsResponse()
+    private static Expression<Func<(Database.News, Database.User), NewsResponse>> MapNewsAndUsersToNewsResponse()
     {
         return src => new NewsResponse
         {
@@ -89,7 +89,7 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private Expression<Func<GuessRequest, Database.Guess>> MapPalpitationRequestToPalpitations()
+    private static Expression<Func<GuessRequest, Database.Guess>> MapGuessRequestToGuessEntity()
     {
         return src => new Database.Guess
         {
@@ -102,9 +102,9 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private Expression<Func<ApiFootball.Team, TeamGameResponse>> MapTeamToTeamGameResponse()
+    private static Expression<Func<ApiFootball.Team, MatchResponse>> MapTeamToMatchResponse()
     {
-        return src => new TeamGameResponse
+        return src => new MatchResponse
         {
             TeamId = src.Id.Value,
             Name = src.Name,
@@ -112,17 +112,17 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private Expression<Func<ApiFootball.Match, GameResponse>> MapMatchToGameResponse()
+    private static Expression<Func<ApiFootball.Match, FixtureResponse>> MapMatchToFixtureResponse()
     {
-        return src => new GameResponse
+        return src => new FixtureResponse
         {
             Id = src.Fixture.Id.Value,
             Name = "",
             ChampionshipId = src.League.Id.Value,
-            FirstTeam = src.Teams.Home.Adapt<TeamGameResponse>(),
-            SecondTeam = src.Teams.Away.Adapt<TeamGameResponse>(),
+            FirstTeam = src.Teams.Home.Adapt<MatchResponse>(),
+            SecondTeam = src.Teams.Away.Adapt<MatchResponse>(),
             Start = src.Fixture.Date.Value,
-            Finished = src.Fixture.Status.Long.Equals("Match Finished"),
+            Finished = src.Fixture.Status.Long.Equals("Match Finished")
         };
     }
 }
