@@ -1,6 +1,6 @@
 ﻿namespace PalpiteFC.Api.Application.Responses;
 
-public class PalpitationResponse
+public class GuessResponse
 {
     public int Id { get; set; }
     public int FirstTeamId { get; set; }

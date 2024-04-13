@@ -1,8 +1,11 @@
+using MassTransit;
+using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Converters;
 using PalpiteFC.Api.ExceptionHandlers;
 using PalpiteFC.Api.Extensions;
 using PalpiteFC.Api.Integrations.Extensions;
 using PalpiteFC.Api.Middlewares;
+using RabbitMQ.Client;
 using Serilog;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -54,6 +57,23 @@ try
     builder.Services.AddStackExchangeRedisCache(options =>
     {
         options.Configuration = builder.Configuration.GetValue<string>("Settings:Redis:ConnectionString");
+    });
+
+    builder.Services.AddMassTransit(x =>
+    {
+        x.UsingRabbitMq((context, cfg) =>
+        {
+            cfg.Host("148.113.183.239", "/", h =>
+            {
+                h.Username("guest");
+                h.Password("guest");
+            });
+
+            cfg.Publish<GuessRequest>(x =>
+            {
+                x.ExchangeType = ExchangeType.Direct;
+            });
+        });
     });
 
     var app = builder.Build();

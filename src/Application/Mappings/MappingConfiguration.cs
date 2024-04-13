@@ -16,7 +16,7 @@ public class MappingConfiguration : IRegister
         config.ForType<ApiFootball.Match, GameResponse>().MapWith(MapMatchToGameResponse());
         config.ForType<ApiFootball.Team, TeamGameResponse>().MapWith(MapTeamToTeamGameResponse());
         config.ForType<(Database.News, Database.User), NewsResponse>().MapWith(MapNewsAndUsersToNewsResponse());
-        config.ForType<PalpitationRequest, Database.Guess>().MapWith(MapPalpitationRequestToPalpitations());
+        config.ForType<GuessRequest, Database.Guess>().MapWith(MapPalpitationRequestToPalpitations());
         config.ForType<(Database.Poll, IEnumerable<Database.Option>), VoteResponse>().MapWith(MapVotesAndListOfOptionsToVoteResponse());
         config.ForType<ChampionshipTeamsPointsRequest, Database.Standing>().MapWith(MapChampionshipTeamsPointsRequestToChampoionshipTeamPoints());
         config.ForType<(IEnumerable<Database.Team>, Database.Match), TeamGameResponse>().MapWith(MapListTeamsAndTeamsGameToTeamGameResponse());
@@ -75,7 +75,7 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private Expression<Func<PalpitationRequest, Database.Guess>> MapPalpitationRequestToPalpitations()
+    private Expression<Func<GuessRequest, Database.Guess>> MapPalpitationRequestToPalpitations()
     {
         return src => new Database.Guess
         {

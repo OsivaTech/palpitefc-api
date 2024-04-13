@@ -4,7 +4,7 @@ using PalpiteFC.Api.CrossCutting.Result;
 
 namespace PalpiteFC.Api.Application.Interfaces;
 
-public interface IPalpitationService
+public interface IGuessService
 {
-    Task<Result<PalpitationResponse>> Create(PalpitationRequest request, CancellationToken cancellationToken);
+    Task<Result<GuessResponse>> Create(GuessRequest request, CancellationToken cancellationToken);
 }

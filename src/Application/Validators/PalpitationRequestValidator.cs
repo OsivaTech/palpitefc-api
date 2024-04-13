@@ -3,7 +3,7 @@ using PalpiteFC.Api.Application.Requests;
 
 namespace PalpiteFC.Api.Application.Validators;
 
-public class PalpitationRequestValidator : AbstractValidator<PalpitationRequest>
+public class PalpitationRequestValidator : AbstractValidator<GuessRequest>
 {
     public PalpitationRequestValidator()
     {

@@ -19,7 +19,7 @@ public static class WebApplicationExtensions
         app.MapTeamPointsEndpoints();
         app.MapSendEmailEndpoints();
 
-        app.MapAuthPalpitationEndpoints();
+        app.MapAuthGuessEndpoints();
         app.MapAuthOptionsEndpoints();
         app.MapAuthUserEndpoints();
         app.MapAuthConfigEndpoints();

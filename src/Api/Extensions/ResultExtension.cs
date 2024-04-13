@@ -16,7 +16,7 @@ public static class ResultExtension
             return Results.Json(result.Data, statusCode: successCode);
         }
 
-        return Results.Json(new { message = result.Messages!.First().Description }, statusCode: failureCode);
+        return Results.Json(CreateMessageObject(result.Messages), statusCode: failureCode);
     }
 
     public static IResult ToIResult(this Result result, int successCode = 204, int failureCode = 400)
@@ -26,6 +26,13 @@ public static class ResultExtension
             return Results.StatusCode(successCode);
         }
 
-        return Results.Json(new { message = result.Messages!.First().Description }, statusCode: failureCode);
+        return Results.Json(CreateMessageObject(result.Messages), statusCode: failureCode);
+    }
+
+    private static object CreateMessageObject(List<Message>? messages)
+    {
+        var first = messages?.FirstOrDefault() ?? new Message("Unknown.Error", "Unknown error.");
+
+        return new { code = first.Code, message = first.Description };
     }
 }

@@ -5,13 +5,13 @@ using PalpiteFC.Api.Extensions;
 
 namespace PalpiteFC.Api.Endpoints.Authenticated;
 
-public static class Palpitation
+public static class Guess
 {
-    public static void MapAuthPalpitationEndpoints(this WebApplication app)
+    public static void MapAuthGuessEndpoints(this WebApplication app)
     {
-        app.MapPost("/auth/palpitation", async (PalpitationRequest request,
-                                                IValidator<PalpitationRequest> validator,
-                                                IPalpitationService service,
+        app.MapPost("/auth/palpitation", async (GuessRequest request,
+                                                IValidator<GuessRequest> validator,
+                                                IGuessService service,
                                                 CancellationToken cancellationToken) =>
         {
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
@@ -23,7 +23,7 @@ public static class Palpitation
 
             var result = await service.Create(request, cancellationToken);
 
-            return result.ToIResult(StatusCodes.Status201Created);
+            return result.ToIResult(StatusCodes.Status202Accepted);
         }).RequireAuthorization();
     }
 }

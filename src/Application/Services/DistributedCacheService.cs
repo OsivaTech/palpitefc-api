@@ -16,9 +16,10 @@ internal class DistributedCacheService : ICacheService
     public async Task<T> GetOrCreateAsync<T>(string cacheKey,
                                              Func<Task<T>> retrieveDataFunc,
                                              TimeSpan? slidingExpiration = null,
-                                             DateTimeOffset? absoluteExpiration = null)
+                                             DateTimeOffset? absoluteExpiration = null,
+                                             CancellationToken cancellationToken = default)
     {
-        var cachedDataString = await _cache.GetStringAsync(cacheKey);
+        var cachedDataString = await _cache.GetStringAsync(cacheKey, cancellationToken);
 
         if (!string.IsNullOrEmpty(cachedDataString))
         {
@@ -35,8 +36,28 @@ internal class DistributedCacheService : ICacheService
             SlidingExpiration = slidingExpiration
         };
 
-        await _cache.SetStringAsync(cacheKey, serializedData, cacheEntryOptions);
+        await _cache.SetStringAsync(cacheKey, serializedData, cacheEntryOptions, cancellationToken);
 
         return cachedData;
+    }
+
+    public async Task<bool> ExistsKey(string cacheKey, CancellationToken cancellationToken = default)
+        => await _cache.GetAsync(cacheKey, cancellationToken) is not null;
+
+    public async Task CreateAsync<T>(string cacheKey,
+                                     T data,
+                                     TimeSpan? slidingExpiration = null,
+                                     DateTimeOffset? absoluteExpiration = null,
+                                     CancellationToken cancellationToken = default)
+    {
+        var serializedData = JsonSerializer.Serialize(data);
+
+        var cacheEntryOptions = new DistributedCacheEntryOptions
+        {
+            AbsoluteExpiration = absoluteExpiration,
+            SlidingExpiration = slidingExpiration
+        };
+
+        await _cache.SetStringAsync(cacheKey, serializedData, cacheEntryOptions, cancellationToken);
     }
 }

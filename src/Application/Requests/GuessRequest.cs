@@ -1,6 +1,6 @@
 ﻿namespace PalpiteFC.Api.Application.Requests;
 
-public class PalpitationRequest
+public class GuessRequest
 {
     public int GameId { get; set; }
     public PalpitationTeam? FirstTeam { get; set; }

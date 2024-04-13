@@ -15,7 +15,7 @@ public class GamesService : IGamesService
     #region Fields
 
     private readonly IFixturesRepository _gamesRepository;
-    private readonly ITeamsGamesRepository _teamsGamesRepository;
+    private readonly IMatchesRepository _matchesRepository;
     private readonly ITeamsRepository _teamsRepository;
     private readonly ICacheService _cache;
     private readonly IOptions<FixturesSettings> _options;
@@ -25,13 +25,13 @@ public class GamesService : IGamesService
     #region Contructors
 
     public GamesService(IFixturesRepository gamesRepository,
-                        ITeamsGamesRepository teamsGamesRepository,
+                        IMatchesRepository matchesRepository,
                         ITeamsRepository teamsRepository,
                         ICacheService cache,
                         IOptions<FixturesSettings> options)
     {
         _gamesRepository = gamesRepository;
-        _teamsGamesRepository = teamsGamesRepository;
+        _matchesRepository = matchesRepository;
         _teamsRepository = teamsRepository;
         _cache = cache;
         _options = options;
@@ -85,7 +85,7 @@ public class GamesService : IGamesService
     private async Task<IEnumerable<GameResponse>> GetFixtures(string from, string to)
     {
         var games = await _gamesRepository.Select(from, to);
-        var teamsGame = await _teamsGamesRepository.Select();
+        var teamsGame = await _matchesRepository.Select();
         var teams = await _teamsRepository.Select();
 
         var gamesResponse = new List<GameResponse>();
