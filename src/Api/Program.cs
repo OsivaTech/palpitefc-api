@@ -74,7 +74,20 @@ try
 
     var app = builder.Build();
 
-    app.UseSerilogRequestLogging();
+    app.UseSerilogRequestLogging(opt => opt.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+    {
+        var request = httpContext.Request;
+        var response = httpContext.Response;
+
+        diagnosticContext.Set("Host", request.Host);
+        diagnosticContext.Set("IpAddress", httpContext.Connection.RemoteIpAddress);
+        diagnosticContext.Set("Protocol", request.Protocol);
+        diagnosticContext.Set("Scheme", request.Scheme);
+        diagnosticContext.Set("QueryString", request.QueryString);
+        diagnosticContext.Set("EndpointName", httpContext.GetEndpoint()?.DisplayName);
+
+        diagnosticContext.Set("ContentType", response.ContentType);
+    });
 
     app.UsePathBase(new PathString("/api"));
     app.UseRouting();
@@ -85,6 +98,7 @@ try
     app.UseAuthorization();
 
     await app.InitiaizeDatabase();
+    app.UseMiddleware<HttpContextLoggerMiddleware>();
     app.UseMiddleware<UserContextMiddleware>();
     app.MapEndpoints();
     app.UseExceptionHandler();
