@@ -18,7 +18,7 @@ public static class Auth
 
             if (!validationResult.IsValid)
             {
-                return Results.BadRequest(validationResult.Errors);
+                return validationResult.ToIResult();
             }
 
             var result = await service.SignUp(request, cancellationToken);

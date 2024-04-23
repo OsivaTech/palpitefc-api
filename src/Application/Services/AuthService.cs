@@ -50,7 +50,7 @@ public class AuthService : IAuthService
             Email = request.Email,
             Password = _hashService.EncryptPassword(request.Password + guid.ToString()),
             UserGuid = guid.ToString(),
-            Role = request.Role
+            Role = 300
         };
 
         await _userRepository.Insert(user);
