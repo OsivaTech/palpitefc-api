@@ -1,4 +1,5 @@
 using MassTransit;
+using Microsoft.OpenApi.Models;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Converters;
 using PalpiteFC.Api.ExceptionHandlers;
@@ -8,7 +9,6 @@ using PalpiteFC.Api.Middlewares;
 using Serilog;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-
 
 try
 {
@@ -25,6 +25,40 @@ try
     builder.Host.UseSerilog(Log.Logger);
 
     builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "PalpiteFC Api", Version = "v1" });
+
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Description =
+                "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer"
+        });
+
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    },
+                    Scheme = "oauth2",
+                    Name = "Bearer",
+                    In = ParameterLocation.Header,
+
+                },
+                new List<string>()
+            }
+        });
+    });
+
     builder.Services.AddCors(options =>
     {
         options.AddPolicy("cors", policy =>
@@ -88,6 +122,18 @@ try
 
         diagnosticContext.Set("ContentType", response.ContentType);
     });
+
+    app.MapSwagger().RequireAuthorization("api");
+
+    //if (app.Environment.IsDevelopment())
+    //{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
+    });
+    //}
 
     app.UsePathBase(new PathString("/api"));
     app.UseRouting();
