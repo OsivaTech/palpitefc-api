@@ -9,21 +9,21 @@ public static class Guess
 {
     public static void MapAuthGuessEndpoints(this WebApplication app)
     {
-        app.MapPost("/auth/palpitation", async (GuessRequest request,
-                                                IValidator<GuessRequest> validator,
-                                                IGuessService service,
-                                                CancellationToken cancellationToken) =>
+        app.MapPost("/auth/guess", async (GuessRequest request,
+                                          IValidator<GuessRequest> validator,
+                                          IGuessService service,
+                                          CancellationToken cancellationToken) =>
         {
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
             if (!validationResult.IsValid)
             {
-                return Results.BadRequest(new { message = validationResult.Errors.First().ErrorMessage });
+                return validationResult.ToIResult();
             }
 
             var result = await service.Create(request, cancellationToken);
 
-            return result.ToIResult(StatusCodes.Status202Accepted);
+            return result.ToIResult();
         }).RequireAuthorization();
     }
 }

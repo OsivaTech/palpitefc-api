@@ -8,14 +8,14 @@ public static class Standing
 {
     public static void MapAuthStandingEntpoints(this WebApplication app)
     {
-        app.MapGet("/auth/championshipTeamPoints", async (IStandingService service, CancellationToken cancellationToken) =>
+        app.MapGet("/auth/standing", async (IStandingService service, CancellationToken cancellationToken) =>
         {
             var result = await service.GetAsync(cancellationToken);
 
             return result.ToIResult();
         });
 
-        app.MapPost("/auth/championshipTeamPoints", async (StandingRequest request, IStandingService service, CancellationToken cancellationToken) =>
+        app.MapPost("/auth/standing", async (StandingRequest request, IStandingService service, CancellationToken cancellationToken) =>
         {
             var result = await service.CreateOrUpdateAsync(request, cancellationToken);
 

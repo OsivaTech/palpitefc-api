@@ -96,12 +96,12 @@ public class FixtureService : IFixtureService
             gamesResponse.Add(new FixtureResponse()
             {
                 Id = game.Id,
-                ChampionshipId = game.ChampionshipId,
+                LeagueId = game.ChampionshipId,
                 Name = game.Name,
                 Start = game.Start,
                 Finished = game.Finished,
-                FirstTeam = (teams, teamsGame.Where(w => w.GameId == game.Id).ElementAt(0)).Adapt<MatchResponse>(),
-                SecondTeam = (teams, teamsGame.Where(w => w.GameId == game.Id).ElementAt(1)).Adapt<MatchResponse>(),
+                HomeTeam = (teams, teamsGame.Where(w => w.GameId == game.Id).ElementAt(0)).Adapt<MatchResponse>(),
+                AwayTeam = (teams, teamsGame.Where(w => w.GameId == game.Id).ElementAt(1)).Adapt<MatchResponse>(),
             });
         }
 

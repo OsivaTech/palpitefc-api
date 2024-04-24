@@ -8,21 +8,21 @@ public static class League
 {
     public static void MapAuthLeagueEndpoints(this WebApplication app)
     {
-        app.MapGet("/auth/championship", async (ILeagueService service, CancellationToken cancellationToken) =>
+        app.MapGet("/auth/league", async (ILeagueService service, CancellationToken cancellationToken) =>
         {
             var result = await service.GetAsync(cancellationToken);
 
             return result.ToIResult();
         }).RequireAuthorization();
 
-        app.MapPost("/auth/championship", async (LeagueRequest request, ILeagueService service, CancellationToken cancellationToken) =>
+        app.MapPost("/auth/league", async (LeagueRequest request, ILeagueService service, CancellationToken cancellationToken) =>
         {
             var result = await service.CreateOrUpdateAsync(request, cancellationToken);
 
             return result.ToIResult();
         }).RequireAuthorization();
 
-        app.MapDelete("/auth/championship", async (int id, ILeagueService service, CancellationToken cancellationToken) =>
+        app.MapDelete("/auth/league", async (int id, ILeagueService service, CancellationToken cancellationToken) =>
         {
             var result = await service.DeleteAsync(id, cancellationToken);
 

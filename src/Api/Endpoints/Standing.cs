@@ -7,7 +7,7 @@ public static class Standing
 {
     public static void MapStandingEndpoints(this WebApplication app)
     {
-        app.MapGet("/championshipTeamPoints", async (IStandingService service, CancellationToken cancellationToken) =>
+        app.MapGet("/standing", async (IStandingService service, CancellationToken cancellationToken) =>
         {
             var result = await service.GetAsync(cancellationToken);
 

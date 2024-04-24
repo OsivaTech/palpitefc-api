@@ -7,7 +7,7 @@ public static class Poll
 {
     public static void MapPollEndpoints(this WebApplication app)
     {
-        app.MapGet("/vote", async (IPollService service, CancellationToken cancellationToken) =>
+        app.MapGet("/poll", async (IPollService service, CancellationToken cancellationToken) =>
         {
             var result = await service.GetAsync(cancellationToken);
 

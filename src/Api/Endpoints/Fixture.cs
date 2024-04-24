@@ -7,7 +7,7 @@ public static class Fixture
 {
     public static void MapFixtureEndpoints(this WebApplication app)
     {
-        app.MapGet("/game", async (IFixtureService service, CancellationToken cancellationToken) =>
+        app.MapGet("/fixture", async (IFixtureService service, CancellationToken cancellationToken) =>
         {
             var result = await service.GetAsync(cancellationToken);
 

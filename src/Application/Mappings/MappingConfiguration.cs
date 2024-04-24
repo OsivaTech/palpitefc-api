@@ -40,8 +40,8 @@ public class MappingConfiguration : IRegister
     {
         return src => new MatchResponse
         {
-            GameId = src.Item2.GameId,
-            Gol = src.Item2.Gol,
+            FixtureId = src.Item2.GameId,
+            Goal = src.Item2.Gol,
             Id = src.Item2.Id,
             TeamId = src.Item2.TeamId,
             Image = src.Item1.First(w => w.Id == src.Item2.TeamId).Image,
@@ -118,9 +118,9 @@ public class MappingConfiguration : IRegister
         {
             Id = src.Fixture.Id.Value,
             Name = "",
-            ChampionshipId = src.League.Id.Value,
-            FirstTeam = src.Teams.Home.Adapt<MatchResponse>(),
-            SecondTeam = src.Teams.Away.Adapt<MatchResponse>(),
+            LeagueId = src.League.Id.Value,
+            HomeTeam = src.Teams.Home.Adapt<MatchResponse>(),
+            AwayTeam = src.Teams.Away.Adapt<MatchResponse>(),
             Start = src.Fixture.Date.Value,
             Finished = src.Fixture.Status.Long.Equals("Match Finished")
         };
