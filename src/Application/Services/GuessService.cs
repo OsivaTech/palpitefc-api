@@ -1,12 +1,15 @@
 ﻿using Mapster;
 using MassTransit;
+using Microsoft.Extensions.Options;
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Application.Utils;
 using PalpiteFC.Api.CrossCutting.Errors;
 using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Api.CrossCutting.Settings;
 using PalpiteFC.DataContracts.MessageTypes;
+using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
 using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
 namespace PalpiteFC.Api.Application.Services;
@@ -17,22 +20,27 @@ public class GuessService : IGuessService
     private readonly ICacheService _cacheService;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly UserContext _userContext;
+    private readonly IOptions<GuessesSettings> _settings;
 
     public GuessService(IGuessesRepository repository,
                         IFixturesRepository fixturesRepository,
                         ICacheService cacheService,
                         IPublishEndpoint publishEndpoint,
-                        UserContext userContext)
+                        UserContext userContext,
+                        IOptions<GuessesSettings> settings)
     {
         _repository = repository;
         _fixturesRepository = fixturesRepository;
         _cacheService = cacheService;
         _publishEndpoint = publishEndpoint;
         _userContext = userContext;
+        _settings = settings;
     }
 
     public async Task<Result<GuessResponse>> Create(GuessRequest request, CancellationToken cancellationToken)
     {
+
+
         var cacheKey = $"PalpiteFC:Guesses:{_userContext.Id}_{request.GameId}";
 
         var exitsKey = await _cacheService.ExistsKey(cacheKey, cancellationToken);
@@ -61,14 +69,25 @@ public class GuessService : IGuessService
             return ResultHelper.Failure<GuessResponse>(GuessErrors.GuessAlreadyExists);
         }
 
-        var message = request.Adapt<GuessMessage>();
 
-        message.UserId = _userContext.Id;
+        if (_settings.Value.EndpointDB == false)
+        {
+            var message = request.Adapt<GuessMessage>();
+            message.UserId = _userContext.Id;
 
-        await _publishEndpoint.Publish(message, cancellationToken);
+            await _publishEndpoint.Publish(message, cancellationToken);
+        }
+        else
+        {
+            var message = request.Adapt<Guess>();
+            message.UserId = _userContext.Id;
+
+            await _repository.Insert(message);
+        }
+
 
         await _cacheService.CreateAsync(cacheKey,
-                                        message,
+                                        string.Empty,
                                         absoluteExpiration: DateTime.Now.Date.AddDays(1).AddTicks(-1),
                                         cancellationToken: cancellationToken);
 
