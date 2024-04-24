@@ -3,12 +3,12 @@
 public class GuessRequest
 {
     public int GameId { get; set; }
-    public PalpitationTeam? FirstTeam { get; set; }
-    public PalpitationTeam? SecondTeam { get; set; }
+    public GuessTeam? HomeTeam { get; set; }
+    public GuessTeam? AwayTeam { get; set; }
 }
 
-public class PalpitationTeam
+public class GuessTeam
 {
     public int Id { get; set; }
-    public int Gol { get; set; }
+    public int Goal { get; set; }
 }

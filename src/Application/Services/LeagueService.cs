@@ -36,15 +36,15 @@ public class LeagueService : ILeagueService
 
     public async Task<Result<LeagueResponse>> CreateOrUpdateAsync(LeagueRequest request, CancellationToken cancellationToken)
     {
-        var id = request.Championship!.Id;
+        var id = request.Id;
 
-        if (request.Championship!.Id > 0)
+        if (request.Id > 0)
         {
-            await _repository.Update(request.Championship.Adapt<League>());
+            await _repository.Update(request.Adapt<League>());
         }
         else
         {
-            id = await _repository.InsertAndGetId(request.Championship.Adapt<League>());
+            id = await _repository.InsertAndGetId(request.Adapt<League>());
         }
 
         var championship = await _repository.Select(id);

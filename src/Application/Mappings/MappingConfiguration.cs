@@ -29,10 +29,10 @@ public class MappingConfiguration : IRegister
         return src => new GuessMessage
         {
             GameId = src.GameId,
-            FirstTeamId = src.FirstTeam!.Id,
-            FirstTeamGol = src.FirstTeam.Gol,
-            SecondTeamId = src.SecondTeam!.Id,
-            SecondTeamGol = src.SecondTeam.Gol
+            FirstTeamId = src.HomeTeam!.Id,
+            FirstTeamGol = src.HomeTeam.Goal,
+            SecondTeamId = src.AwayTeam!.Id,
+            SecondTeamGol = src.AwayTeam.Goal
         };
     }
 
@@ -94,10 +94,10 @@ public class MappingConfiguration : IRegister
         return src => new Database.Guess
         {
             GameId = src.GameId,
-            FirstTeamId = src.FirstTeam.Id,
-            FirstTeamGol = src.FirstTeam.Gol,
-            SecondTeamGol = src.SecondTeam.Gol,
-            SecondTeamId = src.SecondTeam.Id,
+            FirstTeamId = src.HomeTeam.Id,
+            FirstTeamGol = src.HomeTeam.Goal,
+            SecondTeamGol = src.AwayTeam.Goal,
+            SecondTeamId = src.AwayTeam.Id,
             CreatedAt = DateTime.UtcNow
         };
     }
