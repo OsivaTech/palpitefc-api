@@ -3,16 +3,16 @@ using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Extensions;
 
-namespace PalpiteFC.Api.Endpoints.Authenticated;
+namespace PalpiteFC.Api.Endpoints;
 
-public static class Guess
+public static class Guesses
 {
-    public static void MapAuthGuessEndpoints(this WebApplication app)
+    public static void MapGuessEndpoints(this WebApplication app)
     {
-        app.MapPost("/auth/guess", async (GuessRequest request,
-                                          IValidator<GuessRequest> validator,
-                                          IGuessService service,
-                                          CancellationToken cancellationToken) =>
+        app.MapPost("/guesses", async (GuessRequest request,
+                                       IValidator<GuessRequest> validator,
+                                       IGuessService service,
+                                       CancellationToken cancellationToken) =>
         {
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
 

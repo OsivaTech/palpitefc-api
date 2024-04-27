@@ -1,5 +1,4 @@
 ﻿using PalpiteFC.Api.Endpoints;
-using PalpiteFC.Api.Endpoints.Authenticated;
 using PalpiteFC.Libraries.Persistence.Database.Connection;
 
 namespace PalpiteFC.Api.Extensions;
@@ -8,28 +7,21 @@ public static class WebApplicationExtensions
 {
     public static void MapEndpoints(this WebApplication app)
     {
-        app.MapPollEndpoints();
-        app.MapLeagueEndpoints();
-        app.MapFixtureEndpoints();
-        app.MapNewsEndpoints();
         app.MapAuthEndpoints();
+        app.MapConfigEndpoints();
+        app.MapFixtureEndpoints();
+        app.MapGuessEndpoints();
+        app.MapLeagueEndpoints();
+        app.MapNewsEndpoints();
+        app.MapOptionsEndpoints();
+        app.MapPointSeasonsEndpoints();
+        app.MapPollEndpoints();
         app.MapRankingEndpoints();
+        app.MapSendEmailEndpoints();
+        app.MapStandingEndpoints();
+        app.MapTeamEndpoints();
         app.MapUrlVideoEndpoints();
         app.MapUserEndpoints();
-        app.MapStandingEndpoints();
-        app.MapSendEmailEndpoints();
-
-        app.MapAuthGuessEndpoints();
-        app.MapAuthOptionsEndpoints();
-        app.MapAuthUserEndpoints();
-        app.MapAuthConfigEndpoints();
-        app.MapAuthLeagueEndpoints();
-        app.MapAuthNewsEndpoint();
-        app.MapAuthPollEndpoints();
-        app.MapAuthTeamEndpoints();
-        app.MapAuthFixtureEndpoints();
-        app.MapAuthStandingEntpoints();
-        app.MapAuthPointSeasonsEndpoints();
     }
 
     public static async Task InitiaizeDatabase(this WebApplication app)

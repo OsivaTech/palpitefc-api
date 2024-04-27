@@ -3,11 +3,11 @@ using PalpiteFC.Api.Extensions;
 
 namespace PalpiteFC.Api.Endpoints;
 
-public static class Fixture
+public static class Fixtures
 {
     public static void MapFixtureEndpoints(this WebApplication app)
     {
-        app.MapGet("/fixture", async (IFixtureService service, CancellationToken cancellationToken) =>
+        app.MapGet("/fixtures", async (IFixtureService service, CancellationToken cancellationToken) =>
         {
             var result = await service.GetAsync(cancellationToken);
 

@@ -46,7 +46,9 @@ public static class ServiceCollectionExtensions
             };
         });
 
-        services.AddAuthorizationBuilder().AddPolicy("api", policy => policy.RequireRole("300"));
+        services.AddAuthorizationBuilder().AddPolicy("user", policy => policy.RequireRole("300"));
+        services.AddAuthorizationBuilder().AddPolicy("journalist", policy => policy.RequireRole("200"));
+        services.AddAuthorizationBuilder().AddPolicy("admin", policy => policy.RequireRole("100"));
     }
 
     public static void ConfigureValidators(this IServiceCollection services)

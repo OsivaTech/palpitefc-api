@@ -1,4 +1,5 @@
 ﻿using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Application.Requests.Auth;
 using PalpiteFC.Api.Extensions;
 
 namespace PalpiteFC.Api.Endpoints;
@@ -13,5 +14,19 @@ public static class News
 
             return result.ToIResult();
         });
+
+        app.MapPost("/news", async (NewsRequest request, INewsService service, CancellationToken cancellationToken) =>
+        {
+            var result = await service.CreateOrUpdateAsync(request);
+
+            return result.ToIResult();
+        }).RequireAuthorization("admin", "journalist");
+
+        app.MapDelete("/news", async (int id, INewsService service, CancellationToken cancellationToken) =>
+        {
+            var result = await service.DeleteAsync(id, cancellationToken);
+
+            return result.ToIResult();
+        }).RequireAuthorization("admin", "journalist");
     }
 }

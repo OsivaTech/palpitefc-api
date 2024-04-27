@@ -21,15 +21,15 @@ public class NewsService : INewsService
 
     public async Task<Result<NewsResponse>> CreateOrUpdateAsync(NewsRequest request)
     {
-        var id = request.News!.Id;
+        var id = request.Id;
 
         if (id > 0)
         {
-            await _repository.Update(request.News.Adapt<News>());
+            await _repository.Update(request.Adapt<News>());
         }
         else
         {
-            id = await _repository.InsertAndGetId(request.News.Adapt<News>());
+            id = await _repository.InsertAndGetId(request.Adapt<News>());
         }
 
         var news = await _repository.Select(id);
