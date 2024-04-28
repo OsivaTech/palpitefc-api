@@ -39,8 +39,6 @@ public class GuessService : IGuessService
 
     public async Task<Result<GuessResponse>> Create(GuessRequest request, CancellationToken cancellationToken)
     {
-
-
         var cacheKey = $"PalpiteFC:Guesses:{_userContext.Id}_{request.GameId}";
 
         var exitsKey = await _cacheService.ExistsKey(cacheKey, cancellationToken);
@@ -70,7 +68,7 @@ public class GuessService : IGuessService
         }
 
 
-        if (_settings.Value.EndpointDB == false)
+        if (_settings.Value.EndpointDB is false)
         {
             var message = request.Adapt<GuessMessage>();
             message.UserId = _userContext.Id;
@@ -92,5 +90,17 @@ public class GuessService : IGuessService
                                         cancellationToken: cancellationToken);
 
         return ResultHelper.Success(new GuessResponse());
+    }
+
+    public async Task<Result<IEnumerable<GuessResponse>>> GetAsync(DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken)
+    {
+        if (startDate > endDate)
+        {
+            return ResultHelper.Failure<IEnumerable<GuessResponse>>(OtherErrors.StartDateLaterThanEnd);
+        }
+
+        var guesses = await _repository.SelectByUserId(_userContext.Id, startDate ?? DateTime.MinValue, endDate ?? DateTime.MaxValue);
+
+        return ResultHelper.Success(guesses.Adapt<IEnumerable<GuessResponse>>());
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Mapster;
 using PalpiteFC.Api.Application.Requests;
-using PalpiteFC.Api.Application.Requests.Auth;
 using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.DataContracts.MessageTypes;
 using System.Linq.Expressions;
@@ -18,10 +17,25 @@ public class MappingConfiguration : IRegister
         config.ForType<ApiFootball.Team, MatchResponse>().MapWith(MapTeamToMatchResponse());
         config.ForType<(Database.News, Database.User), NewsResponse>().MapWith(MapNewsAndUsersToNewsResponse());
         config.ForType<GuessRequest, Database.Guess>().MapWith(MapGuessRequestToGuessEntity());
+        config.ForType<Database.Guess, GuessResponse>().MapWith(MapGuessResponseToGuessEntity());
         config.ForType<(Database.Poll, IEnumerable<Database.Option>), PollResponse>().MapWith(MapPollAndListOfOptionsToPollResponse());
         config.ForType<StandingRequest, Database.Standing>().MapWith(MapStandingRequestToStandingEntity());
         config.ForType<(IEnumerable<Database.Team>, Database.Match), MatchResponse>().MapWith(MapListTeamsAndMatchToMatchResponse());
         config.ForType<GuessRequest, GuessMessage>().MapWith(MapGuessRequestToGuessMessage());
+    }
+
+    private Expression<Func<Database.Guess, GuessResponse>> MapGuessResponseToGuessEntity()
+    {
+        return src => new GuessResponse
+        {
+            Id = src.Id,
+            FixtureId = src.GameId,
+            UserId = src.UserId,
+            HomeTeamId = src.FirstTeamId,
+            HomeTeamGoal = src.FirstTeamGol,
+            AwayTeamId = src.SecondTeamId,
+            AwayTeamGoal = src.SecondTeamGol
+        };
     }
 
     private static Expression<Func<GuessRequest, GuessMessage>> MapGuessRequestToGuessMessage()

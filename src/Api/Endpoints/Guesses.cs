@@ -9,6 +9,16 @@ public static class Guesses
 {
     public static void MapGuessEndpoints(this WebApplication app)
     {
+        app.MapGet("/guesses/me", async (DateTime? startDate,
+                                         DateTime? endDate,
+                                         IGuessService service,
+                                         CancellationToken cancellationToken) =>
+        {
+            var result = await service.GetAsync(startDate, endDate, cancellationToken);
+
+            return result.ToIResult();
+        }).RequireAuthorization();
+
         app.MapPost("/guesses", async (GuessRequest request,
                                        IValidator<GuessRequest> validator,
                                        IGuessService service,
