@@ -6,49 +6,72 @@ namespace PalpiteFC.Api.Endpoints;
 
 public static class PointSeasons
 {
+    #region Public Methods
+
     public static void MapPointSeasonsEndpoints(this WebApplication app)
     {
-        app.MapGet("/point-seasons", async (IPointSeasonsService service,
-                                           CancellationToken cancellationToken) =>
-        {
-            var result = await service.GetAsync(cancellationToken);
+        app.MapGet("/point-seasons", GetPointSeasons)
+           .WithSummary("Get all point seasons.")
+           .WithOpenApi();
 
-            return result.ToIResult();
-        });
+        app.MapGet("/point-seasons/current", GetCurrentPointSeason)
+           .WithSummary("Get the current point season.")
+           .WithOpenApi();
 
-        app.MapGet("/point-seasons/current", async (IPointSeasonsService service,
-                                                   CancellationToken cancellationToken) =>
-        {
-            var result = await service.GetCurrentAsync(cancellationToken);
+        app.MapPost("/point-seasons", CreatePointSeason)
+           .RequireAuthorization("admin")
+           .WithSummary("Create a new point season.")
+           .WithOpenApi();
 
-            return result.ToIResult();
-        });
+        app.MapPut("/point-seasons", UpdatePointSeason)
+           .RequireAuthorization("admin")
+           .WithSummary("Update an existing point season.")
+           .WithOpenApi();
 
-        app.MapPost("/point-seasons", async (PointSeasonsRequest request,
-                                            IPointSeasonsService service,
-                                            CancellationToken cancellationToken) =>
-        {
-            var result = await service.CreateAsync(request, cancellationToken);
-
-            return result.ToIResult(StatusCodes.Status201Created, StatusCodes.Status409Conflict);
-        }).RequireAuthorization("admin");
-
-        app.MapPut("/point-seasons", async (PointSeasonsRequest request,
-                                           IPointSeasonsService service,
-                                           CancellationToken cancellationToken) =>
-        {
-            var result = await service.UpdateAsync(request, cancellationToken);
-
-            return result.ToIResult(StatusCodes.Status201Created, StatusCodes.Status409Conflict);
-        }).RequireAuthorization("admin");
-
-        app.MapDelete("/point-seasons", async (int id,
-                                              IPointSeasonsService service,
-                                              CancellationToken cancellationToken) =>
-        {
-            var result = await service.DeteleAsync(id, cancellationToken);
-
-            return result.ToIResult();
-        }).RequireAuthorization("admin");
+        app.MapDelete("/point-seasons", DeletePointSeason)
+           .RequireAuthorization("admin")
+           .WithSummary("Delete a point season.")
+           .WithOpenApi();
     }
+
+    #endregion
+
+    #region Non-Public Methods
+
+    private async static Task<IResult> GetPointSeasons(IPointSeasonsService service, CancellationToken cancellationToken)
+    {
+        var result = await service.GetAsync(cancellationToken);
+
+        return result.ToIResult();
+    }
+
+    private async static Task<IResult> GetCurrentPointSeason(IPointSeasonsService service, CancellationToken cancellationToken)
+    {
+        var result = await service.GetCurrentAsync(cancellationToken);
+
+        return result.ToIResult();
+    }
+
+    private async static Task<IResult> CreatePointSeason(PointSeasonsRequest request, IPointSeasonsService service, CancellationToken cancellationToken)
+    {
+        var result = await service.CreateAsync(request, cancellationToken);
+
+        return result.ToIResult(StatusCodes.Status201Created, StatusCodes.Status409Conflict);
+    }
+
+    private async static Task<IResult> UpdatePointSeason(PointSeasonsRequest request, IPointSeasonsService service, CancellationToken cancellationToken)
+    {
+        var result = await service.UpdateAsync(request, cancellationToken);
+
+        return result.ToIResult(StatusCodes.Status201Created, StatusCodes.Status409Conflict);
+    }
+
+    private async static Task<IResult> DeletePointSeason(int id, IPointSeasonsService service, CancellationToken cancellationToken)
+    {
+        var result = await service.DeleteAsync(id, cancellationToken);
+
+        return result.ToIResult();
+    }
+
+    #endregion
 }

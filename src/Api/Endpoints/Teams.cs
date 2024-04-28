@@ -5,13 +5,26 @@ namespace PalpiteFC.Api.Endpoints;
 
 public static class Teams
 {
+    #region Public Methods
+
     public static void MapTeamEndpoints(this WebApplication app)
     {
-        app.MapGet("/teams", async (ITeamService service, CancellationToken cancellationToken) =>
-        {
-            var result = await service.GetAsync(cancellationToken);
-
-            return result.ToIResult();
-        });
+        app.MapGet("/teams", GetTeams)
+           .WithSummary("Get all teams.")
+           .WithOpenApi();
     }
+
+    #endregion
+
+    #region Non-Public Methods
+
+    private async static Task<IResult> GetTeams(ITeamService service, CancellationToken cancellationToken)
+    {
+        var result = await service.GetAsync(cancellationToken);
+
+        return result.ToIResult();
+    }
+
+    #endregion
 }
+

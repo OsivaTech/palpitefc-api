@@ -45,7 +45,7 @@ public class PointSeasonsService : IPointSeasonsService
         return ResultHelper.Success(response);
     }
 
-    public async Task<Result> DeteleAsync(int id, CancellationToken cancellationToken)
+    public async Task<Result> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         await _repository.Delete(id);
 

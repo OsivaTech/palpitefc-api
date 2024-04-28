@@ -10,5 +10,5 @@ public interface IPointSeasonsService
     Task<Result<PointSeasonsResponse>> GetCurrentAsync(CancellationToken cancellationToken);
     Task<Result<PointSeasonsResponse>> CreateAsync(PointSeasonsRequest request, CancellationToken cancellationToken);
     Task<Result<PointSeasonsResponse>> UpdateAsync(PointSeasonsRequest request, CancellationToken cancellationToken);
-    Task<Result> DeteleAsync(int id, CancellationToken cancellationToken);
+    Task<Result> DeleteAsync(int id, CancellationToken cancellationToken);
 }

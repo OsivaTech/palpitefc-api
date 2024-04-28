@@ -1,53 +1,54 @@
-﻿using FluentValidation;
-using PalpiteFC.Api.Application.Interfaces;
+﻿using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Extensions;
+using PalpiteFC.Api.Filters;
 
 namespace PalpiteFC.Api.Endpoints;
 
 public static class Auth
 {
+    #region Public Methods
+
     public static void MapAuthEndpoints(this WebApplication app)
     {
-        app.MapPost("/signup", async (SignUpRequest request,
-                                      IValidator<SignUpRequest> validator,
-                                      IAuthService service,
-                                      CancellationToken cancellationToken) =>
-        {
-            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        app.MapPost("/signup", SignUp)
+           .AddEndpointFilter<ValidationFilter<SignUpRequest>>()
+           .WithSummary("Sign up a new user.")
+           .WithOpenApi();
 
-            if (!validationResult.IsValid)
-            {
-                return validationResult.ToIResult();
-            }
+        app.MapPost("/signin", SignIn)
+           .AddEndpointFilter<ValidationFilter<SignInRequest>>()
+           .WithSummary("Sign in an existing user.")
+           .WithOpenApi();
 
-            var result = await service.SignUp(request, cancellationToken);
-
-            return result.ToIResult();
-        });
-
-        app.MapPost("/signin", async (SignInRequest request,
-                                      IValidator<SignInRequest> validator,
-                                      IAuthService service,
-                                      CancellationToken cancellationToken) =>
-        {
-            var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-            if (!validationResult.IsValid)
-            {
-                return Results.BadRequest(validationResult.Errors);
-            }
-
-            var result = await service.SignIn(request, cancellationToken);
-
-            return result.ToIResult();
-        });
-
-        app.MapPost("/resetpassword", async (ResetPasswordRequest request, IAuthService service, CancellationToken cancellationToken) =>
-        {
-            var result = await service.ResetPassword(request, cancellationToken);
-
-            return result.ToIResult();
-        });
+        app.MapPost("/resetpassword", ResetPassword)
+           .WithSummary("Reset the password of a user.")
+           .WithOpenApi();
     }
+
+    #endregion
+
+    #region Non-Public Methods
+    private async static Task<IResult> SignUp(SignUpRequest request, IAuthService service, CancellationToken cancellationToken)
+    {
+        var result = await service.SignUp(request, cancellationToken);
+
+        return result.ToIResult();
+    }
+
+    private async static Task<IResult> SignIn(SignInRequest request, IAuthService service, CancellationToken cancellationToken)
+    {
+        var result = await service.SignIn(request, cancellationToken);
+
+        return result.ToIResult();
+    }
+
+    private async static Task<IResult> ResetPassword(ResetPasswordRequest request, IAuthService service, CancellationToken cancellationToken)
+    {
+        var result = await service.ResetPassword(request, cancellationToken);
+
+        return result.ToIResult();
+    }
+
+    #endregion
 }

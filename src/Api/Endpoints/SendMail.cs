@@ -5,13 +5,25 @@ namespace PalpiteFC.Api.Endpoints;
 
 public static class SendMail
 {
+    #region Public Methods
+
     public static void MapSendEmailEndpoints(this WebApplication app)
     {
-        app.MapPost("/sendemailcode", async (SendEmailCodeRequest request, IEmailService service, CancellationToken cancellationToken) =>
-        {
-            var result = await service.SendEmailCodeAsync(request, cancellationToken);
-
-            return Results.Ok(result.Data);
-        });
+        app.MapPost("/sendemailcode", SendEmailCode)
+           .WithSummary("Send an email code.")
+           .WithOpenApi();
     }
+
+    #endregion
+
+    #region Non-Public Methods
+
+    private async static Task<IResult> SendEmailCode(SendEmailCodeRequest request, IEmailService service, CancellationToken cancellationToken)
+    {
+        var result = await service.SendEmailCodeAsync(request, cancellationToken);
+
+        return Results.Ok(result.Data);
+    }
+
+    #endregion
 }

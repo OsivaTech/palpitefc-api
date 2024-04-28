@@ -5,13 +5,25 @@ namespace PalpiteFC.Api.Endpoints;
 
 public static class UrlVideo
 {
+    #region Public Methods
+
     public static void MapUrlVideoEndpoints(this WebApplication app)
     {
-        app.MapGet("/urlvideo", async (IConfigService service) =>
-        {
-            var result = await service.GetAsync("URLvideo");
-
-            return result.ToIResult();
-        });
+        app.MapGet("/urlvideo", GetUrlVideo)
+           .WithSummary("Get URL video configuration.")
+           .WithOpenApi();
     }
+
+    #endregion
+
+    #region Non-Public Methods
+
+    private async static Task<IResult> GetUrlVideo(IConfigService service)
+    {
+        var result = await service.GetAsync("URLvideo");
+
+        return result.ToIResult();
+    }
+
+    #endregion
 }

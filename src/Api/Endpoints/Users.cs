@@ -3,32 +3,58 @@ using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Utils;
 using PalpiteFC.Api.CrossCutting.Result;
 using PalpiteFC.Api.Extensions;
+using PalpiteFC.Api.Filters;
 
 namespace PalpiteFC.Api.Endpoints;
 
 public static class User
 {
+    #region Public Methods
+
     public static void MapUserEndpoints(this WebApplication app)
     {
-        app.MapGet("/users", async (IUserService service, CancellationToken cancellationToken) =>
-        {
-            var result = await service.GetAllAsync(cancellationToken);
+        app.MapGet("/users", GetAllUsers)
+           .RequireAuthorization("admin")
+           .WithSummary("Get all users.")
+           .WithOpenApi();
 
-            return result.ToIResult();
-        }).RequireAuthorization("admin");
+        app.MapGet("/users/me", GetCurrentUser)
+           .RequireAuthorization()
+           .WithSummary("Get the current logged in user.")
+           .WithOpenApi();
 
-        app.MapGet("/users/me", async (UserContext userContext) =>
-        {
-            var result = await Task.FromResult(ResultHelper.Success(userContext));
-
-            return result.ToIResult();
-        }).RequireAuthorization();
-
-        app.MapPost("/users", async (UserRequest request, IUserService service, CancellationToken cancellationToken) =>
-        {
-            var result = await service.UpdateAsync(request, cancellationToken);
-
-            return result.ToIResult();
-        }).RequireAuthorization();
+        app.MapPost("/users", UpdateUser)
+           .RequireAuthorization()
+           .AddEndpointFilter<ValidationFilter<UserRequest>>()
+           .WithSummary("Update a user.")
+           .WithOpenApi();
     }
+
+    #endregion
+
+    #region Non-Public Methods
+
+    private async static Task<IResult> GetAllUsers(IUserService service, CancellationToken cancellationToken)
+    {
+        var result = await service.GetAllAsync(cancellationToken);
+
+        return result.ToIResult();
+    }
+
+    private async static Task<IResult> GetCurrentUser(UserContext userContext)
+    {
+        var result = await Task.FromResult(ResultHelper.Success(userContext));
+
+        return result.ToIResult();
+    }
+
+    private async static Task<IResult> UpdateUser(UserRequest request, IUserService service, CancellationToken cancellationToken)
+    {
+        var result = await service.UpdateAsync(request, cancellationToken);
+
+        return result.ToIResult();
+    }
+
+    #endregion
 }
+

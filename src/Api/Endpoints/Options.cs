@@ -6,15 +6,26 @@ namespace PalpiteFC.Api.Endpoints;
 
 public static class Options
 {
+    #region Public Methods
+
     public static void MapOptionsEndpoints(this WebApplication app)
     {
-        app.MapPost("/options", async (OptionsRequest request,
-                                       IOptionsService service,
-                                       CancellationToken cancellationToken) =>
-        {
-            var resultCreate = await service.CreateAsync(request, cancellationToken);
-
-            return resultCreate.ToIResult();
-        }).RequireAuthorization();
+        app.MapPost("/options", CreateOptions)
+           .RequireAuthorization()
+           .WithSummary("Create new options.")
+           .WithOpenApi();
     }
+
+    #endregion
+
+    #region Non-Public Methods
+
+    private async static Task<IResult> CreateOptions(OptionsRequest request, IOptionsService service, CancellationToken cancellationToken)
+    {
+        var resultCreate = await service.CreateAsync(request, cancellationToken);
+
+        return resultCreate.ToIResult();
+    }
+
+    #endregion
 }
