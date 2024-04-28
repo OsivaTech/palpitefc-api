@@ -1,5 +1,5 @@
 ﻿using PalpiteFC.Api.Application.Interfaces;
-using PalpiteFC.Api.Application.Requests.Auth;
+using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Extensions;
 
 namespace PalpiteFC.Api.Endpoints;

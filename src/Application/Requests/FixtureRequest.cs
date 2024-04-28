@@ -1,4 +1,4 @@
-﻿namespace PalpiteFC.Api.Application.Requests.Auth;
+﻿namespace PalpiteFC.Api.Application.Requests;
 
 public class FixtureRequest
 {
