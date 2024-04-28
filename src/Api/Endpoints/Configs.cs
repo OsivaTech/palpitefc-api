@@ -10,13 +10,23 @@ public static class Configs
 
     public static void MapConfigEndpoints(this WebApplication app)
     {
-        app.MapGet("/configs", GetConfig)
+        app.MapGet("/configs", GetAsync)
            .WithSummary("Get a configuration by its name.")
            .WithOpenApi();
 
-        app.MapPost("/configs", CreateOrUpdateConfig)
+        app.MapPost("/configs", CreateAsync)
            .RequireAuthorization("admin")
-           .WithSummary("Create or update a configuration.")
+           .WithSummary("Create a configuration.")
+           .WithOpenApi();
+
+        app.MapPut("/configs/{id}", UpdateAsync)
+           .RequireAuthorization("admin")
+           .WithSummary("Update a configuration.")
+           .WithOpenApi();
+
+        app.MapDelete("/configs/{id}", DeleteAsync)
+           .RequireAuthorization("admin")
+           .WithSummary("Delete a configuration.")
            .WithOpenApi();
     }
 
@@ -24,16 +34,30 @@ public static class Configs
 
     #region Non-Public Methods
 
-    private async static Task<IResult> GetConfig(string name, IConfigService service)
+    private async static Task<IResult> GetAsync(string name, IConfigService service)
     {
         var result = await service.GetAsync(name);
 
         return result.ToIResult();
     }
 
-    private async static Task<IResult> CreateOrUpdateConfig(ConfigRequest request, IConfigService service)
+    private async static Task<IResult> CreateAsync(ConfigRequest request, IConfigService service)
     {
-        var result = await service.CreateOrUpdateAsync(request);
+        var result = await service.CreateAsync(request);
+
+        return result.ToIResult();
+    }
+
+    private async static Task<IResult> UpdateAsync(int id, ConfigRequest request, IConfigService service)
+    {
+        var result = await service.UpdateAsync(id, request);
+
+        return result.ToIResult();
+    }
+
+    private async static Task<IResult> DeleteAsync(int id, IConfigService service)
+    {
+        var result = await service.DeleteAsync(id);
 
         return result.ToIResult();
     }
