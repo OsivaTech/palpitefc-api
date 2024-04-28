@@ -11,12 +11,12 @@ public static class Guesses
 
     public static void MapGuessEndpoints(this WebApplication app)
     {
-        app.MapGet("/guesses/me", GetOwn)
+        app.MapGet("/guesses/me", GetOwnAsync)
             .RequireAuthorization()
             .WithSummary("Get all guesses of the current user.")
            .WithOpenApi();
 
-        app.MapPost("/guesses", Create)
+        app.MapPost("/guesses", CreateAsync)
             .RequireAuthorization()
             .AddEndpointFilter<ValidationFilter<GuessRequest>>()
             .WithSummary("Create a new guess.")
@@ -27,16 +27,16 @@ public static class Guesses
 
     #region Non-Public Methods
 
-    private async static Task<IResult> GetOwn(DateTime? startDate, DateTime? endDate, IGuessService service, CancellationToken cancellationToken)
+    private async static Task<IResult> GetOwnAsync(DateTime? startDate, DateTime? endDate, IGuessService service, CancellationToken cancellationToken)
     {
         var result = await service.GetAsync(startDate, endDate, cancellationToken);
 
         return result.ToIResult();
     }
 
-    private async static Task<IResult> Create(GuessRequest request, IGuessService service, CancellationToken cancellationToken)
+    private async static Task<IResult> CreateAsync(GuessRequest request, IGuessService service, CancellationToken cancellationToken)
     {
-        var result = await service.Create(request, cancellationToken);
+        var result = await service.CreateAsync(request, cancellationToken);
 
         return result.ToIResult();
     }

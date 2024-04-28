@@ -13,17 +13,17 @@ public static class User
 
     public static void MapUserEndpoints(this WebApplication app)
     {
-        app.MapGet("/users", GetAllUsers)
+        app.MapGet("/users", GetAllAsync)
            .RequireAuthorization("admin")
            .WithSummary("Get all users.")
            .WithOpenApi();
 
-        app.MapGet("/users/me", GetCurrentUser)
+        app.MapGet("/users/me", GetCurrentAsync)
            .RequireAuthorization()
            .WithSummary("Get the current logged in user.")
            .WithOpenApi();
 
-        app.MapPost("/users", UpdateUser)
+        app.MapPost("/users", UpdateAsync)
            .RequireAuthorization()
            .AddEndpointFilter<ValidationFilter<UserRequest>>()
            .WithSummary("Update a user.")
@@ -34,21 +34,21 @@ public static class User
 
     #region Non-Public Methods
 
-    private async static Task<IResult> GetAllUsers(IUserService service, CancellationToken cancellationToken)
+    private async static Task<IResult> GetAllAsync(IUserService service, CancellationToken cancellationToken)
     {
         var result = await service.GetAllAsync(cancellationToken);
 
         return result.ToIResult();
     }
 
-    private async static Task<IResult> GetCurrentUser(UserContext userContext)
+    private async static Task<IResult> GetCurrentAsync(UserContext userContext)
     {
         var result = await Task.FromResult(ResultHelper.Success(userContext));
 
         return result.ToIResult();
     }
 
-    private async static Task<IResult> UpdateUser(UserRequest request, IUserService service, CancellationToken cancellationToken)
+    private async static Task<IResult> UpdateAsync(UserRequest request, IUserService service, CancellationToken cancellationToken)
     {
         var result = await service.UpdateAsync(request, cancellationToken);
 

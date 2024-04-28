@@ -9,7 +9,7 @@ public static class Standings
 
     public static void MapStandingEndpoints(this WebApplication app)
     {
-        app.MapGet("/standings", GetStandings)
+        app.MapGet("/standings", GetAsync)
            .WithSummary("Get all standings.")
            .WithOpenApi();
     }
@@ -18,7 +18,7 @@ public static class Standings
 
     #region Non-Public Methods
 
-    private async static Task<IResult> GetStandings(IStandingService service, CancellationToken cancellationToken)
+    private async static Task<IResult> GetAsync(IStandingService service, CancellationToken cancellationToken)
     {
         var result = await service.GetAsync(cancellationToken);
 

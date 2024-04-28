@@ -9,7 +9,7 @@ public static class Teams
 
     public static void MapTeamEndpoints(this WebApplication app)
     {
-        app.MapGet("/teams", GetTeams)
+        app.MapGet("/teams", GetAsync)
            .WithSummary("Get all teams.")
            .WithOpenApi();
     }
@@ -18,7 +18,7 @@ public static class Teams
 
     #region Non-Public Methods
 
-    private async static Task<IResult> GetTeams(ITeamService service, CancellationToken cancellationToken)
+    private async static Task<IResult> GetAsync(ITeamService service, CancellationToken cancellationToken)
     {
         var result = await service.GetAsync(cancellationToken);
 

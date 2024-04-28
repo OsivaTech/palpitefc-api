@@ -9,7 +9,7 @@ public static class SendMail
 
     public static void MapSendEmailEndpoints(this WebApplication app)
     {
-        app.MapPost("/sendemailcode", SendEmailCode)
+        app.MapPost("/sendemailcode", SendAsync)
            .WithSummary("Send an email code.")
            .WithOpenApi();
     }
@@ -18,7 +18,7 @@ public static class SendMail
 
     #region Non-Public Methods
 
-    private async static Task<IResult> SendEmailCode(SendEmailCodeRequest request, IEmailService service, CancellationToken cancellationToken)
+    private async static Task<IResult> SendAsync(SendEmailCodeRequest request, IEmailService service, CancellationToken cancellationToken)
     {
         var result = await service.SendEmailCodeAsync(request, cancellationToken);
 

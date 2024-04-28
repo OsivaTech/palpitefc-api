@@ -9,7 +9,7 @@ public static class UrlVideo
 
     public static void MapUrlVideoEndpoints(this WebApplication app)
     {
-        app.MapGet("/urlvideo", GetUrlVideo)
+        app.MapGet("/urlvideo", GetAsync)
            .WithSummary("Get URL video configuration.")
            .WithOpenApi();
     }
@@ -18,7 +18,7 @@ public static class UrlVideo
 
     #region Non-Public Methods
 
-    private async static Task<IResult> GetUrlVideo(IConfigService service)
+    private async static Task<IResult> GetAsync(IConfigService service)
     {
         var result = await service.GetAsync("URLvideo");
 

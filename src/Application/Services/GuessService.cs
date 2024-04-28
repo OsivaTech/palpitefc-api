@@ -37,7 +37,7 @@ public class GuessService : IGuessService
         _settings = settings;
     }
 
-    public async Task<Result<GuessResponse>> Create(GuessRequest request, CancellationToken cancellationToken)
+    public async Task<Result<GuessResponse>> CreateAsync(GuessRequest request, CancellationToken cancellationToken)
     {
         var cacheKey = $"PalpiteFC:Guesses:{_userContext.Id}_{request.GameId}";
 

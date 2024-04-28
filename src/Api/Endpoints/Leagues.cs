@@ -9,7 +9,7 @@ public static class Leagues
 
     public static void MapLeagueEndpoints(this WebApplication app)
     {
-        app.MapGet("/leagues", GetLeagues)
+        app.MapGet("/leagues", GetAsync)
            .WithSummary("Get all leagues.")
            .WithOpenApi();
     }
@@ -18,7 +18,7 @@ public static class Leagues
 
     #region Non-Public Methods
 
-    private async static Task<IResult> GetLeagues(ILeagueService service, CancellationToken cancellationToken)
+    private async static Task<IResult> GetAsync(ILeagueService service, CancellationToken cancellationToken)
     {
         var result = await service.GetAsync(cancellationToken);
 

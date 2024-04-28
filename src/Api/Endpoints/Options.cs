@@ -10,7 +10,7 @@ public static class Options
 
     public static void MapOptionsEndpoints(this WebApplication app)
     {
-        app.MapPost("/options", CreateOptions)
+        app.MapPost("/options", CreateAsync)
            .RequireAuthorization()
            .WithSummary("Create new options.")
            .WithOpenApi();
@@ -20,7 +20,7 @@ public static class Options
 
     #region Non-Public Methods
 
-    private async static Task<IResult> CreateOptions(OptionsRequest request, IOptionsService service, CancellationToken cancellationToken)
+    private async static Task<IResult> CreateAsync(OptionsRequest request, IOptionsService service, CancellationToken cancellationToken)
     {
         var resultCreate = await service.CreateAsync(request, cancellationToken);
 

@@ -9,7 +9,7 @@ public static class Rankings
 
     public static void MapRankingEndpoints(this WebApplication app)
     {
-        app.MapGet("/rankings", GetRankings)
+        app.MapGet("/rankings", GetAsync)
            .WithSummary("Get all rankings.")
            .WithOpenApi();
     }
@@ -18,7 +18,7 @@ public static class Rankings
 
     #region Non-Public Methods
 
-    private async static Task<IResult> GetRankings(IRankingService service, CancellationToken cancellationToken)
+    private async static Task<IResult> GetAsync(IRankingService service, CancellationToken cancellationToken)
     {
         var result = await service.GetAsync(cancellationToken);
 

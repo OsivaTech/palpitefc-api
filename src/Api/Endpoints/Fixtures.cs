@@ -9,7 +9,7 @@ public static class Fixtures
 
     public static void MapFixtureEndpoints(this WebApplication app)
     {
-        app.MapGet("/fixtures", GetFixtures)
+        app.MapGet("/fixtures", GetAsync)
            .WithSummary("Get all fixtures.")
            .WithOpenApi();
     }
@@ -18,7 +18,7 @@ public static class Fixtures
 
     #region Non-Public Methods
 
-    private async static Task<IResult> GetFixtures(IFixtureService service, CancellationToken cancellationToken)
+    private async static Task<IResult> GetAsync(IFixtureService service, CancellationToken cancellationToken)
     {
         var result = await service.GetAsync(cancellationToken);
 
