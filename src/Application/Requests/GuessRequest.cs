@@ -2,7 +2,7 @@
 
 public class GuessRequest
 {
-    public int GameId { get; set; }
+    public int FixtureId { get; set; }
     public GuessTeam? HomeTeam { get; set; }
     public GuessTeam? AwayTeam { get; set; }
 }

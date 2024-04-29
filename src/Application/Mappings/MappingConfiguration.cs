@@ -42,7 +42,7 @@ public class MappingConfiguration : IRegister
     {
         return src => new GuessMessage
         {
-            GameId = src.GameId,
+            GameId = src.FixtureId,
             FirstTeamId = src.HomeTeam!.Id,
             FirstTeamGol = src.HomeTeam.Goal,
             SecondTeamId = src.AwayTeam!.Id,
@@ -107,7 +107,7 @@ public class MappingConfiguration : IRegister
     {
         return src => new Database.Guess
         {
-            GameId = src.GameId,
+            GameId = src.FixtureId,
             FirstTeamId = src.HomeTeam.Id,
             FirstTeamGol = src.HomeTeam.Goal,
             SecondTeamGol = src.AwayTeam.Goal,

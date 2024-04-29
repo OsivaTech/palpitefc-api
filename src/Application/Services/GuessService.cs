@@ -39,7 +39,7 @@ public class GuessService : IGuessService
 
     public async Task<Result<GuessResponse>> CreateAsync(GuessRequest request, CancellationToken cancellationToken)
     {
-        var cacheKey = $"PalpiteFC:Guesses:{_userContext.Id}_{request.GameId}";
+        var cacheKey = $"PalpiteFC:Guesses:{_userContext.Id}_{request.FixtureId}";
 
         var exitsKey = await _cacheService.ExistsKey(cacheKey, cancellationToken);
 
@@ -48,7 +48,7 @@ public class GuessService : IGuessService
             return ResultHelper.Failure<GuessResponse>(GuessErrors.GuessAlreadyExists);
         }
 
-        var fixture = await _fixturesRepository.Select(request.GameId);
+        var fixture = await _fixturesRepository.Select(request.FixtureId);
 
         if (fixture is null)
         {
@@ -60,7 +60,7 @@ public class GuessService : IGuessService
             return ResultHelper.Failure<GuessResponse>(GuessErrors.MatchAlreadyStarted);
         }
 
-        var guesses = await _repository.SelectByUserIdAndGameId(_userContext.Id, request.GameId);
+        var guesses = await _repository.SelectByUserIdAndGameId(_userContext.Id, request.FixtureId);
 
         if (guesses.Any())
         {
