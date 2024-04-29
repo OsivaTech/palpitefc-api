@@ -31,10 +31,8 @@ public class MappingConfiguration : IRegister
             Id = src.Id,
             FixtureId = src.GameId,
             UserId = src.UserId,
-            HomeTeamId = src.FirstTeamId,
-            HomeTeamGoal = src.FirstTeamGol,
-            AwayTeamId = src.SecondTeamId,
-            AwayTeamGoal = src.SecondTeamGol
+            HomeTeam = new() { Id = src.FirstTeamId, Goal = src.FirstTeamGol },
+            AwayTeam = new() { Id = src.SecondTeamGol, Goal = src.SecondTeamGol }
         };
     }
 
