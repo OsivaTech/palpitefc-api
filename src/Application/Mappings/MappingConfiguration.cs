@@ -18,10 +18,27 @@ public class MappingConfiguration : IRegister
         config.ForType<(Database.News, Database.User), NewsResponse>().MapWith(MapNewsAndUsersToNewsResponse());
         config.ForType<GuessRequest, Database.Guess>().MapWith(MapGuessRequestToGuessEntity());
         config.ForType<Database.Guess, GuessResponse>().MapWith(MapGuessResponseToGuessEntity());
+        config.ForType<Database.User, UserResponse>().MapWith(MapUserEntityToUserResponse());
         config.ForType<(Database.Poll, IEnumerable<Database.Option>), PollResponse>().MapWith(MapPollAndListOfOptionsToPollResponse());
         config.ForType<StandingRequest, Database.Standing>().MapWith(MapStandingRequestToStandingEntity());
         config.ForType<(IEnumerable<Database.Team>, Database.Match), MatchResponse>().MapWith(MapListTeamsAndMatchToMatchResponse());
         config.ForType<GuessRequest, GuessMessage>().MapWith(MapGuessRequestToGuessMessage());
+    }
+
+    private Expression<Func<Database.User, UserResponse>> MapUserEntityToUserResponse()
+    {
+        return src => new UserResponse
+        {
+            Id = src.Id,
+            Name = src.Name,
+            Birthday = src.Birthday,
+            Email = src.Email,
+            Info = src.Info,
+            PhoneNumber = src.Number,
+            Points = src.Points,
+            Role = src.Role,
+            Team = src.Team
+        };
     }
 
     private Expression<Func<Database.Guess, GuessResponse>> MapGuessResponseToGuessEntity()

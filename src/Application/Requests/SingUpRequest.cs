@@ -8,6 +8,6 @@ public sealed class SignUpRequest
     public string? Document { get; set; }
     public string? Team { get; set; }
     public string? Info { get; set; }
-    public string? Number { get; set; }
+    public string? PhoneNumber { get; set; }
     public string? Birthday { get; set; }
 }
