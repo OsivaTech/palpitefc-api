@@ -11,10 +11,10 @@ public class GuessRequestValidator : AbstractValidator<GuessRequest>
 
         RuleFor(x => x.HomeTeam).NotEmpty();
         RuleFor(x => x.HomeTeam.Id).NotNull();
-        RuleFor(x => x.HomeTeam.Goal).NotNull();
+        RuleFor(x => x.HomeTeam.Goals).NotNull();
 
         RuleFor(x => x.AwayTeam).NotEmpty();
         RuleFor(x => x.AwayTeam.Id).NotNull();
-        RuleFor(x => x.AwayTeam.Goal).NotNull();
+        RuleFor(x => x.AwayTeam.Goals).NotNull();
     }
 }

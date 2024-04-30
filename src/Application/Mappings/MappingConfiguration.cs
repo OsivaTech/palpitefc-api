@@ -46,10 +46,10 @@ public class MappingConfiguration : IRegister
         return src => new GuessResponse
         {
             Id = src.Id,
-            FixtureId = src.GameId,
+            FixtureId = src.FixtureId,
             UserId = src.UserId,
-            HomeTeam = new() { Id = src.FirstTeamId, Goal = src.FirstTeamGol },
-            AwayTeam = new() { Id = src.SecondTeamGol, Goal = src.SecondTeamGol }
+            HomeTeam = new() { Id = src.HomeTeamId, Goals = src.HomeTeamGoals },
+            AwayTeam = new() { Id = src.AwayTeamId, Goals = src.AwayTeamGoals }
         };
     }
 
@@ -57,11 +57,11 @@ public class MappingConfiguration : IRegister
     {
         return src => new GuessMessage
         {
-            GameId = src.FixtureId,
-            FirstTeamId = src.HomeTeam!.Id,
-            FirstTeamGol = src.HomeTeam.Goal,
-            SecondTeamId = src.AwayTeam!.Id,
-            SecondTeamGol = src.AwayTeam.Goal
+            FixtureId = src.FixtureId,
+            HomeTeamId = src.HomeTeam!.Id,
+            HomeTeamGoals = src.HomeTeam.Goals,
+            AwayTeamId = src.AwayTeam!.Id,
+            AwayTeamGoals = src.AwayTeam.Goals
         };
     }
 
@@ -69,8 +69,8 @@ public class MappingConfiguration : IRegister
     {
         return src => new MatchResponse
         {
-            FixtureId = src.Item2.GameId,
-            Goal = src.Item2.Gol,
+            FixtureId = src.Item2.FixtureId,
+            Goals = src.Item2.Goals,
             Id = src.Item2.Id,
             TeamId = src.Item2.TeamId,
             Image = src.Item1.First(w => w.Id == src.Item2.TeamId).Image,
@@ -83,7 +83,7 @@ public class MappingConfiguration : IRegister
         return src => new Database.Standing
         {
             Id = src.Id,
-            ChampionshipsId = src.ChampionshipId,
+            LeagueId = src.LeagueId,
             Points = src.Points,
             Position = src.Position.ToString(),
             TeamId = src.TeamId
@@ -122,11 +122,11 @@ public class MappingConfiguration : IRegister
     {
         return src => new Database.Guess
         {
-            GameId = src.FixtureId,
-            FirstTeamId = src.HomeTeam.Id,
-            FirstTeamGol = src.HomeTeam.Goal,
-            SecondTeamGol = src.AwayTeam.Goal,
-            SecondTeamId = src.AwayTeam.Id,
+            FixtureId = src.FixtureId,
+            HomeTeamId = src.HomeTeam.Id,
+            HomeTeamGoals = src.HomeTeam.Goals,
+            AwayTeamGoals = src.AwayTeam.Goals,
+            AwayTeamId = src.AwayTeam.Id,
             CreatedAt = DateTime.UtcNow
         };
     }

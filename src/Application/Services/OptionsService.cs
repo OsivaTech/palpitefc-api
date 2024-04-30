@@ -13,16 +13,16 @@ public class OptionsService : IOptionsService
     #region Fields
 
     private readonly IOptionsRepository _optionsRepository;
-    private readonly IPollsRepository _votesRepository;
+    private readonly IPollsRepository _pollsRepository;
 
     #endregion
 
     #region Constructors
 
-    public OptionsService(IOptionsRepository optionsRepository, IPollsRepository votesRepository)
+    public OptionsService(IOptionsRepository optionsRepository, IPollsRepository pollsRepository)
     {
         _optionsRepository = optionsRepository;
-        _votesRepository = votesRepository;
+        _pollsRepository = pollsRepository;
     }
 
     #endregion
@@ -50,21 +50,21 @@ public class OptionsService : IOptionsService
         var updatedOption = new Libraries.Persistence.Abstractions.Entities.Option
         {
             Id = currentOption.Id,
-            VoteId = currentOption.VoteId,
+            PollId = currentOption.PollId,
             Title = currentOption.Title,
             Count = currentOption.Count + 1,
         };
 
         await _optionsRepository.Update(updatedOption);
 
-        var votes = await _votesRepository.Select(updatedOption.VoteId);
-        var options = await _optionsRepository.SelectByVoteId(updatedOption.VoteId);
+        var poll = await _pollsRepository.Select(updatedOption.PollId);
+        var options = await _optionsRepository.SelectByPollId(updatedOption.PollId);
 
         var response = new PollResponse
         {
-            Id = votes.Id,
-            Title = votes.Title,
-            Options = options.Where(w => w.VoteId == votes.Id).Adapt<IEnumerable<OptionsResponse>>()
+            Id = poll.Id,
+            Title = poll.Title,
+            Options = options.Where(w => w.PollId == poll.Id).Adapt<IEnumerable<OptionsResponse>>()
         };
 
         return ResultHelper.Success(response);

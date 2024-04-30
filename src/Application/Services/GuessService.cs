@@ -60,7 +60,7 @@ public class GuessService : IGuessService
             return ResultHelper.Failure<GuessResponse>(GuessErrors.MatchAlreadyStarted);
         }
 
-        var guesses = await _repository.SelectByUserIdAndGameId(_userContext.Id, request.FixtureId);
+        var guesses = await _repository.SelectByUserIdAndFixtureId(_userContext.Id, request.FixtureId);
 
         if (guesses.Any())
         {

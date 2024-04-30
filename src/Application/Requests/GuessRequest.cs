@@ -10,5 +10,5 @@ public class GuessRequest
 public class GuessTeam
 {
     public int Id { get; set; }
-    public int Goal { get; set; }
+    public int Goals { get; set; }
 }

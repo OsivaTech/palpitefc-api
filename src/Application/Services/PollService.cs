@@ -31,26 +31,26 @@ public class PollService : IPollService
 
     public async Task<Result<IEnumerable<PollResponse>>> GetAsync(CancellationToken cancellationToken)
     {
-        var votes = await _pollsRepository.Select();
+        var polls = await _pollsRepository.Select();
         var options = await _optionsRepository.Select();
 
-        var voteResponse = new List<PollResponse>();
+        var pollsResponse = new List<PollResponse>();
 
-        foreach (var vote in votes)
+        foreach (var poll in polls)
         {
-            voteResponse.Add((vote, options.Where(w => w.VoteId == vote.Id)).Adapt<PollResponse>());
+            pollsResponse.Add((poll, options.Where(w => w.PollId == poll.Id)).Adapt<PollResponse>());
         }
 
-        return ResultHelper.Success<IEnumerable<PollResponse>>(voteResponse);
+        return ResultHelper.Success<IEnumerable<PollResponse>>(pollsResponse);
     }
 
     public async Task<Result<PollResponse>> CreateAsync(PollRequest request, CancellationToken cancellationToken)
     {
         var id = await _pollsRepository.InsertAndGetId(request.Adapt<Poll>());
 
-        var vote = await _pollsRepository.Select(id);
+        var poll = await _pollsRepository.Select(id);
 
-        return ResultHelper.Success(vote.Adapt<PollResponse>());
+        return ResultHelper.Success(poll.Adapt<PollResponse>());
     }
 
     public async Task<Result<PollResponse>> DeleteAsync(int id, CancellationToken cancellationToken)

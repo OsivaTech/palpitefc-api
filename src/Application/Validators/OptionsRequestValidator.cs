@@ -6,6 +6,6 @@ public class OptionsRequestValidator : AbstractValidator<OptionsRequest>
 {
     public OptionsRequestValidator()
     {
-        RuleFor(x => x.VoteId).NotEmpty().WithMessage("Id is required");
+        RuleFor(x => x.PollId).NotEmpty().WithMessage("Id is required");
     }
 }

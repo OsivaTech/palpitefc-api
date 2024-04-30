@@ -24,13 +24,13 @@ public class FixtureService : IFixtureService
 
     #region Contructors
 
-    public FixtureService(IFixturesRepository gamesRepository,
+    public FixtureService(IFixturesRepository fixturesRepository,
                           IMatchesRepository matchesRepository,
                           ITeamsRepository teamsRepository,
                           ICacheService cache,
                           IOptions<FixturesSettings> options)
     {
-        _fixturesRepository = gamesRepository;
+        _fixturesRepository = fixturesRepository;
         _matchesRepository = matchesRepository;
         _teamsRepository = teamsRepository;
         _cache = cache;
@@ -67,9 +67,9 @@ public class FixtureService : IFixtureService
             id = await _fixturesRepository.InsertAndGetId(request.Adapt<Fixture>());
         }
 
-        var championship = await _fixturesRepository.Select(id);
+        var league = await _fixturesRepository.Select(id);
 
-        return ResultHelper.Success(championship.Adapt<FixtureResponse>());
+        return ResultHelper.Success(league.Adapt<FixtureResponse>());
     }
 
     public async Task<Result<FixtureResponse>> DeleteAsync(int id, CancellationToken cancellationToken)
@@ -86,26 +86,26 @@ public class FixtureService : IFixtureService
     private async Task<IEnumerable<FixtureResponse>> GetFixtures(DateTime from, DateTime to)
     {
         var fixtures = await _fixturesRepository.Select(from, to);
-        var teamsGame = await _matchesRepository.Select();
+        var matches = await _matchesRepository.Select();
         var teams = await _teamsRepository.Select();
 
-        var gamesResponse = new List<FixtureResponse>();
+        var fixturesResponse = new List<FixtureResponse>();
 
-        foreach (var game in fixtures)
+        foreach (var fixture in fixtures)
         {
-            gamesResponse.Add(new FixtureResponse()
+            fixturesResponse.Add(new FixtureResponse()
             {
-                Id = game.Id,
-                LeagueId = game.ChampionshipId,
-                Name = game.Name,
-                Start = game.Start,
-                Finished = game.Finished,
-                HomeTeam = (teams, teamsGame.Where(w => w.GameId == game.Id).ElementAt(0)).Adapt<MatchResponse>(),
-                AwayTeam = (teams, teamsGame.Where(w => w.GameId == game.Id).ElementAt(1)).Adapt<MatchResponse>(),
+                Id = fixture.Id,
+                LeagueId = fixture.LeagueId,
+                Name = fixture.Name,
+                Start = fixture.Start,
+                Finished = fixture.Finished,
+                HomeTeam = (teams, matches.Where(w => w.FixtureId == fixture.Id).ElementAt(0)).Adapt<MatchResponse>(),
+                AwayTeam = (teams, matches.Where(w => w.FixtureId == fixture.Id).ElementAt(1)).Adapt<MatchResponse>(),
             });
         }
 
-        return gamesResponse.OrderBy(x => x.Start);
+        return fixturesResponse.OrderBy(x => x.Start);
     }
 
     #endregion

@@ -29,9 +29,9 @@ public class LeagueService : ILeagueService
 
     public async Task<Result<IEnumerable<LeagueResponse>>> GetAsync(CancellationToken cancellationToken)
     {
-        var championships = await _repository.Select();
+        var leagues = await _repository.Select();
 
-        return ResultHelper.Success(championships.Adapt<IEnumerable<LeagueResponse>>());
+        return ResultHelper.Success(leagues.Adapt<IEnumerable<LeagueResponse>>());
     }
 
     public async Task<Result<LeagueResponse>> CreateOrUpdateAsync(LeagueRequest request, CancellationToken cancellationToken)
@@ -47,9 +47,9 @@ public class LeagueService : ILeagueService
             id = await _repository.InsertAndGetId(request.Adapt<League>());
         }
 
-        var championship = await _repository.Select(id);
+        var league = await _repository.Select(id);
 
-        return ResultHelper.Success(championship.Adapt<LeagueResponse>());
+        return ResultHelper.Success(league.Adapt<LeagueResponse>());
     }
 
     public async Task<Result<LeagueResponse>> DeleteAsync(int id, CancellationToken cancellationToken)
