@@ -15,14 +15,28 @@ public class MappingConfiguration : IRegister
     {
         config.ForType<ApiFootball.Match, FixtureResponse>().MapWith(MapMatchToFixtureResponse());
         config.ForType<ApiFootball.Team, MatchResponse>().MapWith(MapTeamToMatchResponse());
-        config.ForType<(Database.News, Database.User), NewsResponse>().MapWith(MapNewsAndUsersToNewsResponse());
-        config.ForType<GuessRequest, Database.Guess>().MapWith(MapGuessRequestToGuessEntity());
         config.ForType<Database.Guess, GuessResponse>().MapWith(MapGuessResponseToGuessEntity());
         config.ForType<Database.User, UserResponse>().MapWith(MapUserEntityToUserResponse());
+        config.ForType<Database.Fixture, FixtureResponse>().MapWith(MapFixtureEntityToFixtureResponse());
+        config.ForType<(Database.News, Database.User), NewsResponse>().MapWith(MapNewsAndUsersToNewsResponse());
         config.ForType<(Database.Poll, IEnumerable<Database.Option>), PollResponse>().MapWith(MapPollAndListOfOptionsToPollResponse());
+        config.ForType<GuessRequest, Database.Guess>().MapWith(MapGuessRequestToGuessEntity());
         config.ForType<StandingRequest, Database.Standing>().MapWith(MapStandingRequestToStandingEntity());
-        config.ForType<(IEnumerable<Database.Team>, Database.Match), MatchResponse>().MapWith(MapListTeamsAndMatchToMatchResponse());
         config.ForType<GuessRequest, GuessMessage>().MapWith(MapGuessRequestToGuessMessage());
+    }
+
+    private Expression<Func<Database.Fixture, FixtureResponse>> MapFixtureEntityToFixtureResponse()
+    {
+        return src => new FixtureResponse
+        {
+            Id = src.Id,
+            LeagueId = src.LeagueId,
+            Name = src.Name,
+            Start = src.Start,
+            Finished = src.Finished,
+            HomeTeam = new() { Id = src.Match!.Id, FixtureId = src.Id, TeamId = src.Match!.HomeId, Goals = src.Match.HomeGoals, Name = src.Match.HomeTeam!.Name, Image = src.Match.HomeTeam.Image },
+            AwayTeam = new() { Id = src.Match!.Id, FixtureId = src.Id, TeamId = src.Match!.AwayId, Goals = src.Match.AwayGoals, Name = src.Match.AwayTeam!.Name, Image = src.Match.AwayTeam.Image },
+        };
     }
 
     private Expression<Func<Database.User, UserResponse>> MapUserEntityToUserResponse()
@@ -62,19 +76,6 @@ public class MappingConfiguration : IRegister
             HomeTeamGoals = src.HomeTeam.Goals,
             AwayTeamId = src.AwayTeam!.Id,
             AwayTeamGoals = src.AwayTeam.Goals
-        };
-    }
-
-    private static Expression<Func<(IEnumerable<Database.Team>, Database.Match), MatchResponse>> MapListTeamsAndMatchToMatchResponse()
-    {
-        return src => new MatchResponse
-        {
-            FixtureId = src.Item2.FixtureId,
-            Goals = src.Item2.Goals,
-            Id = src.Item2.Id,
-            TeamId = src.Item2.TeamId,
-            Image = src.Item1.First(w => w.Id == src.Item2.TeamId).Image,
-            Name = src.Item1.First(w => w.Id == src.Item2.TeamId).Name
         };
     }
 
