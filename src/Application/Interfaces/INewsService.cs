@@ -6,7 +6,8 @@ namespace PalpiteFC.Api.Application.Interfaces;
 
 public interface INewsService
 {
-    Task<Result<NewsResponse>> CreateOrUpdateAsync(NewsRequest request);
-    Task<Result<NewsResponse>> DeleteAsync(int id, CancellationToken cancellationToken);
     Task<Result<IEnumerable<NewsResponse>>> GetAsync(CancellationToken cancellationToken);
+    Task<Result<NewsResponse>> CreateAsync(NewsRequest request, CancellationToken cancellationToken);
+    Task<Result<NewsResponse>> UpdateAsync(int id, NewsRequest request, CancellationToken cancellationToken);
+    Task<Result> DeleteAsync(int id, CancellationToken cancellationToken);
 }

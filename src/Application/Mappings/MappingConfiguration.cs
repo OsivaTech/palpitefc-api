@@ -18,11 +18,24 @@ public class MappingConfiguration : IRegister
         config.ForType<Database.Guess, GuessResponse>().MapWith(MapGuessResponseToGuessEntity());
         config.ForType<Database.User, UserResponse>().MapWith(MapUserEntityToUserResponse());
         config.ForType<Database.Fixture, FixtureResponse>().MapWith(MapFixtureEntityToFixtureResponse());
-        config.ForType<(Database.News, Database.User), NewsResponse>().MapWith(MapNewsAndUsersToNewsResponse());
+        config.ForType<Database.News, NewsResponse>().MapWith(MapNewsEntityToNewsResponse());
         config.ForType<(Database.Poll, IEnumerable<Database.Option>), PollResponse>().MapWith(MapPollAndListOfOptionsToPollResponse());
         config.ForType<GuessRequest, Database.Guess>().MapWith(MapGuessRequestToGuessEntity());
         config.ForType<StandingRequest, Database.Standing>().MapWith(MapStandingRequestToStandingEntity());
         config.ForType<GuessRequest, GuessMessage>().MapWith(MapGuessRequestToGuessMessage());
+    }
+
+    private Expression<Func<Database.News, NewsResponse>> MapNewsEntityToNewsResponse()
+    {
+        return src => new NewsResponse
+        {
+            Id = src.Id,
+            UserId = src.UserId,
+            Title = src.Title,
+            Content = src.Content,
+            Info = src.Info,
+            Author = src.User.Adapt<AuthorInfo>()
+        };
     }
 
     private Expression<Func<Database.Fixture, FixtureResponse>> MapFixtureEntityToFixtureResponse()
@@ -98,24 +111,6 @@ public class MappingConfiguration : IRegister
             Id = src.Item1.Id,
             Title = src.Item1.Title,
             Options = src.Item2.Adapt<IEnumerable<OptionsResponse>>()
-        };
-    }
-
-    private static Expression<Func<(Database.News, Database.User), NewsResponse>> MapNewsAndUsersToNewsResponse()
-    {
-        return src => new NewsResponse
-        {
-            Id = src.Item1.Id,
-            Title = src.Item1.Title,
-            Info = src.Item1.Info,
-            Content = src.Item1.Content,
-            UserId = src.Item1.UserId,
-            Author = new()
-            {
-                Id = src.Item2.Id,
-                Name = src.Item2.Name,
-                Team = src.Item2.Team,
-            }
         };
     }
 
