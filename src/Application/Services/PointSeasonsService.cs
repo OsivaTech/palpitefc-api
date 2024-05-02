@@ -66,7 +66,7 @@ public class PointSeasonsService : IPointSeasonsService
         return ResultHelper.Success(pointSeasons.Adapt<PointSeasonsResponse>());
     }
 
-    public async Task<Result<PointSeasonsResponse>> UpdateAsync(PointSeasonsRequest request, CancellationToken cancellationToken)
+    public async Task<Result<PointSeasonsResponse>> UpdateAsync(int id, PointSeasonsRequest request, CancellationToken cancellationToken)
     {
         var pointSeasons = await _repository.Select();
 
@@ -75,7 +75,10 @@ public class PointSeasonsService : IPointSeasonsService
             return ResultHelper.Failure<PointSeasonsResponse>(PointSeasonsErrors.ConflictDate);
         }
 
-        await _repository.Update(request.Adapt<PointSeason>());
+        var entity = request.Adapt<PointSeason>();
+        entity.Id = id;
+
+        await _repository.Update(entity);
 
         return ResultHelper.Success(request.Adapt<PointSeasonsResponse>());
     }
@@ -84,8 +87,8 @@ public class PointSeasonsService : IPointSeasonsService
 
     #region Non-Public Methods
 
-    private static bool CheckIfDatesConflicts(PointSeasonsRequest request, IEnumerable<PointSeason> pointSeasons) 
-        => pointSeasons.Any(w => w.StartDate <= request.StartDate && w.EndDate >= request.StartDate 
+    private static bool CheckIfDatesConflicts(PointSeasonsRequest request, IEnumerable<PointSeason> pointSeasons)
+        => pointSeasons.Any(w => w.StartDate <= request.StartDate && w.EndDate >= request.StartDate
                               || w.StartDate <= request.EndDate && w.EndDate >= request.EndDate);
 
     #endregion

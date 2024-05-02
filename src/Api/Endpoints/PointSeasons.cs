@@ -23,12 +23,12 @@ public static class PointSeasons
            .WithSummary("Create a new point season.")
            .WithOpenApi();
 
-        app.MapPut("/point-seasons", UpdateAsync)
+        app.MapPut("/point-seasons/{id}", UpdateAsync)
            .RequireAuthorization("admin")
            .WithSummary("Update an existing point season.")
            .WithOpenApi();
 
-        app.MapDelete("/point-seasons", DeleteAsync)
+        app.MapDelete("/point-seasons/{id}", DeleteAsync)
            .RequireAuthorization("admin")
            .WithSummary("Delete a point season.")
            .WithOpenApi();
@@ -59,11 +59,11 @@ public static class PointSeasons
         return result.ToIResult(StatusCodes.Status201Created, StatusCodes.Status409Conflict);
     }
 
-    private async static Task<IResult> UpdateAsync(PointSeasonsRequest request, IPointSeasonsService service, CancellationToken cancellationToken)
+    private async static Task<IResult> UpdateAsync(int id, PointSeasonsRequest request, IPointSeasonsService service, CancellationToken cancellationToken)
     {
-        var result = await service.UpdateAsync(request, cancellationToken);
+        var result = await service.UpdateAsync(id, request, cancellationToken);
 
-        return result.ToIResult(StatusCodes.Status201Created, StatusCodes.Status409Conflict);
+        return result.ToIResult(StatusCodes.Status200OK);
     }
 
     private async static Task<IResult> DeleteAsync(int id, IPointSeasonsService service, CancellationToken cancellationToken)
