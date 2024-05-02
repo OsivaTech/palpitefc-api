@@ -14,19 +14,19 @@ public static class Polls
            .WithSummary("Get all polls.")
            .WithOpenApi();
 
-        app.MapPost("/polls/vote", ComputeVoteAsync)
-           .RequireAuthorization()
-           .WithSummary("Submit a vote on a poll.")
-           .WithOpenApi();
-
         app.MapPost("/polls", CreateAsync)
            .RequireAuthorization("admin")
            .WithSummary("Create a new poll.")
            .WithOpenApi();
 
-        app.MapDelete("/polls", DeleteAsync)
+        app.MapDelete("/polls/{id}", DeleteAsync)
            .RequireAuthorization("admin")
            .WithSummary("Delete a poll.")
+           .WithOpenApi();
+
+        app.MapPost("/polls/{id}/vote/{optionId}", ComputeVoteAsync)
+           .RequireAuthorization()
+           .WithSummary("Submit a vote on a poll.")
            .WithOpenApi();
     }
 
@@ -41,13 +41,6 @@ public static class Polls
         return result.ToIResult();
     }
 
-    private async static Task<IResult> ComputeVoteAsync(OptionsRequest request, IOptionsService service, CancellationToken cancellationToken)
-    {
-        var result = await service.ComputeVoteAsync(request, cancellationToken);
-
-        return result.ToIResult();
-    }
-
     private async static Task<IResult> CreateAsync(PollRequest request, IPollService service, CancellationToken cancellationToken)
     {
         var result = await service.CreateAsync(request, cancellationToken);
@@ -58,6 +51,13 @@ public static class Polls
     private async static Task<IResult> DeleteAsync(int id, IPollService service, CancellationToken cancellationToken)
     {
         var result = await service.DeleteAsync(id, cancellationToken);
+
+        return result.ToIResult();
+    }
+
+    private async static Task<IResult> ComputeVoteAsync(int id, int optionId, IPollService service, CancellationToken cancellationToken)
+    {
+        var result = await service.ComputeVoteAsync(id, optionId, cancellationToken);
 
         return result.ToIResult();
     }

@@ -13,7 +13,6 @@ public static class WebApplicationExtensions
         app.MapGuessEndpoints();
         app.MapLeagueEndpoints();
         app.MapNewsEndpoints();
-        app.MapOptionsEndpoints();
         app.MapPointSeasonsEndpoints();
         app.MapPollEndpoints();
         app.MapRankingEndpoints();

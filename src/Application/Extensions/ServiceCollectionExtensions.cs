@@ -15,7 +15,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IGuessService, GuessService>();
-        services.AddScoped<IOptionsService, OptionsService>();
         services.AddScoped<IConfigService, ConfigService>();
         services.AddScoped<INewsService, NewsService>();
         services.AddScoped<IUserService, UserService>();

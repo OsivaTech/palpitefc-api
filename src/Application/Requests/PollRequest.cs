@@ -3,10 +3,10 @@
 public class PollRequest
 {
     public string? Title { get; set; }
-    public IEnumerable<Option>? Options { get; set; }
+    public IEnumerable<OptionRequest>? Options { get; set; }
 }
 
-public class Option
+public class OptionRequest
 {
     public string? Title { get; set; }
 }
