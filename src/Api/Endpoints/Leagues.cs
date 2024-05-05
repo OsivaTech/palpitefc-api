@@ -1,4 +1,5 @@
 ﻿using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Extensions;
 
 namespace PalpiteFC.Api.Endpoints;
@@ -10,6 +11,7 @@ public static class Leagues
     public static void MapLeagueEndpoints(this WebApplication app)
     {
         app.MapGet("/leagues", GetAsync)
+           .Produces<IEnumerable<LeagueResponse>>()
            .WithSummary("Get all leagues.")
            .WithOpenApi();
     }

@@ -1,5 +1,6 @@
 ﻿using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
+using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Extensions;
 using PalpiteFC.Api.Filters;
 
@@ -12,11 +13,13 @@ public static class Auth
     public static void MapAuthEndpoints(this WebApplication app)
     {
         app.MapPost("/signup", SignUp)
+           .Produces<UserResponse>()
            .AddEndpointFilter<ValidationFilter<SignUpRequest>>()
            .WithSummary("Sign up a new user.")
            .WithOpenApi();
 
         app.MapPost("/signin", SignIn)
+           .Produces<UserResponse>()
            .AddEndpointFilter<ValidationFilter<SignInRequest>>()
            .WithSummary("Sign in an existing user.")
            .WithOpenApi();

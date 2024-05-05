@@ -1,5 +1,6 @@
 ﻿using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
+using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Extensions;
 using PalpiteFC.Api.Filters;
 
@@ -12,14 +13,16 @@ public static class Guesses
     public static void MapGuessEndpoints(this WebApplication app)
     {
         app.MapGet("/guesses/me", GetOwnAsync)
-            .RequireAuthorization()
-            .WithSummary("Get all guesses of the current user.")
+           .Produces<IEnumerable<GuessResponse>>()
+           .RequireAuthorization()
+           .WithSummary("Get all guesses of the current user.")
            .WithOpenApi();
 
         app.MapPost("/guesses", CreateAsync)
-            .RequireAuthorization()
-            .AddEndpointFilter<ValidationFilter<GuessRequest>>()
-            .WithSummary("Create a new guess.")
+           .Produces<GuessResponse>()
+           .RequireAuthorization()
+           .AddEndpointFilter<ValidationFilter<GuessRequest>>()
+           .WithSummary("Create a new guess.")
            .WithOpenApi();
     }
 

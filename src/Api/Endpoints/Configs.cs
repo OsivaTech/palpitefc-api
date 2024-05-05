@@ -1,5 +1,6 @@
 ﻿using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
+using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Extensions;
 
 namespace PalpiteFC.Api.Endpoints;
@@ -11,20 +12,24 @@ public static class Configs
     public static void MapConfigEndpoints(this WebApplication app)
     {
         app.MapGet("/configs", GetAsync)
+           .Produces<ConfigResponse>()
            .WithSummary("Get a configuration by its name.")
            .WithOpenApi();
 
         app.MapPost("/configs", CreateAsync)
+           .Produces<ConfigResponse>()
            .RequireAuthorization("admin")
            .WithSummary("Create a configuration.")
            .WithOpenApi();
 
         app.MapPut("/configs/{id}", UpdateAsync)
+           .Produces<ConfigResponse>()
            .RequireAuthorization("admin")
            .WithSummary("Update a configuration.")
            .WithOpenApi();
 
         app.MapDelete("/configs/{id}", DeleteAsync)
+           .Produces(StatusCodes.Status204NoContent)
            .RequireAuthorization("admin")
            .WithSummary("Delete a configuration.")
            .WithOpenApi();

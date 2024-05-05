@@ -1,5 +1,6 @@
-﻿ using PalpiteFC.Api.Application.Interfaces;
+﻿using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
+using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Extensions;
 
 namespace PalpiteFC.Api.Endpoints;
@@ -11,24 +12,29 @@ public static class PointSeasons
     public static void MapPointSeasonsEndpoints(this WebApplication app)
     {
         app.MapGet("/point-seasons", GetAsync)
+           .Produces<IEnumerable<PointSeasonsResponse>>()
            .WithSummary("Get all point seasons.")
            .WithOpenApi();
 
         app.MapGet("/point-seasons/current", GetCurrentAsync)
+           .Produces<PointSeasonsResponse>()
            .WithSummary("Get the current point season.")
            .WithOpenApi();
 
         app.MapPost("/point-seasons", CreateAsync)
+           .Produces<PointSeasonsResponse>()
            .RequireAuthorization("admin")
            .WithSummary("Create a new point season.")
            .WithOpenApi();
 
         app.MapPut("/point-seasons/{id}", UpdateAsync)
+           .Produces<PointSeasonsResponse>()
            .RequireAuthorization("admin")
            .WithSummary("Update an existing point season.")
            .WithOpenApi();
 
         app.MapDelete("/point-seasons/{id}", DeleteAsync)
+           .Produces(StatusCodes.Status204NoContent)
            .RequireAuthorization("admin")
            .WithSummary("Delete a point season.")
            .WithOpenApi();

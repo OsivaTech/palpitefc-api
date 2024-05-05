@@ -10,6 +10,7 @@ public static class SendMail
     public static void MapSendEmailEndpoints(this WebApplication app)
     {
         app.MapPost("/sendemailcode", SendAsync)
+           .Produces<string>()
            .WithSummary("Send an email code.")
            .WithOpenApi();
     }

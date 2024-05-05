@@ -1,4 +1,5 @@
 ﻿using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Extensions;
 
 namespace PalpiteFC.Api.Endpoints;
@@ -10,6 +11,7 @@ public static class Standings
     public static void MapStandingEndpoints(this WebApplication app)
     {
         app.MapGet("/standings", GetAsync)
+           .Produces<IEnumerable<StandingResponse>>()
            .WithSummary("Get all standings.")
            .WithOpenApi();
     }

@@ -1,5 +1,6 @@
 ﻿using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
+using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Application.Utils;
 using PalpiteFC.Api.CrossCutting.Result;
 using PalpiteFC.Api.Extensions;
@@ -14,16 +15,19 @@ public static class User
     public static void MapUserEndpoints(this WebApplication app)
     {
         app.MapGet("/users", GetAllAsync)
+           .Produces<IEnumerable<UserResponse>>()
            .RequireAuthorization("admin")
            .WithSummary("Get all users.")
            .WithOpenApi();
 
         app.MapGet("/users/me", GetCurrentAsync)
+           .Produces<UserResponse>()
            .RequireAuthorization()
            .WithSummary("Get the current logged in user.")
            .WithOpenApi();
 
         app.MapPost("/users", UpdateAsync)
+           .Produces<UserResponse>()
            .RequireAuthorization()
            .AddEndpointFilter<ValidationFilter<UserRequest>>()
            .WithSummary("Update a user.")

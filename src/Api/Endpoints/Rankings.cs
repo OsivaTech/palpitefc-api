@@ -1,4 +1,5 @@
 ﻿using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Extensions;
 
 namespace PalpiteFC.Api.Endpoints;
@@ -10,6 +11,7 @@ public static class Rankings
     public static void MapRankingEndpoints(this WebApplication app)
     {
         app.MapGet("/rankings", GetAsync)
+           .Produces<IEnumerable<RankingResponse>>()
            .WithSummary("Get all rankings.")
            .WithOpenApi();
     }

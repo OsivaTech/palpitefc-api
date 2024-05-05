@@ -1,5 +1,6 @@
 ﻿using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
+using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Extensions;
 
 namespace PalpiteFC.Api.Endpoints;
@@ -11,20 +12,24 @@ public static class News
     public static void MapNewsEndpoints(this WebApplication app)
     {
         app.MapGet("/news", GetAsync)
+           .Produces<IEnumerable<NewsResponse>>()
            .WithSummary("Get all news.")
            .WithOpenApi();
 
         app.MapPost("/news", CreateAsync)
+           .Produces<NewsResponse>(StatusCodes.Status201Created)
            .RequireAuthorization("admin", "journalist")
            .WithSummary("Create a news.")
            .WithOpenApi();
 
         app.MapPut("/news/{id}", UpdateAsync)
+           .Produces<NewsResponse>()
            .RequireAuthorization("admin", "journalist")
            .WithSummary("Update a news.")
            .WithOpenApi();
 
         app.MapDelete("/news/{id}", DeleteAsync)
+           .Produces(StatusCodes.Status204NoContent)
            .RequireAuthorization("admin", "journalist")
            .WithSummary("Delete a news.")
            .WithOpenApi();

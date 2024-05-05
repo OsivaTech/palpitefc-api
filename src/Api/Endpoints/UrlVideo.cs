@@ -1,4 +1,5 @@
 ﻿using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Extensions;
 
 namespace PalpiteFC.Api.Endpoints;
@@ -10,6 +11,7 @@ public static class UrlVideo
     public static void MapUrlVideoEndpoints(this WebApplication app)
     {
         app.MapGet("/urlvideo", GetAsync)
+           .Produces<ConfigResponse>()
            .WithSummary("Get URL video configuration.")
            .WithOpenApi();
     }
