@@ -23,8 +23,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IStandingService, StandingService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IPointSeasonsService, PointSeasonsService>();
-        services.AddScoped<ICacheService, DistributedCacheService>();
+        services.AddScoped<IPointsService, PointsService>();
 
+        services.AddScoped<ICacheService, DistributedCacheService>();
         services.AddSingleton<IHashService, HashService>(_ => new HashService(SHA512.Create()));
     }
 }

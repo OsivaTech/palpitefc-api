@@ -21,6 +21,7 @@ public static class WebApplicationExtensions
         app.MapTeamEndpoints();
         app.MapUrlVideoEndpoints();
         app.MapUserEndpoints();
+        app.MapPointsEndpoints();
     }
 
     public static async Task InitiaizeDatabase(this WebApplication app)
