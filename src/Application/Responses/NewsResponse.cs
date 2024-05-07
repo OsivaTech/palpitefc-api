@@ -7,6 +7,7 @@ public class NewsResponse
     public string? Content { get; set; }
     public string? Info { get; set; }
     public int UserId { get; set; }
+    public string? Thumbnail { get; set; }
     public AuthorInfo? Author { get; set; }
 }
 

@@ -34,6 +34,7 @@ public class MappingConfiguration : IRegister
             Title = src.Title,
             Content = src.Content,
             Info = src.Info,
+            Thumbnail = src.Thumbnail,
             Author = src.User.Adapt<AuthorInfo>()
         };
     }
