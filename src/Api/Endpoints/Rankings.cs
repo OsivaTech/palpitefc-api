@@ -10,7 +10,7 @@ public static class Rankings
 
     public static void MapRankingEndpoints(this WebApplication app)
     {
-        app.MapGet("/rankings", GetAsync)
+        app.MapGet("/rankings", GetMockAsync)
            .Produces<IEnumerable<RankingResponse>>()
            .WithSummary("Get all rankings.")
            .WithOpenApi();
@@ -19,6 +19,13 @@ public static class Rankings
     #endregion
 
     #region Non-Public Methods
+
+    private async static Task<IResult> GetMockAsync(IRankingService service, CancellationToken cancellationToken)
+    {
+        var result = await service.GetMockAsync(cancellationToken);
+
+        return result.ToIResult();
+    }
 
     private async static Task<IResult> GetAsync(IRankingService service, CancellationToken cancellationToken)
     {
