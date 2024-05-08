@@ -10,9 +10,14 @@ public static class Rankings
 
     public static void MapRankingEndpoints(this WebApplication app)
     {
-        app.MapGet("/rankings", GetMockAsync)
+        app.MapGet("/rankings", GetAsync)
            .Produces<IEnumerable<RankingResponse>>()
            .WithSummary("Get all rankings.")
+           .WithOpenApi();
+
+        app.MapGet("/rankings/mock", GetMockAsync)
+           .Produces<IEnumerable<RankingResponse>>()
+           .WithSummary("Get all rankings (mocked data).")
            .WithOpenApi();
     }
 

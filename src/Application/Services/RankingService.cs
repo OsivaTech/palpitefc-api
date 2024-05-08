@@ -33,24 +33,10 @@ public class RankingService : IRankingService
         var ranking = new List<RankingResponse>();
 
         var points = await _repository.Select(DateTime.Parse($"{DateTime.Now.Year}-01-01"), DateTime.Parse($"{DateTime.Now.Year}-12-31").AddDays(1).AddTicks(-1));
-        var userPoints = await _repository.SelectByUserId(_userContext.Id, DateTime.Parse($"{DateTime.Now.Year}-01-01"), DateTime.Parse($"{DateTime.Now.Year}-12-31").AddDays(1).AddTicks(-1));
 
         AddRankings(ranking, points.GroupBy(w => w.Fixture?.LeagueId), RankingType.League);
         AddRankings(ranking, points.GroupBy(w => w.Fixture?.Start.Month), RankingType.Month);
         AddRankings(ranking, points.GroupBy(w => w.Fixture?.Start.Year), RankingType.Year);
-
-        return ResultHelper.Success<IEnumerable<RankingResponse>>(ranking);
-    }
-
-    public async Task<Result<IEnumerable<RankingResponse>>> GetOwnAsync(CancellationToken cancellationToken)
-    {
-        var ranking = new List<RankingResponse>();
-
-        var userPoints = await _repository.SelectByUserId(_userContext.Id, DateTime.Parse($"{DateTime.Now.Year}-01-01"), DateTime.Parse($"{DateTime.Now.Year}-12-31").AddDays(1).AddTicks(-1));
-
-        AddRankings(ranking, userPoints.GroupBy(w => w.Fixture?.LeagueId), RankingType.League);
-        AddRankings(ranking, userPoints.GroupBy(w => w.Fixture?.Start.Month), RankingType.Month);
-        AddRankings(ranking, userPoints.GroupBy(w => w.Fixture?.Start.Year), RankingType.Year);
 
         return ResultHelper.Success<IEnumerable<RankingResponse>>(ranking);
     }
@@ -189,7 +175,7 @@ public class RankingService : IRankingService
 
     #region Non-Public Methods
 
-    private static void AddRankings(List<RankingResponse> ranking, IEnumerable<IGrouping<int?, UserPoint>> groupedPoints, RankingType type)
+    private void AddRankings(List<RankingResponse> ranking, IEnumerable<IGrouping<int?, UserPoint>> groupedPoints, RankingType type)
     {
         foreach (var group in groupedPoints)
         {
@@ -206,7 +192,7 @@ public class RankingService : IRankingService
                     RankingType.Month => new RankingInfo()
                     {
                         Month = group.Key,
-                        Year = group.First().Fixture?.Start.Year,
+                        Year = group.FirstOrDefault()?.Fixture?.Start.Year,
                     },
                     RankingType.Year => new RankingInfo()
                     {
@@ -215,6 +201,11 @@ public class RankingService : IRankingService
                     _ => default
                 }
             };
+
+            if (_userContext.Id > 0)
+            {
+                rankingResponse.YourPlace = rankingResponse.Placings.FirstOrDefault(w => w.Id == _userContext.Id);
+            }
 
             ranking.Add(rankingResponse);
         }
@@ -231,7 +222,7 @@ public class RankingService : IRankingService
                                Guesses = g.Count()
                            })
                            .OrderByDescending(x => x.Points)
-                           .ThenByDescending(x => x.Guesses)
+                           .ThenBy(x => x.Guesses)
                            .Select((x, index) => { x.Place = index + 1; return x; });
     }
 

@@ -6,7 +6,6 @@ public class RankingResponse
     public RankingInfo? Info { get; set; }
     public IEnumerable<UserPlacing>? Placings { get; set; }
     public UserPlacing? YourPlace { get; set; }
-
 }
 
 public class UserPlacing
