@@ -48,8 +48,8 @@ public class MappingConfiguration : IRegister
             Name = src.Name,
             Start = src.Start,
             Finished = src.Finished,
-            HomeTeam = new() { Id = src.Match!.Id, FixtureId = src.Id, TeamId = src.Match!.HomeId, Goals = src.Match.HomeGoals, Name = src.Match.HomeTeam!.Name, Image = src.Match.HomeTeam.Image },
-            AwayTeam = new() { Id = src.Match!.Id, FixtureId = src.Id, TeamId = src.Match!.AwayId, Goals = src.Match.AwayGoals, Name = src.Match.AwayTeam!.Name, Image = src.Match.AwayTeam.Image },
+            HomeTeam = new() { Id = src.Match!.Id, FixtureId = src.Id, TeamId = src.Match!.HomeId, Goals = src.Match.HomeGoals, Name = src.Match.Home!.Name, Image = src.Match.Home.Image },
+            AwayTeam = new() { Id = src.Match!.Id, FixtureId = src.Id, TeamId = src.Match!.AwayId, Goals = src.Match.AwayGoals, Name = src.Match.Away!.Name, Image = src.Match.Away.Image },
         };
     }
 
@@ -76,8 +76,8 @@ public class MappingConfiguration : IRegister
             Id = src.Id,
             FixtureId = src.FixtureId,
             UserId = src.UserId,
-            HomeTeam = new() { Id = src.HomeTeamId, Goals = src.HomeTeamGoals },
-            AwayTeam = new() { Id = src.AwayTeamId, Goals = src.AwayTeamGoals }
+            HomeTeam = new() { Id = src.HomeId, Goals = src.HomeGoals },
+            AwayTeam = new() { Id = src.AwayId, Goals = src.AwayGoals }
         };
     }
 
@@ -120,10 +120,10 @@ public class MappingConfiguration : IRegister
         return src => new Database.Guess
         {
             FixtureId = src.FixtureId,
-            HomeTeamId = src.HomeTeam.Id,
-            HomeTeamGoals = src.HomeTeam.Goals,
-            AwayTeamGoals = src.AwayTeam.Goals,
-            AwayTeamId = src.AwayTeam.Id,
+            HomeId = src.HomeTeam.Id,
+            HomeGoals = src.HomeTeam.Goals,
+            AwayGoals = src.AwayTeam.Goals,
+            AwayId = src.AwayTeam.Id,
             CreatedAt = DateTime.UtcNow
         };
     }
