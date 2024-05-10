@@ -29,7 +29,7 @@ public class LeagueService : ILeagueService
 
     public async Task<Result<IEnumerable<LeagueResponse>>> GetAsync(CancellationToken cancellationToken)
     {
-        var leagues = await _repository.Select();
+        var leagues = await _repository.SelectEnabled();
 
         return ResultHelper.Success(leagues.Adapt<IEnumerable<LeagueResponse>>());
     }
