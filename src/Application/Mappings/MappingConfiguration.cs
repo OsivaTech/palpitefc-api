@@ -14,7 +14,7 @@ public class MappingConfiguration : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.ForType<ApiFootball.Match, FixtureResponse>().MapWith(MapMatchToFixtureResponse());
-        config.ForType<ApiFootball.Team, MatchResponse>().MapWith(MapTeamToMatchResponse());
+        config.ForType<ApiFootball.Team, TeamMatchResponse>().MapWith(MapTeamToMatchResponse());
         config.ForType<Database.Guess, GuessResponse>().MapWith(MapGuessResponseToGuessEntity());
         config.ForType<Database.User, UserResponse>().MapWith(MapUserEntityToUserResponse());
         config.ForType<Database.Fixture, FixtureResponse>().MapWith(MapFixtureEntityToFixtureResponse());
@@ -48,8 +48,8 @@ public class MappingConfiguration : IRegister
             Name = src.Name,
             Start = src.Start,
             Finished = src.Finished,
-            HomeTeam = new() { Id = src.Match!.Id, FixtureId = src.Id, TeamId = src.Match!.HomeId, Goals = src.Match.HomeGoals, Name = src.Match.Home!.Name, Image = src.Match.Home.Image },
-            AwayTeam = new() { Id = src.Match!.Id, FixtureId = src.Id, TeamId = src.Match!.AwayId, Goals = src.Match.AwayGoals, Name = src.Match.Away!.Name, Image = src.Match.Away.Image },
+            HomeTeam = new() { Id = src.Match!.HomeId, Goals = src.Match.HomeGoals, Name = src.Match.Home!.Name, Image = src.Match.Home.Image },
+            AwayTeam = new() { Id = src.Match!.AwayId, Goals = src.Match.AwayGoals, Name = src.Match.Away!.Name, Image = src.Match.Away.Image },
         };
     }
 
@@ -128,11 +128,11 @@ public class MappingConfiguration : IRegister
         };
     }
 
-    private static Expression<Func<ApiFootball.Team, MatchResponse>> MapTeamToMatchResponse()
+    private static Expression<Func<ApiFootball.Team, TeamMatchResponse>> MapTeamToMatchResponse()
     {
-        return src => new MatchResponse
+        return src => new TeamMatchResponse
         {
-            TeamId = src.Id.Value,
+            Id = src.Id.Value,
             Name = src.Name,
             Image = src.Logo
         };
@@ -145,8 +145,8 @@ public class MappingConfiguration : IRegister
             Id = src.Fixture.Id.Value,
             Name = "",
             LeagueId = src.League.Id.Value,
-            HomeTeam = src.Teams.Home.Adapt<MatchResponse>(),
-            AwayTeam = src.Teams.Away.Adapt<MatchResponse>(),
+            HomeTeam = src.Teams.Home.Adapt<TeamMatchResponse>(),
+            AwayTeam = src.Teams.Away.Adapt<TeamMatchResponse>(),
             Start = src.Fixture.Date.Value,
             Finished = src.Fixture.Status.Long.Equals("Match Finished")
         };
