@@ -62,6 +62,7 @@ public static class ServiceCollectionExtensions
         services.Configure<JwtSettings>(configuration.GetSection("Settings:Jwt"));
         services.Configure<MailingSettings>(configuration.GetSection("Settings:Mailing"));
         services.Configure<FixturesSettings>(configuration.GetSection("Settings:Fixtures"));
+        services.Configure<GuessesSettings>(configuration.GetSection("Settings:Guesses"));
     }
 
     private static void AddCustomMappings(this IServiceCollection services)
