@@ -1,4 +1,6 @@
-﻿using PalpiteFC.Api.Integrations.ApiFootball.Responses;
+﻿using Microsoft.AspNetCore.Http.Extensions;
+using PalpiteFC.Api.Integrations.ApiFootball.Requests;
+using PalpiteFC.Api.Integrations.ApiFootball.Responses;
 using PalpiteFC.Api.Integrations.Interfaces;
 using System.Text.Json;
 
@@ -6,6 +8,7 @@ namespace PalpiteFC.Api.Integrations.ApiFootball;
 
 public class ApiFootballProvider : IApiFootballProvider
 {
+    private static readonly JsonSerializerOptions _serializerOptions = new() { PropertyNameCaseInsensitive = true };
     private readonly HttpClient _httpClient;
 
     public ApiFootballProvider(HttpClient httpClient)
@@ -13,15 +16,19 @@ public class ApiFootballProvider : IApiFootballProvider
         _httpClient = httpClient;
     }
 
-    public async Task<IEnumerable<Match>> GetMatchesByLeagueId(string leagueId, string fromDate, string toDate)
+    public async Task<IEnumerable<LeagueResponse>> GetLeagues(LeaguesRequest request)
     {
-        var uri = $"/v3/fixtures?league={leagueId}&season=2024&from={fromDate}&to={toDate}";
+        var queryBuilder = new QueryBuilder();
+
+        if (request.Season > 0) queryBuilder.Add("season", request.Season.ToString());
+
+        var uri = $"/v3/leagues{queryBuilder.ToQueryString()}";
 
         var response = await _httpClient.GetAsync(uri);
 
         var content = await response.Content.ReadAsStringAsync();
 
-        var result = JsonSerializer.Deserialize<ApiFootballResult<Match>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        var result = JsonSerializer.Deserialize<ApiFootballResult<LeagueResponse>>(content, _serializerOptions);
 
         return result!.Response!;
     }

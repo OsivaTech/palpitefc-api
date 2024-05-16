@@ -3,7 +3,6 @@ using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.DataContracts.MessageTypes;
 using System.Linq.Expressions;
-using ApiFootball = PalpiteFC.Api.Integrations.ApiFootball.Responses;
 using Database = PalpiteFC.Libraries.Persistence.Abstractions.Entities;
 
 
@@ -13,8 +12,6 @@ public class MappingConfiguration : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.ForType<ApiFootball.Match, FixtureResponse>().MapWith(MapMatchToFixtureResponse());
-        config.ForType<ApiFootball.Team, TeamMatchResponse>().MapWith(MapTeamToMatchResponse());
         config.ForType<Database.Guess, GuessResponse>().MapWith(MapGuessResponseToGuessEntity());
         config.ForType<Database.User, UserResponse>().MapWith(MapUserEntityToUserResponse());
         config.ForType<Database.Fixture, FixtureResponse>().MapWith(MapFixtureEntityToFixtureResponse());
@@ -125,30 +122,6 @@ public class MappingConfiguration : IRegister
             AwayGoals = src.AwayTeam.Goals,
             AwayId = src.AwayTeam.Id,
             CreatedAt = DateTime.UtcNow
-        };
-    }
-
-    private static Expression<Func<ApiFootball.Team, TeamMatchResponse>> MapTeamToMatchResponse()
-    {
-        return src => new TeamMatchResponse
-        {
-            Id = src.Id.Value,
-            Name = src.Name,
-            Image = src.Logo
-        };
-    }
-
-    private static Expression<Func<ApiFootball.Match, FixtureResponse>> MapMatchToFixtureResponse()
-    {
-        return src => new FixtureResponse
-        {
-            Id = src.Fixture.Id.Value,
-            Name = "",
-            LeagueId = src.League.Id.Value,
-            HomeTeam = src.Teams.Home.Adapt<TeamMatchResponse>(),
-            AwayTeam = src.Teams.Away.Adapt<TeamMatchResponse>(),
-            Start = src.Fixture.Date.Value,
-            Finished = src.Fixture.Status.Long.Equals("Match Finished")
         };
     }
 }

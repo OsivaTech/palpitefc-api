@@ -1,8 +1,9 @@
-﻿using PalpiteFC.Api.Integrations.ApiFootball.Responses;
+﻿using PalpiteFC.Api.Integrations.ApiFootball.Requests;
+using PalpiteFC.Api.Integrations.ApiFootball.Responses;
 
 namespace PalpiteFC.Api.Integrations.Interfaces;
 
 public interface IApiFootballProvider
 {
-    Task<IEnumerable<Match>> GetMatchesByLeagueId(string leagueId, string fromDate, string toDate);
+    Task<IEnumerable<LeagueResponse>> GetLeagues(LeaguesRequest request);
 }
