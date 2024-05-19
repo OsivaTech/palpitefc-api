@@ -41,12 +41,7 @@ public class UserContextMiddleware
             userContext.Id = ConvertToInt(jsonToken.Claims.First(w => w.Type.Equals("Id", StringComparison.InvariantCultureIgnoreCase)).Value);
             userContext.Name = jsonToken.Claims.First(w => w.Type.Equals("Name", StringComparison.InvariantCultureIgnoreCase)).Value;
             userContext.Email = jsonToken.Claims.First(w => w.Type.Equals("Email", StringComparison.InvariantCultureIgnoreCase)).Value;
-            userContext.Birthday = jsonToken.Claims.First(w => w.Type.Equals("Birthday", StringComparison.InvariantCultureIgnoreCase)).Value;
             userContext.Role = ConvertToInt(jsonToken.Claims.First(w => w.Type.Equals("Role", StringComparison.InvariantCultureIgnoreCase)).Value);
-            userContext.Points = ConvertToInt(jsonToken.Claims.First(w => w.Type.Equals("Points", StringComparison.InvariantCultureIgnoreCase)).Value);
-            userContext.Team = jsonToken.Claims.First(w => w.Type.Equals("Team", StringComparison.InvariantCultureIgnoreCase)).Value;
-            userContext.Info = jsonToken.Claims.First(w => w.Type.Equals("Info", StringComparison.InvariantCultureIgnoreCase)).Value;
-            userContext.Number = jsonToken.Claims.First(w => w.Type.Equals("Number", StringComparison.InvariantCultureIgnoreCase)).Value;
         }
 
         await _next(context);

@@ -13,7 +13,6 @@ public class MappingConfiguration : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.ForType<Database.Guess, GuessResponse>().MapWith(MapGuessResponseToGuessEntity());
-        config.ForType<Database.User, UserResponse>().MapWith(MapUserEntityToUserResponse());
         config.ForType<Database.Fixture, FixtureResponse>().MapWith(MapFixtureEntityToFixtureResponse());
         config.ForType<Database.News, NewsResponse>().MapWith(MapNewsEntityToNewsResponse());
         config.ForType<(Database.Poll, IEnumerable<Database.Option>), PollResponse>().MapWith(MapPollAndListOfOptionsToPollResponse());
@@ -47,22 +46,6 @@ public class MappingConfiguration : IRegister
             Finished = src.Finished,
             HomeTeam = new() { Id = src.Match!.HomeId, Goals = src.Match.HomeGoals, Name = src.Match.Home!.Name, Image = src.Match.Home.Image },
             AwayTeam = new() { Id = src.Match!.AwayId, Goals = src.Match.AwayGoals, Name = src.Match.Away!.Name, Image = src.Match.Away.Image },
-        };
-    }
-
-    private Expression<Func<Database.User, UserResponse>> MapUserEntityToUserResponse()
-    {
-        return src => new UserResponse
-        {
-            Id = src.Id,
-            Name = src.Name,
-            Birthday = src.Birthday,
-            Email = src.Email,
-            Info = src.Info,
-            PhoneNumber = src.Number,
-            Points = src.Points,
-            Role = src.Role,
-            Team = src.Team
         };
     }
 

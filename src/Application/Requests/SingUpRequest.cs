@@ -1,13 +1,17 @@
-﻿namespace PalpiteFC.Api.Application.Requests;
+﻿using PalpiteFC.Api.Application.Contracts;
+using PalpiteFC.Api.Application.Enums;
+
+namespace PalpiteFC.Api.Application.Requests;
 
 public sealed class SignUpRequest
 {
     public string? Name { get; set; }
     public string? Email { get; set; }
     public string? Password { get; set; }
+    public Genre? Genre { get; set; }
     public string? Document { get; set; }
-    public string? Team { get; set; }
-    public string? Info { get; set; }
+    public int TeamId { get; set; }
     public string? PhoneNumber { get; set; }
-    public string? Birthday { get; set; }
+    public DateOnly? Birthday { get; set; }
+    public Address? Address { get; set; }
 }

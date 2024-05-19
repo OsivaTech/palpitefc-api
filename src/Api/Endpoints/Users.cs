@@ -2,7 +2,6 @@
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Application.Utils;
-using PalpiteFC.Api.CrossCutting.Result;
 using PalpiteFC.Api.Extensions;
 using PalpiteFC.Api.Filters;
 
@@ -45,9 +44,9 @@ public static class User
         return result.ToIResult();
     }
 
-    private async static Task<IResult> GetCurrentAsync(UserContext userContext)
+    private async static Task<IResult> GetCurrentAsync(IUserService service, UserContext userContext, CancellationToken cancellationToken)
     {
-        var result = await Task.FromResult(ResultHelper.Success(userContext));
+        var result = await service.GetByEmail(userContext.Email, cancellationToken);
 
         return result.ToIResult();
     }

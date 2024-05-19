@@ -25,7 +25,7 @@ public class EmailService : IEmailService
 
     public async Task<Result<string>> SendEmailCodeAsync(SendEmailCodeRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userService.GetByEmail(request.Email!);
+        var user = await _userService.GetByEmail(request.Email, cancellationToken);
 
         if (user is null)
         {

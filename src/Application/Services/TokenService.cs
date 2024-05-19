@@ -61,11 +61,6 @@ public class TokenService : ITokenService
         ci.AddClaim(new("name", user.Name ?? string.Empty));
         ci.AddClaim(new("email", user.Email ?? string.Empty));
         ci.AddClaim(new("role", user.Role.ToString()));
-        ci.AddClaim(new("points", user.Points.ToString()));
-        ci.AddClaim(new("birthday", user.Birthday ?? string.Empty));
-        ci.AddClaim(new("info", user.Info ?? string.Empty));
-        ci.AddClaim(new("number", user.Number ?? string.Empty));
-        ci.AddClaim(new("team", user.Team ?? string.Empty));
 
         return ci;
     }

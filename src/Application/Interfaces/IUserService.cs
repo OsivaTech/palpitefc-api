@@ -7,6 +7,6 @@ namespace PalpiteFC.Api.Application.Interfaces;
 public interface IUserService
 {
     Task<Result<IEnumerable<UserResponse>>> GetAllAsync(CancellationToken cancellationToken);
-    Task<Result<UserResponse>> GetByEmail(string email);
+    Task<Result<UserResponse>> GetByEmail(string? email, CancellationToken cancellationToken);
     Task<Result<UserResponse>> UpdateAsync(UserRequest request, CancellationToken cancellationToken);
 }

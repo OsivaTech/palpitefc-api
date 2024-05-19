@@ -2,6 +2,7 @@
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
+using PalpiteFC.Api.CrossCutting.Errors;
 using PalpiteFC.Api.CrossCutting.Result;
 using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
 using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
@@ -33,8 +34,13 @@ public class UserService : IUserService
         return ResultHelper.Success(user.Adapt<UserResponse>());
     }
 
-    public async Task<Result<UserResponse>> GetByEmail(string email)
+    public async Task<Result<UserResponse>> GetByEmail(string? email, CancellationToken cancellationToken)
     {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            return ResultHelper.Failure<UserResponse>(UserErrors.InvalidEmail);
+        }
+
         var user = await _repository.SelectByEmail(email);
 
         return ResultHelper.Success(user.Adapt<UserResponse>());

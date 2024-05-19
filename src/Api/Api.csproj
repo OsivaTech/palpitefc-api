@@ -17,7 +17,7 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.3" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
-    <PackageReference Include="PalpiteFC.Libraries.Persistence.Database" Version="1.0.0-alfa.32" />
+    <PackageReference Include="PalpiteFC.Libraries.Persistence.Database" Version="1.0.0-alfa.33" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
     <PackageReference Include="Serilog.Expressions" Version="4.0.0" />

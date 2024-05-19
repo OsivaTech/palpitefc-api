@@ -5,6 +5,7 @@ using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.CrossCutting.Errors;
 using PalpiteFC.Api.CrossCutting.Result;
+using PalpiteFC.Libraries.Persistence.Abstractions.Connection;
 using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
 using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
@@ -15,55 +16,82 @@ public class AuthService : IAuthService
     #region Fields
 
     private readonly IUsersRepository _userRepository;
+    private readonly ITeamsRepository _teamsRepository;
+    private readonly IUsersAddressesRepository _userAddressesRepository;
     private readonly ITokenService _tokenService;
     private readonly IHashService _hashService;
     private readonly IDistributedCache _cache;
+    private readonly IUnitOfWork _unitOfWork;
 
     #endregion
 
     #region Constructor
 
-    public AuthService(IUsersRepository usersRepository, ITokenService tokenService, IHashService hashService, IDistributedCache cache)
+    public AuthService(IUsersRepository usersRepository,
+                       ITeamsRepository teamsRepository,
+                       IUsersAddressesRepository userAddressesRepository,
+                       ITokenService tokenService,
+                       IHashService hashService,
+                       IDistributedCache cache,
+                       IUnitOfWork unitOfWork)
     {
         _userRepository = usersRepository;
+        _teamsRepository = teamsRepository;
+        _userAddressesRepository = userAddressesRepository;
         _tokenService = tokenService;
         _hashService = hashService;
         _cache = cache;
+        _unitOfWork = unitOfWork;
     }
 
     #endregion
 
     #region Public Methods
 
-    public async Task<Result<AuthResponse>> SignUp(SignUpRequest request, CancellationToken cancellationToken)
+    public async Task<Result<UserResponse>> SignUp(SignUpRequest request, CancellationToken cancellationToken)
     {
+        var guid = Guid.NewGuid();
+        int? addressId = 0;
+
+        _unitOfWork.BeginTransaction();
+
         if (await _userRepository.SelectByEmail(request.Email!) is not null)
         {
-            return ResultHelper.Failure<AuthResponse>(SignUpErrors.EmailAlreadyUsed);
+            return ResultHelper.Failure<UserResponse>(SignUpErrors.EmailAlreadyUsed);
         }
 
-        var guid = Guid.NewGuid();
+        if (await _teamsRepository.Select(request.TeamId) is null)
+        {
+            return ResultHelper.Failure<UserResponse>(TeamErrors.InvalidTeamId);
+        }
+
+        if (request.Address is not null)
+        {
+            addressId = await _userAddressesRepository.InsertAndGetId(request.Address.Adapt<UserAddress>());
+        }
 
         var user = new User()
         {
             Name = request.Name,
             Email = request.Email,
             Password = _hashService.EncryptPassword(request.Password + guid.ToString()),
-            UserGuid = guid.ToString(),
-            Role = 300
+            Genre = request.Genre.ToString(),
+            Document = request.Document,
+            TeamId = request.TeamId,
+            PhoneNumber = request.PhoneNumber,
+            Birthday = request.Birthday,
+            AddressId = addressId,
+            Role = 300,
+            UserGuid = guid.ToString()
         };
 
-        await _userRepository.Insert(user);
+        var createdId = await _userRepository.InsertAndGetId(user);
 
-        var token = _tokenService.Generate(user);
+        var createdUser = await _userRepository.Select(createdId);
 
-        var authResponse = new AuthResponse()
-        {
-            AccessToken = token.Data,
-            User = user.Adapt<UserResponse>()
-        };
+        _unitOfWork.Commit();
 
-        return ResultHelper.Success(authResponse);
+        return ResultHelper.Success(createdUser.Adapt<UserResponse>());
     }
 
     public async Task<Result<AuthResponse>> SignIn(SignInRequest request, CancellationToken cancellationToken)
