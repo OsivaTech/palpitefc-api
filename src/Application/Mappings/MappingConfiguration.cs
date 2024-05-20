@@ -66,10 +66,10 @@ public class MappingConfiguration : IRegister
         return src => new GuessMessage
         {
             FixtureId = src.FixtureId,
-            HomeTeamId = src.HomeTeam!.Id,
-            HomeTeamGoals = src.HomeTeam.Goals,
-            AwayTeamId = src.AwayTeam!.Id,
-            AwayTeamGoals = src.AwayTeam.Goals
+            HomeId = src.HomeTeam!.Id,
+            HomeGoals = src.HomeTeam.Goals,
+            AwayId = src.AwayTeam!.Id,
+            AwayGoals = src.AwayTeam.Goals
         };
     }
 
