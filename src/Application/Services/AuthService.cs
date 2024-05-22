@@ -76,7 +76,7 @@ public class AuthService : IAuthService
             Name = request.Name,
             Email = request.Email,
             Password = _hashService.EncryptPassword(request.Password + guid.ToString()),
-            Genre = request.Genre.ToString(),
+            Gender = request.Gender.ToString(),
             Document = request.Document,
             TeamId = request.TeamId,
             PhoneNumber = request.PhoneNumber,

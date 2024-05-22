@@ -8,7 +8,7 @@ public sealed class SignUpRequest
     public string? Name { get; set; }
     public string? Email { get; set; }
     public string? Password { get; set; }
-    public Genre? Genre { get; set; }
+    public Gender? Gender { get; set; }
     public string? Document { get; set; }
     public int TeamId { get; set; }
     public string? PhoneNumber { get; set; }

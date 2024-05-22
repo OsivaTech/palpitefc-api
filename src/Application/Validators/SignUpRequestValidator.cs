@@ -11,7 +11,7 @@ public class SignUpRequestValidator : AbstractValidator<SignUpRequest>
         RuleFor(x => x.Name).NotEmpty();
         RuleFor(x => x.Email).NotEmpty();
         RuleFor(x => x.Password).NotEmpty();
-        RuleFor(x => x.Genre).NotEmpty();
+        RuleFor(x => x.Gender).NotEmpty();
         RuleFor(x => x.Document).NotEmpty();
         RuleFor(x => x.TeamId).NotEmpty();
         RuleFor(x => x.PhoneNumber).NotEmpty();
