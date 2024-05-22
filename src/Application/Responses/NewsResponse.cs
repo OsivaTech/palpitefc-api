@@ -15,5 +15,5 @@ public class AuthorInfo
 {
     public int Id { get; set; }
     public string? Name { get; set; }
-    public string? Team { get; set; }
+    public TeamResponse? Team { get; set; }
 }

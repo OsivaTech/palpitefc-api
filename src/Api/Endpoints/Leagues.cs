@@ -1,4 +1,5 @@
-﻿using PalpiteFC.Api.Application.Interfaces;
+﻿using PalpiteFC.Api.Application.Enums;
+using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Extensions;
 
@@ -17,13 +18,13 @@ public static class Leagues
 
         app.MapPost("/leagues/update", UpdateAsync)
            .Produces(StatusCodes.Status204NoContent)
-           .RequireAuthorization("admin")
+           .RequireAuthorization(Policies.Admin)
            .WithSummary("Update leagues database")
            .WithOpenApi();
 
         app.MapPut("/leagues/{id}", ToggleStatusAsync)
            .Produces<IEnumerable<LeagueResponse>>()
-           .RequireAuthorization("admin")
+           .RequireAuthorization(Policies.Admin)
            .WithSummary("Enable/Disable league showing.")
            .WithOpenApi();
     }

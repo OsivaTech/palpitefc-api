@@ -1,4 +1,5 @@
-﻿using PalpiteFC.Api.Application.Interfaces;
+﻿using PalpiteFC.Api.Application.Enums;
+using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Extensions;
@@ -18,13 +19,13 @@ public static class Polls
 
         app.MapPost("/polls", CreateAsync)
            .Produces<PollResponse>()
-           .RequireAuthorization("admin")
+           .RequireAuthorization(Policies.Admin)
            .WithSummary("Create a new poll.")
            .WithOpenApi();
 
         app.MapDelete("/polls/{id}", DeleteAsync)
            .Produces(StatusCodes.Status204NoContent)
-           .RequireAuthorization("admin")
+           .RequireAuthorization(Policies.Admin)
            .WithSummary("Delete a poll.")
            .WithOpenApi();
 

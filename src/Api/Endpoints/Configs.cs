@@ -1,4 +1,5 @@
-﻿using PalpiteFC.Api.Application.Interfaces;
+﻿using PalpiteFC.Api.Application.Enums;
+using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Extensions;
@@ -18,19 +19,19 @@ public static class Configs
 
         app.MapPost("/configs", CreateAsync)
            .Produces<ConfigResponse>()
-           .RequireAuthorization("admin")
+           .RequireAuthorization(Policies.Admin)
            .WithSummary("Create a configuration.")
            .WithOpenApi();
 
         app.MapPut("/configs/{id}", UpdateAsync)
            .Produces<ConfigResponse>()
-           .RequireAuthorization("admin")
+           .RequireAuthorization(Policies.Admin)
            .WithSummary("Update a configuration.")
            .WithOpenApi();
 
         app.MapDelete("/configs/{id}", DeleteAsync)
            .Produces(StatusCodes.Status204NoContent)
-           .RequireAuthorization("admin")
+           .RequireAuthorization(Policies.Admin)
            .WithSummary("Delete a configuration.")
            .WithOpenApi();
     }

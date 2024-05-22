@@ -1,4 +1,5 @@
-﻿using PalpiteFC.Api.Application.Interfaces;
+﻿using PalpiteFC.Api.Application.Enums;
+using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Application.Utils;
@@ -15,7 +16,7 @@ public static class User
     {
         app.MapGet("/users", GetAllAsync)
            .Produces<IEnumerable<UserResponse>>()
-           .RequireAuthorization("admin")
+           .RequireAuthorization(Policies.Admin)
            .WithSummary("Get all users.")
            .WithOpenApi();
 

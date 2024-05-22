@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using PalpiteFC.Api.Application.Enums;
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.CrossCutting.Result;
 using PalpiteFC.Api.CrossCutting.Settings;
@@ -60,7 +61,7 @@ public class TokenService : ITokenService
         ci.AddClaim(new("id", user.Id.ToString()));
         ci.AddClaim(new("name", user.Name ?? string.Empty));
         ci.AddClaim(new("email", user.Email ?? string.Empty));
-        ci.AddClaim(new("role", user.Role.ToString()));
+        ci.AddClaim(new("role", user.Role ?? Roles.User));
 
         return ci;
     }

@@ -3,6 +3,7 @@ using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using PalpiteFC.Api.Application.Enums;
 using PalpiteFC.Api.Application.Extensions;
 using PalpiteFC.Api.Application.Mappings;
 using PalpiteFC.Api.Application.Utils;
@@ -46,9 +47,23 @@ public static class ServiceCollectionExtensions
             };
         });
 
-        services.AddAuthorizationBuilder().AddPolicy("user", policy => policy.RequireRole("300"));
-        services.AddAuthorizationBuilder().AddPolicy("journalist", policy => policy.RequireRole("200"));
-        services.AddAuthorizationBuilder().AddPolicy("admin", policy => policy.RequireRole("100"));
+        services.AddAuthorizationBuilder().AddPolicy(Policies.User, policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireRole(Roles.User);
+        });
+
+        services.AddAuthorizationBuilder().AddPolicy(Policies.Journalist, policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireRole(Roles.Journalist, Roles.Admin);
+        });
+
+        services.AddAuthorizationBuilder().AddPolicy(Policies.Admin, policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireRole(Roles.Admin);
+        });
     }
 
     public static void ConfigureValidators(this IServiceCollection services)

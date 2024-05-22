@@ -41,7 +41,7 @@ public class UserContextMiddleware
             userContext.Id = ConvertToInt(jsonToken.Claims.First(w => w.Type.Equals("Id", StringComparison.InvariantCultureIgnoreCase)).Value);
             userContext.Name = jsonToken.Claims.First(w => w.Type.Equals("Name", StringComparison.InvariantCultureIgnoreCase)).Value;
             userContext.Email = jsonToken.Claims.First(w => w.Type.Equals("Email", StringComparison.InvariantCultureIgnoreCase)).Value;
-            userContext.Role = ConvertToInt(jsonToken.Claims.First(w => w.Type.Equals("Role", StringComparison.InvariantCultureIgnoreCase)).Value);
+            userContext.Role = jsonToken.Claims.First(w => w.Type.Equals("Role", StringComparison.InvariantCultureIgnoreCase)).Value;
         }
 
         await _next(context);

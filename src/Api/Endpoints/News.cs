@@ -1,4 +1,5 @@
-﻿using PalpiteFC.Api.Application.Interfaces;
+﻿using PalpiteFC.Api.Application.Enums;
+using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Extensions;
@@ -18,19 +19,19 @@ public static class News
 
         app.MapPost("/news", CreateAsync)
            .Produces<NewsResponse>(StatusCodes.Status201Created)
-           .RequireAuthorization("admin", "journalist")
+           .RequireAuthorization(Policies.Journalist)
            .WithSummary("Create a news.")
            .WithOpenApi();
 
         app.MapPut("/news/{id}", UpdateAsync)
            .Produces<NewsResponse>()
-           .RequireAuthorization("admin", "journalist")
+           .RequireAuthorization(Policies.Journalist)
            .WithSummary("Update a news.")
            .WithOpenApi();
 
         app.MapDelete("/news/{id}", DeleteAsync)
            .Produces(StatusCodes.Status204NoContent)
-           .RequireAuthorization("admin", "journalist")
+           .RequireAuthorization(Policies.Journalist)
            .WithSummary("Delete a news.")
            .WithOpenApi();
     }

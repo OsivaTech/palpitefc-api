@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using Microsoft.Extensions.Caching.Distributed;
+using PalpiteFC.Api.Application.Enums;
 using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
@@ -81,7 +82,7 @@ public class AuthService : IAuthService
             PhoneNumber = request.PhoneNumber,
             Birthday = request.Birthday,
             AddressId = addressId,
-            Role = 300,
+            Role = Roles.User,
             UserGuid = guid.ToString()
         };
 

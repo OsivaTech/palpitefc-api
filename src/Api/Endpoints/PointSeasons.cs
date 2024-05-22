@@ -1,4 +1,5 @@
-﻿using PalpiteFC.Api.Application.Interfaces;
+﻿using PalpiteFC.Api.Application.Enums;
+using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.Extensions;
@@ -23,19 +24,19 @@ public static class PointSeasons
 
         app.MapPost("/point-seasons", CreateAsync)
            .Produces<PointSeasonsResponse>()
-           .RequireAuthorization("admin")
+           .RequireAuthorization(Policies.Admin)
            .WithSummary("Create a new point season.")
            .WithOpenApi();
 
         app.MapPut("/point-seasons/{id}", UpdateAsync)
            .Produces<PointSeasonsResponse>()
-           .RequireAuthorization("admin")
+           .RequireAuthorization(Policies.Admin)
            .WithSummary("Update an existing point season.")
            .WithOpenApi();
 
         app.MapDelete("/point-seasons/{id}", DeleteAsync)
            .Produces(StatusCodes.Status204NoContent)
-           .RequireAuthorization("admin")
+           .RequireAuthorization(Policies.Admin)
            .WithSummary("Delete a point season.")
            .WithOpenApi();
     }
