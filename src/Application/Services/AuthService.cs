@@ -51,7 +51,7 @@ public class AuthService : IAuthService
     public async Task<Result<UserResponse>> SignUp(SignUpRequest request, CancellationToken cancellationToken)
     {
         var guid = Guid.NewGuid();
-        int? addressId = 0;
+        int? addressId = null;
 
         _unitOfWork.BeginTransaction();
 
