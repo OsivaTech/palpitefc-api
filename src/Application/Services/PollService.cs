@@ -46,7 +46,22 @@ public class PollService : IPollService
     {
         var polls = await _pollsRepository.Select();
 
-        return ResultHelper.Success(polls.Adapt<IEnumerable<PollResponse>>());
+        var pollsResponse = polls.Adapt<IEnumerable<PollResponse>>().ToList();
+
+        if (_userContext.Id > 0)
+        {
+            foreach (var poll in pollsResponse)
+            {
+                var userVote = await _userVotesRepository.SelectByPollIdAndUserId(poll.Id, _userContext.Id);
+
+                if (userVote != null)
+                {
+                    poll.YourVote = userVote.OptionId;
+                }
+            }
+        }
+
+        return ResultHelper.Success<IEnumerable<PollResponse>>(pollsResponse);
     }
 
     public async Task<Result<PollResponse>> CreateAsync(PollRequest request, CancellationToken cancellationToken)
