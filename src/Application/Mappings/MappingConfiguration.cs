@@ -26,7 +26,7 @@ public class MappingConfiguration : IRegister
         return src => new NewsResponse
         {
             Id = src.Id,
-            UserId = src.UserId,
+            UserId = src.UserId.GetValueOrDefault(),
             Title = src.Title,
             Content = src.Content,
             Info = src.Info,

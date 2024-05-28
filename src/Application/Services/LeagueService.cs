@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.CrossCutting.Result;
 using PalpiteFC.Api.Integrations.Interfaces;
@@ -33,12 +34,28 @@ public class LeagueService : ILeagueService
     {
         var leagues = await _repository.SelectEnabled();
 
+        cancellationToken.ThrowIfCancellationRequested();
+
         return ResultHelper.Success(leagues.Adapt<IEnumerable<LeagueResponse>>());
     }
 
-    public async Task<Result> UpdateAsync(CancellationToken cancellationToken)
+    public async Task<Result<LeagueResponse>> UpdateAsync(int id, LeagueRequest request, CancellationToken cancellationToken)
+    {
+        var entity = request.Adapt<League>();
+        entity.Id = id;
+
+        await _repository.Update(entity);
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        return ResultHelper.Success(entity.Adapt<LeagueResponse>());
+    }
+
+    public async Task<Result> UpdateDatabaseAsync(CancellationToken cancellationToken)
     {
         var leagues = await _provider.GetLeagues(new() { Season = DateTime.Now.Year });
+
+        cancellationToken.ThrowIfCancellationRequested();
 
         var entity = leagues.Select(l => new League
         {
@@ -50,6 +67,8 @@ public class LeagueService : ILeagueService
 
         await _repository.InsertOrUpdate(entity);
 
+        cancellationToken.ThrowIfCancellationRequested();
+
         return ResultHelper.Success();
     }
 
@@ -57,9 +76,13 @@ public class LeagueService : ILeagueService
     {
         var league = await _repository.Select(id);
 
+        cancellationToken.ThrowIfCancellationRequested();
+
         league.Enabled = enabled;
 
         await _repository.Update(league);
+
+        cancellationToken.ThrowIfCancellationRequested();
 
         return ResultHelper.Success(league.Adapt<LeagueResponse>());
     }
