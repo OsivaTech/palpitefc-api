@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 namespace PalpiteFC.Api.Application.Responses;
 public class AdvertisementResponse
 {
+    public int Id { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
     public string? ImageBanner { get; set; }
     public string? ImageCard { get; set; }
+    public bool? Enabled { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public string? UrlGoTo { get; set; }

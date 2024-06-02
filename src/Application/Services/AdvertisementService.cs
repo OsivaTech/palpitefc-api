@@ -38,4 +38,12 @@ public class AdvertisementService : IAdvertisementService
         return ResultHelper.Success(result.Adapt<IEnumerable<AdvertisementResponse>>());
     }
 
+    public async Task<Result<AdvertisementResponse>> Update(int id, AdvertisementRequest request, CancellationToken cancellationToken)
+    {
+        var entity = request.Adapt<Advertisement>();
+        entity.Id = id;
+
+        await _advertisementRepository.Update(entity);
+        return ResultHelper.Success(entity.Adapt<AdvertisementResponse>());
+    }
 }

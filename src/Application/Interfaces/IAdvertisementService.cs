@@ -12,4 +12,6 @@ public interface IAdvertisementService
 {
     Task<Result<AdvertisementResponse>> Create(AdvertisementRequest request, CancellationToken cancellationToken);
     Task<Result<IEnumerable<AdvertisementResponse>>> Get(CancellationToken cancellationToken);
+    Task<Result<AdvertisementResponse>> Update(int id, AdvertisementRequest request, CancellationToken cancellationToken);
+
 }

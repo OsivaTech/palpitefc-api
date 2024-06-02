@@ -12,24 +12,33 @@ public static class Advertisement
     public static void MapAdvertisementEndpoints(this WebApplication app)
     {
 
-        app.MapPost("/advertisement", CreateAd)
-        .AddEndpointFilter<ValidationFilter<AdvertisementRequest>>()
-        .WithSummary("Register a new advertisement.")
-        .WithOpenApi();
+        app.MapPost("/advertisement", CreateAsync)
+            .AddEndpointFilter<ValidationFilter<AdvertisementRequest>>()
+            .WithSummary("Register a new advertisement.")
+            .WithOpenApi();
 
-        app.MapGet("/advertisement", GetAds)
+        app.MapGet("/advertisement", GetAsync)
             .WithSummary("Get an advertisement list")
             .WithOpenApi();
+        app.MapPut("/advertisement/{id}", UpdateAsync)
+            .AddEndpointFilter<ValidationFilter<AdvertisementRequest>>()
+            .WithSummary("Update an advertisemnt")
+            .WithOpenApi();
     }
-    private async static Task<IResult> CreateAd(AdvertisementRequest request, IAdvertisementService service, CancellationToken cancellationToken)
+    private async static Task<IResult> CreateAsync(AdvertisementRequest request, IAdvertisementService service, CancellationToken cancellationToken)
     {
         var result = await service.Create(request, cancellationToken);
         return result.ToIResult(StatusCodes.Status201Created);
     }
 
-    private async static Task<IResult> GetAds(bool? details, IAdvertisementService service, CancellationToken cancellationToken)
+    private async static Task<IResult> GetAsync(bool? details, IAdvertisementService service, CancellationToken cancellationToken)
     {
         var result = await service.Get(cancellationToken);
+        return result.ToIResult();
+    }
+    private async static Task<IResult> UpdateAsync(int id, AdvertisementRequest request, IAdvertisementService service, CancellationToken cancellationToken)
+    {
+        var result = await service.Update(id, request, cancellationToken);
         return result.ToIResult();
     }
 }

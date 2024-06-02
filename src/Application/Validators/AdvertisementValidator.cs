@@ -29,6 +29,10 @@ public class AdvertisementValidator : AbstractValidator<AdvertisementRequest>
             .WithMessage("ImageCard is required")
             .When(x => string.IsNullOrWhiteSpace(x.ImageBanner));
 
+        RuleFor(x => x.Enabled)
+            .NotEmpty()
+            .WithMessage("Enabled is required");
+
         RuleFor(x => x.StartDate)
             .NotEmpty()
             .WithMessage("StartDate is required");
