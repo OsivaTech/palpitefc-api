@@ -23,6 +23,7 @@ public static class WebApplicationExtensions
         app.MapUserEndpoints();
         app.MapPointsEndpoints(); 
         app.MapAdvertisementEndpoints();
+        app.MapWaitingListEndpoints();
     }
 
     public static async Task InitiaizeDatabase(this WebApplication app)

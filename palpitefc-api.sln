@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossCutting", "src\CrossCu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Integrations", "src\Integrations\Integrations.csproj", "{BF580420-CDCA-4756-91A0-58DBFAF0EC34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataContracts", "src\DataContracts\DataContracts.csproj", "{C96E3948-4FBE-4CE6-A4DA-1E9B542CD30A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataContracts", "src\DataContracts\DataContracts.csproj", "{C96E3948-4FBE-4CE6-A4DA-1E9B542CD30A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
