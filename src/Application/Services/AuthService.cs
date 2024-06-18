@@ -131,6 +131,11 @@ public class AuthService : IAuthService
 
         var user = await _userRepository.SelectByEmail(request.Email!);
 
+        if (user is null)
+        {
+            return ResultHelper.Failure<UserResponse>(SignInErrors.UserNotFound);
+        }
+
         var newPassword = _hashService.EncryptPassword(request.Password + user.UserGuid);
 
         await _userRepository.UpdatePassword(request.Email!, newPassword);
