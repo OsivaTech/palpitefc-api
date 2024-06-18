@@ -13,6 +13,7 @@ public static class WaitingList
     {
         app.MapGet("/waitinglist", GetAllAsync)
            .Produces<IEnumerable<WaitingListResponse>>()
+           .RequireAuthorization(Policies.Admin)
            .WithSummary("Get all from the waiting list.")
            .WithOpenApi();
 
