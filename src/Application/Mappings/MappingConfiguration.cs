@@ -1,7 +1,7 @@
 ﻿using Mapster;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.DataContracts.MessageTypes;
+using PalpiteFC.Libraries.DataContracts.MessageTypes;
 using System.Linq.Expressions;
 using Database = PalpiteFC.Libraries.Persistence.Abstractions.Entities;
 

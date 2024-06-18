@@ -8,7 +8,7 @@ using PalpiteFC.Api.Application.Utils;
 using PalpiteFC.Api.CrossCutting.Errors;
 using PalpiteFC.Api.CrossCutting.Result;
 using PalpiteFC.Api.CrossCutting.Settings;
-using PalpiteFC.DataContracts.MessageTypes;
+using PalpiteFC.Libraries.DataContracts.MessageTypes;
 using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
 using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
