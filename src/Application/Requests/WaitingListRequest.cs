@@ -1,5 +1,4 @@
-﻿using PalpiteFC.Api.Application.Contracts;
-using PalpiteFC.Api.Application.Enums;
+﻿using PalpiteFC.Api.Application.Enums;
 
 namespace PalpiteFC.Api.Application.Requests;
 
@@ -13,4 +12,3 @@ public class WaitingListRequest
     public string? City { get; set; }
     public string? State { get; set; }
 }
-

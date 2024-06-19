@@ -14,14 +14,27 @@ public static class WaitingList
         app.MapGet("/waitinglist", GetAllAsync)
            .Produces<IEnumerable<WaitingListResponse>>()
            .RequireAuthorization(Policies.Admin)
-           .WithSummary("Get all from the waiting list.")
+           .WithSummary("Get all users from the waiting list.")
+           .WithOpenApi();
+
+        app.MapPost("/waitinglist/send-welcome", SendWelcome)
+           .Produces(204)
+           .RequireAuthorization(Policies.Admin)
+           .WithSummary("Send welcome mail to user list.")
            .WithOpenApi();
 
         app.MapPost("/waitinglist", InsertAsync)
            .Produces<WaitingListResponse>()
            .AddEndpointFilter<ValidationFilter<WaitingListRequest>>()
-           .WithSummary("Update a user.")
+           .WithSummary("Subscribe to waiting list.")
            .WithOpenApi();
+    }
+
+    private async static Task<IResult> SendWelcome(WelcomeRequest[] request, IWaitingListService service, CancellationToken cancellationToken)
+    {
+        var result = await service.SendWelcomeAsync(request, cancellationToken);
+
+        return result.ToIResult();
     }
 
     private async static Task<IResult> GetAllAsync(IWaitingListService service, CancellationToken cancellationToken)
