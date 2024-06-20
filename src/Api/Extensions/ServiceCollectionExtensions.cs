@@ -78,6 +78,7 @@ public static class ServiceCollectionExtensions
         services.Configure<MailingSettings>(configuration.GetSection("Settings:Mailing"));
         services.Configure<FixturesSettings>(configuration.GetSection("Settings:Fixtures"));
         services.Configure<GuessesSettings>(configuration.GetSection("Settings:Guesses"));
+        services.Configure<WaitingListSettings>(configuration.GetSection("Settings:WaitingList"));
     }
 
     private static void AddCustomMappings(this IServiceCollection services)
