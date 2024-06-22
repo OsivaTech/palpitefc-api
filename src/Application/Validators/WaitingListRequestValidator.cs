@@ -12,7 +12,6 @@ public class WaitingListRequestValidator : AbstractValidator<WaitingListRequest>
         RuleFor(x => x.Email).NotEmpty();
         RuleFor(x => x.Gender).NotEmpty();
         RuleFor(x => x.Team).NotEmpty();
-        RuleFor(x => x.Birthday).NotEmpty();
         RuleFor(x => x.State).NotEmpty();
     }
 }
