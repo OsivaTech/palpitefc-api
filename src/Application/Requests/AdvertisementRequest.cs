@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PalpiteFC.Api.Application.Requests.Auth;
+namespace PalpiteFC.Api.Application.Requests;
 public class AdvertisementRequest
 {
     public string? Name { get; set; }

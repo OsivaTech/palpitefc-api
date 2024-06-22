@@ -1,4 +1,4 @@
-﻿using PalpiteFC.Api.Application.Requests.Auth;
+﻿using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
 using PalpiteFC.Api.CrossCutting.Result;
 using System;

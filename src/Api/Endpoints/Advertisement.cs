@@ -1,7 +1,5 @@
-﻿using FluentValidation;
-using PalpiteFC.Api.Application.Interfaces;
-using PalpiteFC.Api.Application.Requests.Auth;
-using PalpiteFC.Api.Application.Services;
+﻿using PalpiteFC.Api.Application.Interfaces;
+using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Extensions;
 using PalpiteFC.Api.Filters;
 
@@ -20,6 +18,7 @@ public static class Advertisement
         app.MapGet("/advertisement", GetAsync)
             .WithSummary("Get an advertisement list")
             .WithOpenApi();
+
         app.MapPut("/advertisement/{id}", UpdateAsync)
             .AddEndpointFilter<ValidationFilter<AdvertisementRequest>>()
             .WithSummary("Update an advertisemnt")

@@ -1,5 +1,4 @@
-﻿using PalpiteFC.Api.Application.Contracts;
-using PalpiteFC.Api.Application.Enums;
+﻿using PalpiteFC.Api.Application.Enums;
 
 namespace PalpiteFC.Api.Application.Responses;
 
@@ -14,5 +13,5 @@ public class UserResponse
     public DateOnly? Birthday { get; set; }
     public string? Role { get; set; }
     public TeamResponse? Team { get; set; }
-    public Address? Address { get; set; }
+    public AddressResponse? Address { get; set; }
 }

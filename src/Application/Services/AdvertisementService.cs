@@ -1,26 +1,17 @@
 ﻿using Mapster;
-using Microsoft.Extensions.Options;
 using PalpiteFC.Api.Application.Interfaces;
-using PalpiteFC.Api.Application.Requests.Auth;
+using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Application.Responses;
-using PalpiteFC.Api.Application.Utils;
 using PalpiteFC.Api.CrossCutting.Result;
-using PalpiteFC.Api.CrossCutting.Settings;
 using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
 using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PalpiteFC.Api.Application.Services;
+
 public class AdvertisementService : IAdvertisementService
 {
     private readonly IAdvertisementRepository _advertisementRepository;
-    //private readonly IOptions<AdvertisementSettings> _settings;
-
-    //cadastra anuncio no banco de dados
+    
     public AdvertisementService(IAdvertisementRepository advertisementRepository)
     {
         _advertisementRepository = advertisementRepository;
@@ -34,7 +25,7 @@ public class AdvertisementService : IAdvertisementService
     }
     public async Task<Result<IEnumerable<AdvertisementResponse>>> Get(CancellationToken cancellationToken)
     {
-       var result =  await _advertisementRepository.SelectToday();
+        var result = await _advertisementRepository.SelectToday();
         return ResultHelper.Success(result.Adapt<IEnumerable<AdvertisementResponse>>());
     }
 

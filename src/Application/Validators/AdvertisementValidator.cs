@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using PalpiteFC.Api.Application.Requests.Auth;
+using PalpiteFC.Api.Application.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;

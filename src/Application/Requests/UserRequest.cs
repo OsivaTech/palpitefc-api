@@ -11,4 +11,3 @@ public class UserRequest
     public string? Document { get; set; }
     public string? Birthday { get; set; }
 }
-

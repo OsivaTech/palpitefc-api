@@ -26,7 +26,7 @@ public static class User
            .WithSummary("Get the current logged in user.")
            .WithOpenApi();
 
-        app.MapPost("/users", UpdateAsync)
+        app.MapPut("/users", UpdateAsync)
            .Produces<UserResponse>()
            .RequireAuthorization()
            .AddEndpointFilter<ValidationFilter<UserRequest>>()

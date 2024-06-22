@@ -1,5 +1,5 @@
-﻿using PalpiteFC.Api.Application.Contracts;
-using PalpiteFC.Api.Application.Enums;
+﻿using PalpiteFC.Api.Application.Enums;
+using PalpiteFC.Api.Application.Responses;
 
 namespace PalpiteFC.Api.Application.Requests;
 
@@ -13,5 +13,5 @@ public sealed class SignUpRequest
     public int TeamId { get; set; }
     public string? PhoneNumber { get; set; }
     public DateOnly? Birthday { get; set; }
-    public Address? Address { get; set; }
+    public AddressResponse? Address { get; set; }
 }

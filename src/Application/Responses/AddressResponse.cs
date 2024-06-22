@@ -1,9 +1,10 @@
 ﻿using PalpiteFC.Api.Application.Enums;
 
-namespace PalpiteFC.Api.Application.Contracts;
+namespace PalpiteFC.Api.Application.Responses;
 
-public sealed class Address
+public sealed class AddressResponse
 {
+    public int Id { get; set; }
     public string? Street { get; set; }
     public string? Number { get; set; }
     public string? Complement { get; set; }
