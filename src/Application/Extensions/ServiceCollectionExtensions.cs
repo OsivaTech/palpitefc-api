@@ -27,6 +27,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IAdvertisementService, AdvertisementService>();
         services.AddScoped<IWaitingListService, WaitingListService>();
         services.AddScoped<IUserAddressService, UserAddressService>();
+        services.AddScoped<ISubscriptionService, SubscriptionService>();
 
         services.AddScoped<ICacheService, DistributedCacheService>();
         services.AddSingleton<IHashService, HashService>(_ => new HashService(SHA512.Create()));
