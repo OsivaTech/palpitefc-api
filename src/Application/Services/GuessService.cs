@@ -40,6 +40,7 @@ public class GuessService : IGuessService
     public async Task<Result<GuessResponse>> CreateAsync(GuessRequest request, CancellationToken cancellationToken)
     {
         var result = new GuessResponse();
+        var guessDate = DateTime.UtcNow;
 
         var cacheKey = $"PalpiteFC:Guesses:{_userContext.Id}_{request.FixtureId}";
 
@@ -70,19 +71,21 @@ public class GuessService : IGuessService
         }
 
 
-        if (_settings.Value.EndpointDB is false)
+        if (_settings.Value.UseQueue)
         {
             var message = request.Adapt<GuessMessage>();
+            message.GuessDate = guessDate;
             message.UserId = _userContext.Id;
 
             await _publishEndpoint.Publish(message, cancellationToken);
         }
         else
         {
-            var message = request.Adapt<Guess>();
-            message.UserId = _userContext.Id;
+            var entity = request.Adapt<Guess>();
+            entity.GuessDate = guessDate;
+            entity.UserId = _userContext.Id;
 
-            var id = await _repository.InsertAndGetId(message);
+            var id = await _repository.InsertAndGetId(entity);
 
             var guess = await _repository.Select(id);
 
