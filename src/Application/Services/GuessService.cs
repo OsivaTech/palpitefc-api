@@ -58,7 +58,7 @@ public class GuessService : IGuessService
             return ResultHelper.Failure<GuessResponse>(FixtureErrors.FixtureNotFound);
         }
 
-        if (fixture.Start < DateTime.Now)
+        if (fixture.Start < DateTime.UtcNow)
         {
             return ResultHelper.Failure<GuessResponse>(GuessErrors.MatchAlreadyStarted);
         }
@@ -95,7 +95,7 @@ public class GuessService : IGuessService
 
         await _cacheService.CreateAsync(cacheKey,
                                         string.Empty,
-                                        absoluteExpiration: DateTime.Now.Date.AddDays(1).AddTicks(-1),
+                                        absoluteExpiration: DateTime.UtcNow.Date.AddDays(1).AddTicks(-1),
                                         cancellationToken: cancellationToken);
 
         return ResultHelper.Success(result);

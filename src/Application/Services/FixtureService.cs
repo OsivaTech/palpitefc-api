@@ -35,8 +35,8 @@ public class FixtureService : IFixtureService
 
     public async Task<Result<IEnumerable<FixtureResponse>>> GetAsync(CancellationToken cancellationToken)
     {
-        var from = DateTime.Now.Date;
-        var to = DateTime.Now.Date.AddDays(_options.Value.DaysToSearch + 1).AddTicks(-1);
+        var from = DateTime.UtcNow.Date;
+        var to = DateTime.UtcNow.Date.AddDays(_options.Value.DaysToSearch + 1).AddTicks(-1);
 
         var fixtures = await _cache.GetOrCreateAsync(_options.Value.CacheKey ?? "PalpiteFC:Fixtures",
                                                      () => GetFixtures(from, to),
