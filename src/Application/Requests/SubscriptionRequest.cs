@@ -1,9 +1,7 @@
-﻿using System.Text.Json.Serialization;
-
-namespace PalpiteFC.Api.Application.Requests;
+﻿namespace PalpiteFC.Api.Application.Requests;
 
 public class SubscriptionRequest
 {
-    [JsonPropertyName("token")]
-    public string? CardTokenId { get; set; }
+    public bool CreateCustomer { get; set; }
+    public Card? Card { get; set; }
 }

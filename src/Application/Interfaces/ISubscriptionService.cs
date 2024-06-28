@@ -5,5 +5,6 @@ using PalpiteFC.Api.CrossCutting.Result;
 namespace PalpiteFC.Api.Application.Interfaces;
 public interface ISubscriptionService
 {
-    Task<Result<SubscriptionResponse>> SubscribeAsync(SubscriptionRequest request, CancellationToken cancellationToken);
+    Task<Result> CreateCustomerAsync(CreateCustomerRequest request, CancellationToken cancellationToken);
+    Task<Result> SubscribeAsync(SubscriptionRequest request, CancellationToken cancellationToken);
 }
