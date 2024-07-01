@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\palpitefc-libraries\src\Persistence.Database\Persistence.Database.csproj" />
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Integrations\Integrations.csproj" />
   </ItemGroup>

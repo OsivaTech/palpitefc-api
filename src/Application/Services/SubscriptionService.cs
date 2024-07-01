@@ -4,22 +4,41 @@ using PalpiteFC.Api.Application.Utils;
 using PalpiteFC.Api.CrossCutting.Errors;
 using PalpiteFC.Api.CrossCutting.Result;
 using PalpiteFC.Api.Integrations.Interfaces;
+using PalpiteFC.Libraries.Persistence.Abstractions.Entities;
 using PalpiteFC.Libraries.Persistence.Abstractions.Repositories;
 
 namespace PalpiteFC.Api.Application.Services;
 
 public class SubscriptionService : ISubscriptionService
 {
+    #region Fields
+
     private readonly IPagBankProvider _pagBankProvider;
     private readonly IUsersRepository _usersRepository;
+    private readonly IPlansRepository _plansRepository;
+    private readonly ISubscriptionsRepository _subsRepository;
     private readonly UserContext _userContext;
 
-    public SubscriptionService(IPagBankProvider pagBankProvider, IUsersRepository usersRepository, UserContext userContext)
+    #endregion
+
+    #region Constructor
+
+    public SubscriptionService(IPagBankProvider pagBankProvider,
+                               IUsersRepository usersRepository,
+                               IPlansRepository plansRepository,
+                               ISubscriptionsRepository subsRepository,
+                               UserContext userContext)
     {
         _pagBankProvider = pagBankProvider;
         _usersRepository = usersRepository;
+        _plansRepository = plansRepository;
+        _subsRepository = subsRepository;
         _userContext = userContext;
     }
+
+    #endregion
+
+    #region Public Methods
 
     public async Task<Result> CreateCustomerAsync(CreateCustomerRequest request, CancellationToken cancellationToken)
     {
@@ -36,13 +55,14 @@ public class SubscriptionService : ISubscriptionService
                 {
                     Country = "55",
                     Area = user.PhoneNumber?[..2],
-                    Number = user.PhoneNumber?[1..]
+                    Number = user.PhoneNumber?[2..]
                 }
             ],
             BillingInfo =
             [
                 new()
                 {
+                    Type = "CREDIT_CARD",
                     CardInfo = new() { Encrypted = request.Card?.Encrypted, SecurityCode = request.Card?.SecurityCode }
                 },
             ]
@@ -55,42 +75,67 @@ public class SubscriptionService : ISubscriptionService
             return ResultHelper.Failure(SubscriptionErrors.GenericError);
         }
 
+        await _usersRepository.Update(new User()
+        {
+            Id = user.Id,
+            CustomerRef = response.Data.Id
+        });
+
         return ResultHelper.Success();
     }
 
     public async Task<Result> SubscribeAsync(SubscriptionRequest request, CancellationToken cancellationToken)
     {
+        var plans = await _plansRepository.Select();
+
+        if (plans.Any() is false)
+        {
+            return ResultHelper.Failure(SubscriptionErrors.NoRegistredPlans);
+        }
+
         if (request.CreateCustomer)
         {
-            await CreateCustomerAsync(new CreateCustomerRequest { Card = request.Card }, cancellationToken);
+            var customerResponse = await CreateCustomerAsync(new CreateCustomerRequest { Card = request.Card }, cancellationToken);
+
+            if (customerResponse.IsFailure)
+            {
+                return customerResponse;
+            }
         }
 
         var user = await _usersRepository.Select(_userContext.Id);
 
-        var subscription = new Integrations.PagBank.Requests.SubscriptionRequest()
+        var subsRequest = new Integrations.PagBank.Requests.SubscriptionRequest()
         {
-            Plan = new() { Id = "PLAN_883143C0-3B19-446D-B5E1-E3F360E78A9E" },
-            Customer = new() { Id = "CUST_863743A5-5320-473C-A494-8B053626D0B" }, //todo change this id to customer id from pagbank
+            Plan = new() { Id = plans.OrderByDescending(x => x.Id).First().PlanRef },
+            Customer = new() { Id = user.CustomerRef },
             ReferenceId = user.Id.ToString(),
             PaymentMethods =
             [
                 new()
                 {
                     Type = "CREDIT_CARD",
-                    CardInfo = new() { SecurityCode = request.SecurityCode }
+                    CardInfo = new() { SecurityCode = request.Card?.SecurityCode }
                 }
             ]
         };
 
-        var response = await _pagBankProvider.CreateSubscription(subscription, cancellationToken);
+        var response = await _pagBankProvider.CreateSubscription(subsRequest, cancellationToken);
 
         if (response.IsFailure)
         {
             return ResultHelper.Failure(SubscriptionErrors.GenericError);
         }
 
-        await _usersRepository.Update(user);// todo changes this to save (on subscription table?)
+        await _subsRepository.Insert(new Subscription
+        {
+            PlanId = plans.OrderByDescending(x => x.Id).First().Id,
+            SubscriptionRef = response.Data.Id,
+            UserId = user.Id
+        });
 
         return ResultHelper.Success();
     }
+
+    #endregion
 }

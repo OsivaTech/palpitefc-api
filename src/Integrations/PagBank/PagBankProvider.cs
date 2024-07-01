@@ -4,6 +4,7 @@ using PalpiteFC.Api.Integrations.Extensions;
 using PalpiteFC.Api.Integrations.Interfaces;
 using PalpiteFC.Api.Integrations.PagBank.Requests;
 using PalpiteFC.Api.Integrations.PagBank.Responses;
+using System.Text;
 using System.Text.Json;
 
 namespace PalpiteFC.Api.Integrations.PagBank;
@@ -35,10 +36,10 @@ public class PagBankProvider : IPagBankProvider
 
     #region Public Methods
 
-    public async Task<Result<CreateCustomerResponse>> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken) 
+    public async Task<Result<CreateCustomerResponse>> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken)
         => await PostAsync<CreateCustomerRequest, CreateCustomerResponse>("customers", request, cancellationToken);
 
-    public async Task<Result<SubscriptionResponse>> CreateSubscription(SubscriptionRequest request, CancellationToken cancellationToken) 
+    public async Task<Result<SubscriptionResponse>> CreateSubscription(SubscriptionRequest request, CancellationToken cancellationToken)
         => await PostAsync<SubscriptionRequest, SubscriptionResponse>("subscriptions", request, cancellationToken);
 
     #endregion
@@ -49,7 +50,7 @@ public class PagBankProvider : IPagBankProvider
     {
         try
         {
-            var content = new StringContent(JsonSerializer.Serialize(request, _serializerOptions));
+            var content = new StringContent(JsonSerializer.Serialize(request, _serializerOptions), Encoding.UTF8, "application/json");
 
             var httpResponse = await _httpClient.PostAsync(requestUri, content, cancellationToken);
 

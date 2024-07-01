@@ -19,8 +19,9 @@ public static class ServiceCollectionExtensions
 
         services.AddHttpClient<IPagBankProvider, PagBankProvider>(client =>
         {
-            client.BaseAddress = new Uri("https://api.mercadopago.com");
-            client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer TEST-788839605460239-062208-feea299b5b85a8bf404897d6bf05d5ff-165347412");
+            client.BaseAddress = new Uri(configuration["Settings:Integrations:PagBank:BaseAddress"]!);
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", $"Bearer {configuration["Settings:Integrations:PagBank:Token"]}");
+            client.DefaultRequestHeaders.Add("accept", "application/json");
         });
     }
 }

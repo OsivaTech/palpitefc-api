@@ -1,6 +1,7 @@
 ﻿using PalpiteFC.Api.Application.Interfaces;
 using PalpiteFC.Api.Application.Requests;
 using PalpiteFC.Api.Extensions;
+using PalpiteFC.Api.Filters;
 
 namespace PalpiteFC.Api.Endpoints;
 
@@ -19,6 +20,7 @@ public static class Subscriptions
         app.MapPost("/subscriptions", SubscribeAsync)
            .Produces(StatusCodes.Status204NoContent)
            .RequireAuthorization()
+           .AddEndpointFilter<ValidationFilter<SubscriptionRequest>>()
            .WithSummary("Subscribe to premium plan.")
            .WithOpenApi();
     }

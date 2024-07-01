@@ -2,6 +2,6 @@
 
 public class SubscriptionRequest
 {
-    public bool CreateCustomer { get; set; }
     public Card? Card { get; set; }
+    public bool CreateCustomer { get; set; }
 }

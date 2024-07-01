@@ -5,7 +5,7 @@ namespace PalpiteFC.Api.Integrations.PagBank.Responses;
 public class CreateCustomerResponse
 {
     [JsonPropertyName("id")]
-    public Guid Id { get; set; }
+    public string? Id { get; set; }
 
     [JsonPropertyName("email")]
     public string? Email { get; set; }

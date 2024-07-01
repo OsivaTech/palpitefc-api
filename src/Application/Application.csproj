@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\palpitefc-libraries\src\Persistence.Abstractions\Persistence.Abstractions.csproj" />
     <ProjectReference Include="..\CrossCutting\CrossCutting.csproj" />
     <ProjectReference Include="..\DataContracts\DataContracts.csproj" />
     <ProjectReference Include="..\Integrations\Integrations.csproj" />
