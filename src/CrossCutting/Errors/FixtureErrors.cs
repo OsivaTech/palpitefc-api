@@ -4,5 +4,5 @@ namespace PalpiteFC.Api.CrossCutting.Errors;
 
 public static class FixtureErrors
 {
-    public static readonly Message FixtureNotFound = new("Fixture.NotFound", "This fixture was not found.");
+    public static readonly Message FixtureNotFound = new("Fixture-NotFound", "This fixture was not found.");
 }

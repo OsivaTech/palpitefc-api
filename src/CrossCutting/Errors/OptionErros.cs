@@ -4,5 +4,5 @@ namespace PalpiteFC.Api.CrossCutting.Errors;
 
 public static class OptionErros
 {
-    public static readonly Message OptionNotFound = new("Option.NotFound", "This option was not found.");
+    public static readonly Message OptionNotFound = new("Option-NotFound", "This option was not found.");
 }
